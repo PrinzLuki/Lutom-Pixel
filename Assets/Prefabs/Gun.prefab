@@ -51,7 +51,7 @@ MonoBehaviour:
   player: {fileID: 0}
   gunEnd: {fileID: 7784186475152316395}
   bulletSpawn: {fileID: 5018310373698463449}
-  bouncyMAT: {fileID: 6200000, guid: 636822711cedb5b4899843a1a774b49e, type: 2}
+  bouncyMAT: {fileID: 6200000, guid: ca4d78f15b3baa541b164cd6b7468d7e, type: 2}
   weaponSprite: {fileID: 0}
   bullet: {fileID: 8336525490738794815, guid: 61d5a916608d6a84ebbb620902948c2b, type: 3}
   speed: 5
