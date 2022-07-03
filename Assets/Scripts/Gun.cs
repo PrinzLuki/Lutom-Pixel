@@ -15,9 +15,11 @@ public class Gun : MonoBehaviour
     [Header("Weapon")]
     public GameObject bullet;
     public float speed;
+    public float munition;
     public bool automatic;
     public bool bouncyBullet;
     public bool livingBullet;
+    public bool stickyBullet;
 
     private void Start()
     {
@@ -33,14 +35,14 @@ public class Gun : MonoBehaviour
 
         if (automatic)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && munition > 0)
             {
                 ShootBullet();
             }
         }
         else
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && munition > 0)
             {
                 ShootBullet();
             }
@@ -56,14 +58,23 @@ public class Gun : MonoBehaviour
         shootDirection = shootDirection - transform.position;
         GameObject bulletInstance = Instantiate(bullet, bulletSpawn.position, Quaternion.Euler(new Vector3(0, 0, 0)));
         Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
+
+        //Special Bullets/Effects
         Bullet bulletStat = bulletInstance.GetComponent<Bullet>();
         if (livingBullet)
             bulletStat.livingBullet = true;
         if (bouncyBullet)
             bulletRigidbody.sharedMaterial = bouncyMAT;
+        if (stickyBullet)
+            bulletStat.stickyBullet = true;
+
+
         bulletRigidbody.velocity = new Vector2(shootDirection.x * speed, shootDirection.y * speed);
 
         Physics2D.IgnoreCollision(bulletInstance.GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
+
+        munition--;
+        if (munition <= 0) munition = 0;
 
     }
 

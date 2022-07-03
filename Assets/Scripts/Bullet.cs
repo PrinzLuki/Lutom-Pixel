@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
 {
     public float timeUntilDestroyed = 4f;
     public bool livingBullet;
+    public bool stickyBullet;
 
     private void Start()
     {
@@ -16,5 +17,12 @@ public class Bullet : MonoBehaviour
     {
         if (!livingBullet)
             Destroy(gameObject);
+        if (stickyBullet)
+        {
+            transform.parent = collision.transform;
+            Destroy(this.GetComponent<Rigidbody2D>());
+            Destroy(this.GetComponent<Collider2D>());
+            stickyBullet = false;
+        }
     }
 }

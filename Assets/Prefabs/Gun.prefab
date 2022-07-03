@@ -55,9 +55,11 @@ MonoBehaviour:
   weaponSprite: {fileID: 0}
   bullet: {fileID: 8336525490738794815, guid: 61d5a916608d6a84ebbb620902948c2b, type: 3}
   speed: 5
+  munition: 10
   automatic: 0
   bouncyBullet: 0
   livingBullet: 1
+  stickyBullet: 0
 --- !u!1 &668576819147349053
 GameObject:
   m_ObjectHideFlags: 0
