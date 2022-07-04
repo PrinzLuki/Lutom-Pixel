@@ -35,26 +35,37 @@
             ],
             "bindings": [
                 {
-                    "name": "",
-                    "id": "16514e9f-ebd3-4ba5-8e0d-bf1902b211e4",
+                    "name": "Horizontal",
+                    "id": "708ebdd9-4580-4eda-b7e9-60a99e78e8aa",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "ec24c113-9d8c-437c-a33b-de2a263e523c",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Movement",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "a95a98aa-8eb1-4f28-aa47-44064fc1906b",
+                    "name": "positive",
+                    "id": "3116a5be-2d4d-49e3-9ef2-b74005a2ae35",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Movement",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",

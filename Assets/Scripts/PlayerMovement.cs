@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void MovePlayer()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
+        horizontalInput = InputManager.instance.CurrentPosition();
         _playerRigidbody.velocity = new Vector2(horizontalInput * playerSpeed, _playerRigidbody.velocity.y);
 
         //Animation
@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (InputManager.instance.IsJumping())
         {
             if (isGrounded)
             {
