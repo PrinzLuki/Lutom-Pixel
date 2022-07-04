@@ -13,13 +13,9 @@ public class Gun : MonoBehaviour
     public SpriteRenderer weaponSprite;
 
     [Header("Weapon")]
-    public GameObject bullet;
+    public BulletScriptableObject bulletScriptable;
     public float speed;
     public float munition;
-    public bool automatic;
-    public bool bouncyBullet;
-    public bool livingBullet;
-    public bool stickyBullet;
 
     private void Start()
     {
@@ -33,7 +29,7 @@ public class Gun : MonoBehaviour
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RotateWeapon();
 
-        if (automatic)
+        if (bulletScriptable.automatic)
         {
             if (Input.GetMouseButton(0) && munition > 0)
             {
@@ -56,17 +52,8 @@ public class Gun : MonoBehaviour
         shootDirection.z = 0.0f;
         shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
         shootDirection = shootDirection - transform.position;
-        GameObject bulletInstance = Instantiate(bullet, bulletSpawn.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        GameObject bulletInstance = Instantiate(bulletScriptable.prefab, bulletSpawn.position, Quaternion.Euler(new Vector3(0, 0, 0)));
         Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
-
-        //Special Bullets/Effects
-        Bullet bulletStat = bulletInstance.GetComponent<Bullet>();
-        if (livingBullet)
-            bulletStat.livingBullet = true;
-        if (bouncyBullet)
-            bulletRigidbody.sharedMaterial = bouncyMAT;
-        if (stickyBullet)
-            bulletStat.stickyBullet = true;
 
 
         bulletRigidbody.velocity = new Vector2(shootDirection.x * speed, shootDirection.y * speed);

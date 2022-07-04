@@ -4,32 +4,29 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float timeUntilDestroyed = 4f;
-    public bool livingBullet;
-    public bool stickyBullet;
-    public float bulletDmg = 2;
+    public BulletScriptableObject bulletScriptable;
 
 
     private void Start()
     {
-        Destroy(gameObject, timeUntilDestroyed);
+        Destroy(gameObject, bulletScriptable.timeUntilDestroyed);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
         if(other.gameObject.GetComponent<IDamageable>() != null)
         {
-            other.gameObject.GetComponent<IDamageable>().GetDamage(bulletDmg);
+            other.gameObject.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage);
         }
 
-        if (!livingBullet)
+        if (!bulletScriptable.living)
             Destroy(gameObject);
-        if (stickyBullet)
+        if (bulletScriptable.sticky)
         {
             transform.parent = other.transform;
             Destroy(this.GetComponent<Rigidbody2D>());
             Destroy(this.GetComponent<Collider2D>());
-            stickyBullet = false;
+            //stickyBullet = false;
         }
     }
 }

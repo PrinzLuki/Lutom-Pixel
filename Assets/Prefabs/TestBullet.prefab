@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4795432096612225617}
   - component: {fileID: 587208569447796826}
   m_Layer: 7
-  m_Name: Bullet
+  m_Name: TestBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,5 +136,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 039651bd5a1389c4f92996f80fcaaa44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeUntilDestroyed: 4
-  livingBullet: 0
+  bulletScriptable: {fileID: 11400000, guid: f68b8d9788cc5894a82f2ce0996c9de8, type: 2}

@@ -1453,6 +1453,7 @@ GameObject:
   - component: {fileID: 2096894311}
   - component: {fileID: 2096894310}
   - component: {fileID: 2096894309}
+  - component: {fileID: 2096894313}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Player
@@ -1543,6 +1544,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2096894313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096894308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a81a08d0501e19148962bd23b5e2305d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 10
 --- !u!1 &2100564425
 GameObject:
   m_ObjectHideFlags: 0
@@ -1721,6 +1735,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1927238920538852517, guid: 40e2516487e1b9f4e96170716ebd2667, type: 3}
+      propertyPath: bulletScriptable
+      value: 
+      objectReference: {fileID: 11400000, guid: f68b8d9788cc5894a82f2ce0996c9de8, type: 2}
     - target: {fileID: 7309897353762664629, guid: 40e2516487e1b9f4e96170716ebd2667, type: 3}
       propertyPath: m_Name
       value: Player
