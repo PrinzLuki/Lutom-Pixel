@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
+    public float PlayerSpeed { get => playerSpeed; set => playerSpeed = value; }
+
     private void Start()
     {
         _playerRigidbody = GetComponent<Rigidbody2D>();
@@ -144,7 +146,16 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawCube(transform.position + groundCheckPosition, groundCheckScale);
     }
 
-
-
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (InputManager.instance.Interact())
+        {
+            Debug.Log("Interact");
+            if (other.gameObject.GetComponent<IInteractable>() != null)
+            {
+                other.gameObject.GetComponent<IInteractable>().Interact(this);
+            }
+        }
+    }
 
 }

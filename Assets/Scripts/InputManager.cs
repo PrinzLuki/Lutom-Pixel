@@ -8,12 +8,14 @@ public class InputManager : BaseSingelton<InputManager>
     [SerializeField] InputActionReference movementControll;
     [SerializeField] InputActionReference jumpControll;
     [SerializeField] InputActionReference shootControll;
+    [SerializeField] InputActionReference interActionControll;
 
     private void OnEnable()
     {
         movementControll.action.Enable();
         jumpControll.action.Enable();
         shootControll.action.Enable();
+        interActionControll.action.Enable();
 
     }
     private void OnDisable()
@@ -21,6 +23,7 @@ public class InputManager : BaseSingelton<InputManager>
         movementControll.action.Disable();
         jumpControll.action.Disable();
         shootControll.action.Disable();
+        interActionControll.action.Disable();
     }
 
     public float CurrentPosition()
@@ -36,6 +39,11 @@ public class InputManager : BaseSingelton<InputManager>
     public bool IsShooting()
     {
         return shootControll.action.triggered;
+    }
+
+    public bool Interact()
+    {
+        return interActionControll.action.triggered;
     }
 
 }
