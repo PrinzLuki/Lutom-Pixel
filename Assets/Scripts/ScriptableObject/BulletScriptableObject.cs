@@ -9,7 +9,6 @@ public class BulletScriptableObject : ScriptableObject
     public float damage;
     public float timeUntilDestroyed;
 
-    public bool automatic;
     public bool bouncy;
     public bool living;
     public bool sticky;

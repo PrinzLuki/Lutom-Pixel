@@ -5,23 +5,33 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     [Header("References")]
-    public Vector3 mousePos;
+    [SerializeField] private Vector3 mousePos;
     [SerializeField] private Transform player;
-    public Transform gunEnd;
-    public Transform bulletSpawn;
+    [SerializeField] private SpriteRenderer weaponSprite;
+    [SerializeField] private Transform gunEnd;
+    [SerializeField] private Transform bulletSpawn;
     public PhysicsMaterial2D bouncyMAT;
-    public SpriteRenderer weaponSprite;
+
 
     [Header("Weapon")]
+    public WeaponScriptableObject weaponScriptable;
     public BulletScriptableObject bulletScriptable;
-    public float speed;
-    public float munition;
+    public float currentMunition;
+    public float currentSpeed;
+    //public bool automatic;
 
     private void Start()
     {
         player = GetComponentInParent<PlayerMovement>().transform;
 
+        currentMunition = weaponScriptable.munition;
+        currentSpeed = weaponScriptable.speed;
+
         weaponSprite = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
+        weaponSprite.sprite = weaponScriptable.sprite;
+
+        gunEnd.localPosition = weaponScriptable.gunEndPosition;
+        bulletSpawn.localPosition = weaponScriptable.bulletSpawnPosition;
     }
 
     void Update()
@@ -29,16 +39,16 @@ public class Gun : MonoBehaviour
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RotateWeapon();
 
-        if (bulletScriptable.automatic)
+        if (weaponScriptable.automatic)
         {
-            if (Input.GetMouseButton(0) && munition > 0)
+            if (Input.GetMouseButton(0) && currentMunition > 0)
             {
                 ShootBullet();
             }
         }
         else
         {
-            if (Input.GetMouseButtonDown(0) && munition > 0)
+            if (Input.GetMouseButtonDown(0) && currentMunition > 0)
             {
                 ShootBullet();
             }
@@ -56,12 +66,12 @@ public class Gun : MonoBehaviour
         Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
 
 
-        bulletRigidbody.velocity = new Vector2(shootDirection.x * speed, shootDirection.y * speed);
+        bulletRigidbody.velocity = new Vector2(shootDirection.x * weaponScriptable.speed, shootDirection.y * weaponScriptable.speed);
 
         Physics2D.IgnoreCollision(bulletInstance.GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
 
-        munition--;
-        if (munition <= 0) munition = 0;
+        currentMunition--;
+        if (currentMunition <= 0) currentMunition = 0;
 
     }
 
@@ -86,7 +96,9 @@ public class Gun : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(gunEnd.position, mousePos);
+        if (weaponScriptable != null)
+            Gizmos.DrawLine(gunEnd.position, mousePos);
     }
 }

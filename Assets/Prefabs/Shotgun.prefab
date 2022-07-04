@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8864614463603277073}
   - component: {fileID: 9209603402018852596}
   m_Layer: 3
-  m_Name: Gun
+  m_Name: Shotgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,17 +49,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mousePos: {x: 0, y: 0, z: 0}
   player: {fileID: 0}
+  weaponSprite: {fileID: 0}
   gunEnd: {fileID: 7784186475152316395}
   bulletSpawn: {fileID: 5018310373698463449}
   bouncyMAT: {fileID: 6200000, guid: ca4d78f15b3baa541b164cd6b7468d7e, type: 2}
-  weaponSprite: {fileID: 0}
-  bullet: {fileID: 8336525490738794815, guid: 61d5a916608d6a84ebbb620902948c2b, type: 3}
-  speed: 5
-  munition: 100
-  automatic: 0
-  bouncyBullet: 0
-  livingBullet: 1
-  stickyBullet: 0
+  weaponScriptable: {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
+  bulletScriptable: {fileID: 11400000, guid: f68b8d9788cc5894a82f2ce0996c9de8, type: 2}
+  currentMunition: 0
+  currentSpeed: 0
 --- !u!1 &668576819147349053
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,7 +268,7 @@ GameObject:
   - component: {fileID: 7722439610920795734}
   - component: {fileID: 606044041986130275}
   m_Layer: 0
-  m_Name: Shotgun_01
+  m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

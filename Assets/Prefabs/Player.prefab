@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7309897352405963857}
   - component: {fileID: 7309897352405963858}
   m_Layer: 3
-  m_Name: Character_1_0
+  m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -255,15 +255,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 91947576742915814, guid: e3d0c2fb9897d244699c826fb089d87a, type: 3}
       propertyPath: m_Name
-      value: Gun
-      objectReference: {fileID: 0}
-    - target: {fileID: 606044041986130275, guid: e3d0c2fb9897d244699c826fb089d87a, type: 3}
-      propertyPath: m_FlipX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 606044041986130275, guid: e3d0c2fb9897d244699c826fb089d87a, type: 3}
-      propertyPath: m_FlipY
-      value: 0
+      value: Weapon
       objectReference: {fileID: 0}
     - target: {fileID: 8864614463603277073, guid: e3d0c2fb9897d244699c826fb089d87a, type: 3}
       propertyPath: m_RootOrder
