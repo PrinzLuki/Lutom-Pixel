@@ -15,7 +15,7 @@ MonoBehaviour:
   prefab: {fileID: 8336525490738794815, guid: 61d5a916608d6a84ebbb620902948c2b, type: 3}
   damage: 2
   timeUntilDestroyed: 4
-  automatic: 0
-  bouncy: 0
+  bouncy: 1
+  bouncyMAT: {fileID: 6200000, guid: ca4d78f15b3baa541b164cd6b7468d7e, type: 2}
   living: 1
   sticky: 0

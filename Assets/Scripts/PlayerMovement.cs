@@ -15,11 +15,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float horizontalInput;
     [Header("Gizmos")]
     public LayerMask groundLayer;
-
+    [SerializeField] private bool showGizmos;
     [SerializeField] private Vector3 groundCheckPosition = new Vector3(-0.003f, -0.4f, 0);
     [SerializeField] private Vector3 groundCheckScale = new Vector3(0.66f, 0.2f, 0);
+    [SerializeField] private float interactionRadius;
 
-    [Header("Animations")]
+    [Header("Animations & Effects")]
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
@@ -51,6 +52,8 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
         IsGrounded();
         Jump();
+
+        IsInteracting();
     }
 
     /// <summary>
@@ -112,6 +115,21 @@ public class PlayerMovement : MonoBehaviour
         return isGrounded;
     }
 
+    private void IsInteracting()
+    {
+        var colliders = Physics2D.OverlapCircleAll(transform.position, interactionRadius);
+        foreach (var collider in colliders)
+        {
+            if (collider.GetComponent<IInteractable>() != null)
+            {
+                if (InputManager.instance.Interact())
+                {
+                    collider.GetComponent<IInteractable>().Interact(this);
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// Checks Input of player and Flips the Sprite accordingly
     /// </summary>
@@ -142,19 +160,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = new Color(0, 1, 0, 0.25f);
-        Gizmos.DrawCube(transform.position + groundCheckPosition, groundCheckScale);
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (InputManager.instance.Interact())
+        if (showGizmos)
         {
-            Debug.Log("Interact");
-            if (other.gameObject.GetComponent<IInteractable>() != null)
-            {
-                other.gameObject.GetComponent<IInteractable>().Interact(this);
-            }
+            Gizmos.color = new Color(0, 1, 0, 0.25f);
+            Gizmos.DrawCube(transform.position + groundCheckPosition, groundCheckScale);
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(transform.position, interactionRadius);
         }
     }
 

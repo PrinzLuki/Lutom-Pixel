@@ -14,9 +14,16 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.GetComponent<IDamageable>() != null)
+        if (other.gameObject.GetComponent<IDamageable>() != null)
         {
             other.gameObject.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage);
+            Destroy(gameObject);
+        }
+
+        if (bulletScriptable.bouncy && bulletScriptable.bouncyMAT != null)
+        {
+            var bulletRigidbody = GetComponent<Rigidbody2D>();
+            bulletRigidbody.sharedMaterial = bulletScriptable.bouncyMAT;
         }
 
         if (!bulletScriptable.living)
