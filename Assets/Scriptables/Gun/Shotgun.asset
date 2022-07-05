@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 861d6857858c4684abbfa99b7827b6ad, type: 3}
   m_Name: Shotgun
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: e08b81d7f02d38c43828c5020eefc2fb, type: 3}
-  gunEndPosition: {x: 0.727, y: -0.05, z: 0}
-  bulletSpawnPosition: {x: 0.779, y: -0.049, z: 0}
-  speed: 50
+  weaponPrefab: {fileID: 2770220800326088166, guid: d4fbda4b7bfc8c74f83784933edd25d7, type: 3}
+  speed: 10
   munition: 100
   automatic: 0

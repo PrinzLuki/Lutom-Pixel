@@ -1,5 +1,5 @@
 public interface IInteractable
 {
-    public void Interact(PlayerMovement playerspeed);
+    public void Interact(PlayerStats playerStats);
 
 }

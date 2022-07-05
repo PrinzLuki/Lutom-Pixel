@@ -152,7 +152,7 @@ Transform:
   - {fileID: 7309897353430470532}
   - {fileID: 2194544991773818688}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7309897353762664630
 Animator:
@@ -262,6 +262,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 50
   health: 30
+  maxSpeed: 5
+  speed: 5
+  maxJumpPower: 5
+  jumpPower: 5
+  canDoubleJump: 0
+  interactionRadius: 1
+  showGizmos: 0
 --- !u!1001 &7309897352957297233
 PrefabInstance:
   m_ObjectHideFlags: 0
