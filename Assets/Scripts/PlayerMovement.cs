@@ -5,26 +5,25 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Rigidbody2D _playerRigidbody;
+    [SerializeField] private PlayerStats _playerStats;
 
-    [Header("Player Overall")]
-    [SerializeField] private float playerSpeed = 5.0f;
-    [SerializeField] private float jumpPower = 5.0f;
-    [SerializeField] private bool canDoubleJump;
-    [SerializeField] private bool isGrounded;
+
     [Header("Player Input")]
+    [SerializeField] private bool canDoubleJump;
     [SerializeField] private float horizontalInput;
+    [SerializeField] private bool isGrounded;
+    public bool CanDoubleJump { get => CanDoubleJump; set => CanDoubleJump = value; }
+
     [Header("Gizmos")]
     public LayerMask groundLayer;
-    [SerializeField] private bool showGizmos;
     [SerializeField] private Vector3 groundCheckPosition = new Vector3(-0.003f, -0.4f, 0);
     [SerializeField] private Vector3 groundCheckScale = new Vector3(0.66f, 0.2f, 0);
-    [SerializeField] private float interactionRadius;
 
     [Header("Animations & Effects")]
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
-    public float PlayerSpeed { get => playerSpeed; set => playerSpeed = value; }
+
 
     private void Start()
     {
@@ -32,6 +31,12 @@ public class PlayerMovement : MonoBehaviour
         if (_playerRigidbody == null)
         {
             Debug.LogError("Player is missing a Rigidbody2D component");
+        }
+
+        _playerStats = GetComponent<PlayerStats>();
+        if (_playerStats == null)
+        {
+            Debug.LogError("Player is missing a PlayerStats component");
         }
 
         _animator = GetComponent<Animator>();
@@ -52,8 +57,6 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
         IsGrounded();
         Jump();
-
-        IsInteracting();
     }
 
     /// <summary>
@@ -62,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer()
     {
         horizontalInput = InputManager.instance.CurrentPosition();
-        _playerRigidbody.velocity = new Vector2(horizontalInput * playerSpeed, _playerRigidbody.velocity.y);
+        _playerRigidbody.velocity = new Vector2(horizontalInput * _playerStats.Speed, _playerRigidbody.velocity.y);
 
         //Animation
         FlipPlayer();
@@ -79,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
             if (isGrounded)
             {
                 _playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, 0);
-                _playerRigidbody.velocity = (new Vector2(_playerRigidbody.velocity.x, jumpPower));
+                _playerRigidbody.velocity = (new Vector2(_playerRigidbody.velocity.x, _playerStats.JumpPower));
                 canDoubleJump = true;
             }
             else
@@ -88,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     canDoubleJump = false;
                     _playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, 0);
-                    _playerRigidbody.velocity = (new Vector2(_playerRigidbody.velocity.x, jumpPower));
+                    _playerRigidbody.velocity = (new Vector2(_playerRigidbody.velocity.x, _playerStats.JumpPower));
                 }
             }
         }
@@ -115,20 +118,7 @@ public class PlayerMovement : MonoBehaviour
         return isGrounded;
     }
 
-    private void IsInteracting()
-    {
-        var colliders = Physics2D.OverlapCircleAll(transform.position, interactionRadius);
-        foreach (var collider in colliders)
-        {
-            if (collider.GetComponent<IInteractable>() != null)
-            {
-                if (InputManager.instance.Interact())
-                {
-                    collider.GetComponent<IInteractable>().Interact(this);
-                }
-            }
-        }
-    }
+
 
     /// <summary>
     /// Checks Input of player and Flips the Sprite accordingly
@@ -158,15 +148,5 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (showGizmos)
-        {
-            Gizmos.color = new Color(0, 1, 0, 0.25f);
-            Gizmos.DrawCube(transform.position + groundCheckPosition, groundCheckScale);
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(transform.position, interactionRadius);
-        }
-    }
 
 }

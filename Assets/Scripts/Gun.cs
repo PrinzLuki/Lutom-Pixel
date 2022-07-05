@@ -7,7 +7,8 @@ public class Gun : MonoBehaviour
     [Header("References")]
     [SerializeField] private Vector3 mousePos;
     [SerializeField] private Transform player;
-    [SerializeField] private SpriteRenderer weaponSprite;
+    [Header("Instantiated Prefab")]
+    [SerializeField] private GameObject weaponPrefab;
     [SerializeField] private Transform gunEnd;
     [SerializeField] private Transform bulletSpawn;
     public PhysicsMaterial2D bouncyMAT;
@@ -22,16 +23,22 @@ public class Gun : MonoBehaviour
 
     private void Start()
     {
-        player = GetComponentInParent<PlayerMovement>().transform;
+        player = transform.parent.GetComponentInParent<PlayerMovement>().transform;
 
         currentMunition = weaponScriptable.munition;
         currentSpeed = weaponScriptable.speed;
 
-        weaponSprite = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
-        weaponSprite.sprite = weaponScriptable.sprite;
+        weaponPrefab = Instantiate(weaponScriptable.weaponPrefab, this.transform, false);
 
-        gunEnd.localPosition = weaponScriptable.gunEndPosition;
-        bulletSpawn.localPosition = weaponScriptable.bulletSpawnPosition;
+        gunEnd = weaponPrefab.transform.GetChild(1);
+
+        bulletSpawn = weaponPrefab.transform.GetChild(2);
+
+        //weaponSprite = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
+        //weaponSprite.sprite = weaponScriptable.sprite;
+
+        //gunEnd.localPosition = weaponScriptable.gunEndPosition;
+        //bulletSpawn.localPosition = weaponScriptable.bulletSpawnPosition;
     }
 
     void Update()
@@ -98,7 +105,7 @@ public class Gun : MonoBehaviour
     {
 
         Gizmos.color = Color.red;
-        if (weaponScriptable != null)
+        if (gunEnd != null)
             Gizmos.DrawLine(gunEnd.position, mousePos);
     }
 }
