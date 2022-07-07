@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 587208569447796826}
   - component: {fileID: 2351888153890238926}
   - component: {fileID: 8168929990989108403}
-  - component: {fileID: -4004755341416856855}
+  - component: {fileID: -4096029918344475925}
+  - component: {fileID: 7916284691634827629}
   m_Layer: 7
   m_Name: TestBullet
   m_TagString: Untagged
@@ -158,7 +159,29 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 61d5a916608d6a84ebbb620902948c2b
   hasSpawned: 0
---- !u!114 &-4004755341416856855
+--- !u!114 &-4096029918344475925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8336525490738794815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab2cbc52526ea384ba280d13cd1a57b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0
+  target: {fileID: 5520740641853197844}
+  clientAuthority: 0
+  syncVelocity: 1
+  clearVelocity: 0
+  velocitySensitivity: 0.1
+  syncAngularVelocity: 1
+  clearAngularVelocity: 0
+  angularVelocitySensitivity: 0.1
+--- !u!114 &7916284691634827629
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -171,8 +194,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 0
+  syncInterval: 0
+  clientAuthority: 1
   sendInterval: 0.05
   syncPosition: 1
   syncRotation: 1

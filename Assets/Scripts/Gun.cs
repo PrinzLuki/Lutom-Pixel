@@ -51,7 +51,7 @@ public class Gun : NetworkBehaviour
     void Update()
     {
 
-        if (!isLocalPlayer) return;
+        if (!hasAuthority) return;
 
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RotateWeapon();
@@ -76,21 +76,21 @@ public class Gun : NetworkBehaviour
 
     }
 
+    [Command]
     private void ShootBullet()
     {
-
         Vector3 shootDirection = Input.mousePosition;
         shootDirection.z = 0.0f;
         shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
-        shootDirection = shootDirection - transform.position;
+        shootDirection = shootDirection - weaponHolder.transform.position;
         GameObject bulletInstance = Instantiate(bulletScriptable.prefab, bulletSpawn.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-        //NetworkServer.Spawn(bulletInstance);
+
+        NetworkServer.Spawn(bulletInstance, this.gameObject);
 
         Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
-
         bulletRigidbody.velocity = new Vector2(shootDirection.x * weaponScriptable.speed, shootDirection.y * weaponScriptable.speed);
 
-        Physics2D.IgnoreCollision(bulletInstance.GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
+        Physics2D.IgnoreCollision(bulletInstance.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
 
         currentMunition--;
         if (currentMunition <= 0) currentMunition = 0;

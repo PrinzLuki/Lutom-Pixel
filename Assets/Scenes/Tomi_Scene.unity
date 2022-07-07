@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 297410692
+  sceneId: 2492784813
   serverOnly: 0
   visible: 0
   m_AssetId: 
@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.1
   clientAuthority: 0
   sendInterval: 0.05
   syncPosition: 1
@@ -488,7 +488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 620383795
+  sceneId: 1498577377
   serverOnly: 0
   visible: 0
   m_AssetId: 
@@ -506,7 +506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.1
   clientAuthority: 0
   sendInterval: 0.05
   syncPosition: 1
@@ -674,7 +674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 3825916443
+  sceneId: 2228160661
   serverOnly: 0
   visible: 0
   m_AssetId: 
@@ -692,7 +692,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.1
   clientAuthority: 0
   sendInterval: 0.05
   syncPosition: 1
@@ -849,6 +849,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2476049371832087035, guid: 78e2ee621e12c954b973819278b832ff, type: 3}
+      propertyPath: clientAuthority
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2856277042908724494, guid: 78e2ee621e12c954b973819278b832ff, type: 3}
       propertyPath: sceneId
       value: 2467516282
@@ -872,6 +876,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 759f21ca102b72140b066c6b4de269db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   speed: 10
 --- !u!1 &827668011
 GameObject:
@@ -1096,7 +1102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 1596450035
+  sceneId: 1034060744
   serverOnly: 0
   visible: 0
   m_AssetId: 
@@ -1114,7 +1120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.1
   clientAuthority: 0
   sendInterval: 0.05
   syncPosition: 1
@@ -1282,7 +1288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 2600730578
+  sceneId: 1994832656
   serverOnly: 0
   visible: 0
   m_AssetId: 
@@ -1300,7 +1306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.1
   clientAuthority: 0
   sendInterval: 0.05
   syncPosition: 1
@@ -1468,7 +1474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 185826401
+  sceneId: 2246092726
   serverOnly: 0
   visible: 0
   m_AssetId: 
@@ -1486,7 +1492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.1
   clientAuthority: 0
   sendInterval: 0.05
   syncPosition: 1
@@ -1581,7 +1587,7 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs:
-  - {fileID: 4755247930899199781, guid: 9d68de8a8e1ecbe4681a9bc379ff6dbb, type: 3}
+  - {fileID: 8336525490738794815, guid: 61d5a916608d6a84ebbb620902948c2b, type: 3}
 --- !u!4 &1423617103
 Transform:
   m_ObjectHideFlags: 0
@@ -1869,7 +1875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 859766642
+  sceneId: 2885965218
   serverOnly: 0
   visible: 0
   m_AssetId: 
@@ -1887,7 +1893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.1
   clientAuthority: 0
   sendInterval: 0.05
   syncPosition: 1
@@ -2027,7 +2033,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.004023671, y: 0.028277785}
+  m_Offset: {x: -0.004023671, y: -0.1723481}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2038,7 +2044,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6539651, y: 0.9112552}
+  m_Size: {x: 0.6539651, y: 0.631595}
   m_EdgeRadius: 0
 --- !u!50 &2096894310
 Rigidbody2D:

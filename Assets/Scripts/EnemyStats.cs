@@ -7,7 +7,6 @@ public class EnemyStats : NetworkBehaviour, IDamageable
 {
     public float health = 10;
 
-
     public void GetDamage(float dmg)
     {
         health -= dmg;

@@ -46,6 +46,7 @@ public class PlayerMovement : NetworkBehaviour
             Debug.LogError("Player is missing an Animator component");
         }
 
+
         //Child of transform is "Sprite" and the child of that is our SpriteRenderer
         _spriteRenderer = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
         if (_animator == null)
