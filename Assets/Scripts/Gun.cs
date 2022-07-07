@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public class Gun : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] private Vector3 mousePos;
     [SerializeField] private Transform player;
+    [SerializeField] private Transform weaponHolder;
     [Header("Instantiated Prefab")]
     [SerializeField] private GameObject weaponPrefab;
     [SerializeField] private Transform gunEnd;
@@ -24,8 +25,8 @@ public class Gun : MonoBehaviour
 
     private void Start()
     {
-        player = transform.parent.GetComponentInParent<PlayerMovement>().transform;
-
+        player = this.transform;
+        weaponHolder = transform.GetChild(1);
 
         if (weaponScriptable != null)
         {
@@ -33,7 +34,9 @@ public class Gun : MonoBehaviour
             currentSpeed = weaponScriptable.speed;
 
             weaponPrefab = Instantiate(weaponScriptable.weaponPrefab, this.transform, false);
+            weaponPrefab.transform.parent = weaponHolder.transform;
 
+            //NetworkServer.Spawn(weaponPrefab);
             gunEnd = weaponPrefab.transform.GetChild(1);
 
             bulletSpawn = weaponPrefab.transform.GetChild(2);
@@ -48,7 +51,7 @@ public class Gun : MonoBehaviour
     void Update()
     {
 
-        //if (!isLocalPlayer) return;
+        if (!isLocalPlayer) return;
 
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RotateWeapon();
@@ -81,6 +84,8 @@ public class Gun : MonoBehaviour
         shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
         shootDirection = shootDirection - transform.position;
         GameObject bulletInstance = Instantiate(bulletScriptable.prefab, bulletSpawn.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        //NetworkServer.Spawn(bulletInstance);
+
         Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
 
         bulletRigidbody.velocity = new Vector2(shootDirection.x * weaponScriptable.speed, shootDirection.y * weaponScriptable.speed);
@@ -94,18 +99,18 @@ public class Gun : MonoBehaviour
 
     private void RotateWeapon()
     {
-        var dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
+        var dir = Input.mousePosition - Camera.main.WorldToScreenPoint(weaponHolder.transform.position);
         var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = q;
+        weaponHolder.transform.rotation = q;
         if (mousePos.x > player.position.x)
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            weaponHolder.transform.localScale = new Vector3(1, 1, 1);
         }
 
         if (mousePos.x < player.position.x)
         {
-            transform.localScale = new Vector3(1, -1, 1);
+            weaponHolder.transform.localScale = new Vector3(1, -1, 1);
         }
     }
 
