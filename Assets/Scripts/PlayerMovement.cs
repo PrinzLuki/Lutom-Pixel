@@ -1,7 +1,8 @@
+using Mirror;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] private Rigidbody2D _playerRigidbody;
@@ -54,6 +55,8 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
+        if (!isLocalPlayer) return;
+
         MovePlayer();
         IsGrounded();
         Jump();

@@ -1,3 +1,4 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,15 +26,18 @@ public class Gun : MonoBehaviour
     {
         player = transform.parent.GetComponentInParent<PlayerMovement>().transform;
 
-        currentMunition = weaponScriptable.munition;
-        currentSpeed = weaponScriptable.speed;
 
-        weaponPrefab = Instantiate(weaponScriptable.weaponPrefab, this.transform, false);
+        if (weaponScriptable != null)
+        {
+            currentMunition = weaponScriptable.munition;
+            currentSpeed = weaponScriptable.speed;
 
-        gunEnd = weaponPrefab.transform.GetChild(1);
+            weaponPrefab = Instantiate(weaponScriptable.weaponPrefab, this.transform, false);
 
-        bulletSpawn = weaponPrefab.transform.GetChild(2);
+            gunEnd = weaponPrefab.transform.GetChild(1);
 
+            bulletSpawn = weaponPrefab.transform.GetChild(2);
+        }
         //weaponSprite = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
         //weaponSprite.sprite = weaponScriptable.sprite;
 
@@ -43,8 +47,13 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
+
+        //if (!isLocalPlayer) return;
+
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RotateWeapon();
+
+        if (weaponScriptable == null) return;
 
         if (weaponScriptable.automatic)
         {
@@ -61,17 +70,18 @@ public class Gun : MonoBehaviour
             }
         }
 
+
     }
 
     private void ShootBullet()
     {
+
         Vector3 shootDirection = Input.mousePosition;
         shootDirection.z = 0.0f;
         shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
         shootDirection = shootDirection - transform.position;
         GameObject bulletInstance = Instantiate(bulletScriptable.prefab, bulletSpawn.position, Quaternion.Euler(new Vector3(0, 0, 0)));
         Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
-
 
         bulletRigidbody.velocity = new Vector2(shootDirection.x * weaponScriptable.speed, shootDirection.y * weaponScriptable.speed);
 

@@ -1,8 +1,9 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStats : MonoBehaviour, IDamageable
+public class EnemyStats : NetworkBehaviour, IDamageable
 {
     public float health = 10;
 

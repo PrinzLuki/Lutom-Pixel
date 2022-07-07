@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 512876790802291001}
   - component: {fileID: 2678977673078960963}
   - component: {fileID: 8424061158638699208}
+  - component: {fileID: 8375160407543778720}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -235,6 +236,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728b079a7f356734592d77aa4c169861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   _playerRigidbody: {fileID: 0}
   _playerStats: {fileID: 0}
   canDoubleJump: 1
@@ -242,7 +245,7 @@ MonoBehaviour:
   isGrounded: 0
   groundLayer:
     serializedVersion: 2
-    m_Bits: 200
+    m_Bits: 456
   groundCheckPosition: {x: -0.003, y: -0.4, z: 0}
   groundCheckScale: {x: 0.66, y: 0.2, z: 0}
   _animator: {fileID: 0}
@@ -318,6 +321,20 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!114 &8375160407543778720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7309897353762664629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc654f29862fc2643b948f772ebb9e68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 1, b: 1, a: 1}
+  padding: 2
 --- !u!1001 &7309897352957297233
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -378,6 +395,10 @@ PrefabInstance:
       propertyPath: bulletScriptable
       value: 
       objectReference: {fileID: 11400000, guid: 0f976e7b3f08735469bc7f549efcbba5, type: 2}
+    - target: {fileID: 9209603402018852596, guid: e3d0c2fb9897d244699c826fb089d87a, type: 3}
+      propertyPath: weaponScriptable
+      value: 
+      objectReference: {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: e3d0c2fb9897d244699c826fb089d87a, type: 3}
