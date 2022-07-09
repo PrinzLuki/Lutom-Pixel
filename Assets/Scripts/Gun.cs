@@ -48,13 +48,14 @@ public class Gun : NetworkBehaviour
         //bulletSpawn.localPosition = weaponScriptable.bulletSpawnPosition;
     }
 
+    [Client]
     void Update()
     {
 
         if (!hasAuthority) return;
-
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RotateWeapon();
+        CmdRotateWeapon();
+        //RotateWeapon();
 
         if (weaponScriptable == null) return;
 
@@ -62,30 +63,32 @@ public class Gun : NetworkBehaviour
         {
             if (Input.GetMouseButton(0) && currentMunition > 0)
             {
-                ShootBullet();
+                //ShootBullet();
+                CmdShootBullet();
+
             }
         }
         else
         {
             if (Input.GetMouseButtonDown(0) && currentMunition > 0)
             {
-                ShootBullet();
+                //ShootBullet();
+                CmdShootBullet();
             }
         }
 
 
     }
 
-    [Command]
     private void ShootBullet()
     {
-        Vector3 shootDirection = Input.mousePosition;
-        shootDirection.z = 0.0f;
-        shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+        //Vector3 shootDirection = Input.mousePosition;
+        //shootDirection.z = 0.0f;
+        //shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+        var shootDirection = mousePos;
         shootDirection = shootDirection - weaponHolder.transform.position;
         GameObject bulletInstance = Instantiate(bulletScriptable.prefab, bulletSpawn.position, Quaternion.Euler(new Vector3(0, 0, 0)));
 
-        NetworkServer.Spawn(bulletInstance, this.gameObject);
 
         Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
         bulletRigidbody.velocity = new Vector2(shootDirection.x * weaponScriptable.speed, shootDirection.y * weaponScriptable.speed);
@@ -95,7 +98,17 @@ public class Gun : NetworkBehaviour
         currentMunition--;
         if (currentMunition <= 0) currentMunition = 0;
 
+        //NetworkServer.Spawn(bulletInstance, this.gameObject);
     }
+
+    [Command]
+    private void CmdShootBullet()
+    {
+        RpcShootBullet();
+    }
+
+    [ClientRpc]
+    private void RpcShootBullet() => ShootBullet();
 
     private void RotateWeapon()
     {
@@ -114,6 +127,15 @@ public class Gun : NetworkBehaviour
         }
     }
 
+
+    [Command]
+    private void CmdRotateWeapon()
+    {
+        RpcRotateWeapon();
+    }
+
+    [ClientRpc]
+    private void RpcRotateWeapon() => RotateWeapon();
 
 
     private void OnDrawGizmos()

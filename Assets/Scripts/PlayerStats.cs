@@ -1,15 +1,16 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : NetworkBehaviour
 {
     [SerializeField] private float maxHealth;
     [SerializeField] private float health;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float speed = 5.0f;
     [SerializeField] private float maxJumpPower;
-    [SerializeField] private float jumpPower = 5.0f;      
+    [SerializeField] private float jumpPower = 5.0f;
     [SerializeField] private float interactionRadius = 1f;
     [SerializeField] private bool showGizmos;
 
@@ -21,10 +22,15 @@ public class PlayerStats : MonoBehaviour
     public float MaxSpeed { get => maxSpeed; }
     public float MaxJumpPower { get => maxJumpPower; }
 
+
+    [Client]
     private void Update()
     {
-        IsInteracting();
+        //IsInteracting();
+        CmdIsInteracting();
     }
+
+
 
     private void IsInteracting()
     {
@@ -40,6 +46,17 @@ public class PlayerStats : MonoBehaviour
             }
         }
     }
+
+
+    [Command]
+    private void CmdIsInteracting()
+    {
+        RpcIsInteracting();
+    }
+
+    [ClientRpc]
+    private void RpcIsInteracting() => IsInteracting();
+
 
     private void OnDrawGizmosSelected()
     {

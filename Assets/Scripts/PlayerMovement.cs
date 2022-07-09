@@ -54,9 +54,11 @@ public class PlayerMovement : NetworkBehaviour
             Debug.LogError("Player is missing a SpriteRenderer component");
         }
     }
+
+    [Client]
     private void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!hasAuthority) return;
 
         MovePlayer();
         IsGrounded();

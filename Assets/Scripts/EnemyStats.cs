@@ -10,10 +10,11 @@ public class EnemyStats : NetworkBehaviour, IDamageable
     public void GetDamage(float dmg)
     {
         health -= dmg;
-        if(health <= 0)
+        if (health <= 0)
         {
             Debug.Log("Enemy Died");
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            NetworkServer.Destroy(gameObject);
         }
     }
 }
