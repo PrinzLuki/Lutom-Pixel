@@ -23,6 +23,13 @@ public class Gun : NetworkBehaviour
     public float currentSpeed;
     //public bool automatic;
 
+    public override void OnStartLocalPlayer()
+    {
+        Camera.main.transform.SetParent(transform);
+        Camera.main.transform.localPosition = new Vector3(0, 0, -10);
+    }
+
+
     private void Start()
     {
         player = this.transform;
