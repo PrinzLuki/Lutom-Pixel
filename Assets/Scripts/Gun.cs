@@ -59,8 +59,8 @@ public class Gun : NetworkBehaviour
     void Update()
     {
 
-        if (!hasAuthority) return;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (!isLocalPlayer) return;
         CmdRotateWeapon();
         //RotateWeapon();
 
