@@ -1,6 +1,4 @@
 using Mirror;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerStats : NetworkBehaviour
@@ -28,8 +26,8 @@ public class PlayerStats : NetworkBehaviour
     {
         //IsInteracting();
         CmdIsInteracting();
-    }
 
+    }
 
 
     private void IsInteracting()
