@@ -25,15 +25,15 @@ public class Gun : NetworkBehaviour
 
     public override void OnStartLocalPlayer()
     {
-        Camera.main.transform.SetParent(transform);
-        Camera.main.transform.localPosition = new Vector3(0, 0, -10);
+        //Camera.main.transform.SetParent(transform);
+        //Camera.main.transform.localPosition = new Vector3(0, 0, -10);
     }
 
 
     private void Start()
     {
         player = this.transform;
-        weaponHolder = transform.GetChild(1);
+        //weaponHolder = transform.GetChild(1);
 
         if (weaponScriptable != null)
         {
@@ -59,8 +59,8 @@ public class Gun : NetworkBehaviour
     void Update()
     {
 
+        if (!hasAuthority) return;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (!isLocalPlayer) return;
         CmdRotateWeapon();
         //RotateWeapon();
 
@@ -151,5 +151,7 @@ public class Gun : NetworkBehaviour
         Gizmos.color = Color.red;
         if (gunEnd != null)
             Gizmos.DrawLine(gunEnd.position, mousePos);
+
+        //Gizmos.DrawLine(transform.position, Input.mousePosition - Camera.main.WorldToScreenPoint(weaponHolder.transform.position));
     }
 }

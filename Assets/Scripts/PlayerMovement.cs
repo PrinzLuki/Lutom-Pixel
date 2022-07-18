@@ -7,6 +7,7 @@ public class PlayerMovement : NetworkBehaviour
     [Header("References")]
     [SerializeField] private Rigidbody2D _playerRigidbody;
     [SerializeField] private PlayerStats _playerStats;
+    [SerializeField] NetworkIdentity identity;
 
 
     [Header("Player Input")]
@@ -26,8 +27,10 @@ public class PlayerMovement : NetworkBehaviour
 
 
 
+
     private void Start()
     {
+      
         _playerRigidbody = GetComponent<Rigidbody2D>();
         if (_playerRigidbody == null)
         {
@@ -48,18 +51,20 @@ public class PlayerMovement : NetworkBehaviour
 
 
         //Child of transform is "Sprite" and the child of that is our SpriteRenderer
-        _spriteRenderer = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
+        //_spriteRenderer = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         if (_animator == null)
         {
             Debug.LogError("Player is missing a SpriteRenderer component");
         }
+
+        identity = GetComponent<NetworkIdentity>();
     }
+
 
     [Client]
     private void Update()
     {
-        if (!hasAuthority) return;
-
         MovePlayer();
         IsGrounded();
         Jump();
@@ -70,12 +75,14 @@ public class PlayerMovement : NetworkBehaviour
     /// </summary>
     private void MovePlayer()
     {
-        horizontalInput = InputManager.instance.CurrentPosition();
-        _playerRigidbody.velocity = new Vector2(horizontalInput * _playerStats.Speed, _playerRigidbody.velocity.y);
-
-        //Animation
-        FlipPlayer();
-        AnimatorSetRunAnimation();
+        if (isLocalPlayer)
+        {
+            horizontalInput = InputManager.instance.CurrentPosition();
+            _playerRigidbody.velocity = new Vector2(horizontalInput * _playerStats.Speed, _playerRigidbody.velocity.y);
+        
+            FlipPlayer();
+        }
+        SetRunAnimation();
     }
 
     /// <summary>
@@ -83,7 +90,7 @@ public class PlayerMovement : NetworkBehaviour
     /// </summary>
     private void Jump()
     {
-        if (InputManager.instance.IsJumping())
+        if (InputManager.instance.IsJumping() && isLocalPlayer)
         {
             if (isGrounded)
             {
@@ -125,23 +132,37 @@ public class PlayerMovement : NetworkBehaviour
     }
 
 
-
     /// <summary>
     /// Checks Input of player and Flips the Sprite accordingly
     /// </summary>
     /// <returns></returns>
     private void FlipPlayer()
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        CmdFlipPlayer(this.gameObject);
+        //Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         // mouseCircle.position = mousePos;
-        if (mousePos.x < transform.position.x) _spriteRenderer.flipX = true;
-        if (mousePos.x > transform.position.x) _spriteRenderer.flipX = false;
+        //if (mousePos.x < transform.position.x) _spriteRenderer.flipX = true;
+        //if (mousePos.x > transform.position.x) _spriteRenderer.flipX = false;
+
+        if (horizontalInput > 0) _spriteRenderer.flipX = false;
+        if (horizontalInput < 0) _spriteRenderer.flipX = true;
     }
+
+    [Command]
+    private void CmdFlipPlayer(GameObject gameObject)
+    {
+        SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+
+        if (horizontalInput > 0) spriteRenderer.flipX = false;
+        if (horizontalInput < 0) spriteRenderer.flipX = true;
+    }
+
+
 
     /// <summary>
     /// Checks if player is moving, if yes - the animation will be set and activated
     /// </summary>
-    private void AnimatorSetRunAnimation()
+    private void SetRunAnimation()
     {
         //Animation Run
         if (horizontalInput != 0)

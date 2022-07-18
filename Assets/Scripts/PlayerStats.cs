@@ -21,39 +21,40 @@ public class PlayerStats : NetworkBehaviour
     public float MaxJumpPower { get => maxJumpPower; }
 
 
-    [Client]
-    private void Update()
-    {
-        //IsInteracting();
-        CmdIsInteracting();
 
-    }
+    //[Client]
+    //private void Update()
+    //{
+    //    //IsInteracting();
+    //    CmdIsInteracting();
 
-
-    private void IsInteracting()
-    {
-        var colliders = Physics2D.OverlapCircleAll(transform.position, interactionRadius);
-        foreach (var collider in colliders)
-        {
-            if (collider.GetComponent<IInteractable>() != null)
-            {
-                if (InputManager.instance.Interact())
-                {
-                    collider.GetComponent<IInteractable>().Interact(this);
-                }
-            }
-        }
-    }
+    //}
 
 
-    [Command]
-    private void CmdIsInteracting()
-    {
-        RpcIsInteracting();
-    }
+    //private void IsInteracting()
+    //{
+    //    var colliders = Physics2D.OverlapCircleAll(transform.position, interactionRadius);
+    //    foreach (var collider in colliders)
+    //    {
+    //        if (collider.GetComponent<IInteractable>() != null)
+    //        {
+    //            if (InputManager.instance.Interact())
+    //            {
+    //                collider.GetComponent<IInteractable>().Interact(this);
+    //            }
+    //        }
+    //    }
+    //}
 
-    [ClientRpc]
-    private void RpcIsInteracting() => IsInteracting();
+
+    //[Command]
+    //private void CmdIsInteracting()
+    //{
+    //    RpcIsInteracting();
+    //}
+
+    //[ClientRpc]
+    //private void RpcIsInteracting() => IsInteracting();
 
 
     private void OnDrawGizmosSelected()
