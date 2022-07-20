@@ -136,6 +136,7 @@ MonoBehaviour:
   _animator: {fileID: 6866975217536437510}
   _spriteRenderer: {fileID: 6002458195435725208}
   flipX: 0
+  isMoving: 0
 --- !u!114 &2238357759046061811
 MonoBehaviour:
   m_ObjectHideFlags: 0

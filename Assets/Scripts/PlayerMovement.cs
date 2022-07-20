@@ -25,8 +25,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     public bool flipX;
-
-
+    public bool isMoving;
 
     private void Start()
     {
@@ -78,6 +77,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         _playerRigidbody.velocity = new Vector2(horizontalInput * _playerStats.Speed, _playerRigidbody.velocity.y);
 
+
         if (horizontalInput > 0)
         {
             flipX = false;
@@ -88,11 +88,22 @@ public class PlayerMovement : NetworkBehaviour
         }
 
         //Execute on Client
-        _spriteRenderer.flipX = flipX;
+        CmdFlipXOnClient();
         //Execute on Server
         CmdFlipXOnServer(flipX, this.gameObject);
 
-        //SetRunAnimation();
+
+        SetRunAnimationOnClient();
+        //CmdSetRunAnimationOnServer(isMoving, this.gameObject);
+    }
+
+    #region Flip Character
+    /// <summary>
+    /// Executes the function on the client
+    /// </summary>
+    void CmdFlipXOnClient()
+    {
+        _spriteRenderer.flipX = flipX;
     }
 
     /// <summary>
@@ -116,8 +127,9 @@ public class PlayerMovement : NetworkBehaviour
     {
         trg.GetComponent<SpriteRenderer>().flipX = flipValue;
     }
+    #endregion
 
-
+    #region Jump
     /// <summary>
     /// Jump function for the player - Adds velocity to the y-axis of player
     /// </summary>
@@ -142,7 +154,9 @@ public class PlayerMovement : NetworkBehaviour
             }
         }
     }
+    #endregion
 
+    #region Check If Grounded
     /// <summary>
     /// Returns boolean true - if player is grounded (on the ground)
     /// </summary>
@@ -163,23 +177,24 @@ public class PlayerMovement : NetworkBehaviour
 
         return isGrounded;
     }
+    #endregion
 
+    /// <summary>
+    /// Checks if player is moving, if yes - the animation will be set and activated
+    /// </summary>
+    private void SetRunAnimationOnClient()
+    {
+        if (horizontalInput != 0)
+        {
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
+        }
 
-    ///// <summary>
-    ///// Checks if player is moving, if yes - the animation will be set and activated
-    ///// </summary>
-    //private void SetRunAnimation()
-    //{
-    //    //Animation Run
-    //    if (horizontalInput != 0)
-    //    {
-    //        _animator.SetBool("isMoving", true);
-    //    }
-    //    else
-    //    {
-    //        _animator.SetBool("isMoving", false);
-    //    }
-    //}
+        _animator.SetBool("isMoving", isMoving);
+    }
 
     private void OnDrawGizmosSelected()
     {
