@@ -955,9 +955,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa7842edcd577d4db3244ab747b59ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   networkRoomManager: {fileID: 0}
   networkIdentity: {fileID: 0}
   networkRoomPlayer: {fileID: 0}
+  lobbyManager: {fileID: 0}
   roomPlayerPanel: {fileID: 8735993354989543720}
   usernameTMP: {fileID: 1896439806825978378}
   IpTMP: {fileID: 7009236460214216758}

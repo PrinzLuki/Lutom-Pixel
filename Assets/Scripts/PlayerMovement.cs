@@ -24,13 +24,13 @@ public class PlayerMovement : NetworkBehaviour
     [Header("Animations & Effects")]
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-
+    public bool flipX;
 
 
 
     private void Start()
     {
-      
+
         _playerRigidbody = GetComponent<Rigidbody2D>();
         if (_playerRigidbody == null)
         {
@@ -49,7 +49,6 @@ public class PlayerMovement : NetworkBehaviour
             Debug.LogError("Player is missing an Animator component");
         }
 
-
         //Child of transform is "Sprite" and the child of that is our SpriteRenderer
         //_spriteRenderer = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -65,6 +64,8 @@ public class PlayerMovement : NetworkBehaviour
     [Client]
     private void Update()
     {
+        if (!hasAuthority) return;
+        horizontalInput = InputManager.instance.CurrentPosition();
         MovePlayer();
         IsGrounded();
         Jump();
@@ -75,15 +76,47 @@ public class PlayerMovement : NetworkBehaviour
     /// </summary>
     private void MovePlayer()
     {
-        if (isLocalPlayer)
+        _playerRigidbody.velocity = new Vector2(horizontalInput * _playerStats.Speed, _playerRigidbody.velocity.y);
+
+        if (horizontalInput > 0)
         {
-            horizontalInput = InputManager.instance.CurrentPosition();
-            _playerRigidbody.velocity = new Vector2(horizontalInput * _playerStats.Speed, _playerRigidbody.velocity.y);
-        
-            FlipPlayer();
+            flipX = false;
         }
-        SetRunAnimation();
+        if (horizontalInput < 0)
+        {
+            flipX = true;
+        }
+
+        //Execute on Client
+        _spriteRenderer.flipX = flipX;
+        //Execute on Server
+        CmdFlipXOnServer(flipX, this.gameObject);
+
+        //SetRunAnimation();
     }
+
+    /// <summary>
+    /// Sends this function to the server from THIS client
+    /// </summary>
+    /// <param name="flipValue"></param>
+    /// <param name="trg"></param>
+    [Command]
+    void CmdFlipXOnServer(bool flipValue, GameObject trg)
+    {
+        RpcFlipXOnServer(flipValue, trg);
+    }
+
+    /// <summary>
+    /// The Server executes this function to ALL clients
+    /// </summary>
+    /// <param name="flipValue"></param>
+    /// <param name="trg"></param>
+    [ClientRpc]
+    void RpcFlipXOnServer(bool flipValue, GameObject trg)
+    {
+        trg.GetComponent<SpriteRenderer>().flipX = flipValue;
+    }
+
 
     /// <summary>
     /// Jump function for the player - Adds velocity to the y-axis of player
@@ -132,48 +165,26 @@ public class PlayerMovement : NetworkBehaviour
     }
 
 
-    /// <summary>
-    /// Checks Input of player and Flips the Sprite accordingly
-    /// </summary>
-    /// <returns></returns>
-    private void FlipPlayer()
+    ///// <summary>
+    ///// Checks if player is moving, if yes - the animation will be set and activated
+    ///// </summary>
+    //private void SetRunAnimation()
+    //{
+    //    //Animation Run
+    //    if (horizontalInput != 0)
+    //    {
+    //        _animator.SetBool("isMoving", true);
+    //    }
+    //    else
+    //    {
+    //        _animator.SetBool("isMoving", false);
+    //    }
+    //}
+
+    private void OnDrawGizmosSelected()
     {
-        CmdFlipPlayer(this.gameObject);
-        //Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // mouseCircle.position = mousePos;
-        //if (mousePos.x < transform.position.x) _spriteRenderer.flipX = true;
-        //if (mousePos.x > transform.position.x) _spriteRenderer.flipX = false;
-
-        if (horizontalInput > 0) _spriteRenderer.flipX = false;
-        if (horizontalInput < 0) _spriteRenderer.flipX = true;
+        Gizmos.color = Color.green;
+        Gizmos.DrawCube(transform.position + groundCheckPosition, groundCheckScale);
     }
-
-    [Command]
-    private void CmdFlipPlayer(GameObject gameObject)
-    {
-        SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-
-        if (horizontalInput > 0) spriteRenderer.flipX = false;
-        if (horizontalInput < 0) spriteRenderer.flipX = true;
-    }
-
-
-
-    /// <summary>
-    /// Checks if player is moving, if yes - the animation will be set and activated
-    /// </summary>
-    private void SetRunAnimation()
-    {
-        //Animation Run
-        if (horizontalInput != 0)
-        {
-            _animator.SetBool("isMoving", true);
-        }
-        else
-        {
-            _animator.SetBool("isMoving", false);
-        }
-    }
-
 
 }

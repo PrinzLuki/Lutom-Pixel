@@ -9,12 +9,13 @@ using TMPro;
 using UnityEngine.UI;
 
 
-public class LobbyPlayer : MonoBehaviour
+public class LobbyPlayer : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] NetworkRoomManager networkRoomManager;
     [SerializeField] NetworkIdentity networkIdentity;
     [SerializeField] NetworkRoomPlayer networkRoomPlayer;
+    [SerializeField] LobbyManager lobbyManager;
     [SerializeField] GameObject roomPlayerPanel;
 
     [Header("Inputs")]
@@ -34,27 +35,55 @@ public class LobbyPlayer : MonoBehaviour
         if (networkRoomPlayer == null) networkRoomPlayer = GetComponent<NetworkRoomPlayer>();
         if (networkIdentity == null) networkIdentity = GetComponent<NetworkIdentity>();
 
+
+        if (lobbyManager == null) lobbyManager = FindObjectOfType<LobbyManager>();
+        if (lobbyManager != null) lobbyManager.roomPlayers.Add(this.gameObject);
+
+        lobbyManager.GetClientInfo(this.gameObject);
+        lobbyManager.CmdIncreaseIndex();
     }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        Debug.Log(networkRoomPlayer.index);
+        networkRoomPlayer = NetworkClient.connection.identity.GetComponent<NetworkRoomPlayer>();
+        Debug.Log(networkRoomPlayer.index);
+
+    }
+
+
     public void StopHostingGame()
     {
+        if (lobbyManager != null) lobbyManager.roomPlayers.Remove(this.gameObject);
+
         networkRoomManager.StopHost();
     }
 
 
     public void StopClient()
     {
+        if (lobbyManager != null) lobbyManager.roomPlayers.Remove(this.gameObject);
+
         networkRoomManager.StopClient();
 
     }
 
     public void ReadyClient()
     {
+        Debug.Log(hasAuthority);
+        if (!hasAuthority) return;
+        Debug.Log("ready " + username);
         networkRoomPlayer.readyToBegin = true;
         networkRoomPlayer.CmdChangeReadyState(true);
     }
 
     public void UnreadyClient()
     {
+        Debug.Log(hasAuthority);
+
+        if (!hasAuthority) return;
+        Debug.Log("unready " + username);
         networkRoomPlayer.readyToBegin = false;
         networkRoomPlayer.CmdChangeReadyState(false);
 
@@ -68,7 +97,7 @@ public class LobbyPlayer : MonoBehaviour
             .ToString();
     }
 
-   public void SetPlayerInfo()
+    public void SetPlayerInfo()
     {
         IpTMP.text = GetLocalIPv4();
 

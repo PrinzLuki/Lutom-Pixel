@@ -1,17 +1,25 @@
 using Mirror;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class LobbyManager : MonoBehaviour
+public class LobbyManager : NetworkBehaviour
 {
     [SerializeField] UIManager uIManager;
     [SerializeField] NetworkRoomManager networkRoomManager;
+
+    public List<GameObject> roomPlayers;
+    [SyncVar(hook = nameof(IncreaseIndex))]
+    public int index;
+    public GameObject hostPlayer;
 
     private void Awake()
     {
         if (networkRoomManager == null) networkRoomManager = FindObjectOfType<NetworkRoomManager>();
 
         if (uIManager == null) uIManager = FindObjectOfType<UIManager>();
+
+        index = 0;
     }
 
     public void HostGame()
@@ -19,7 +27,6 @@ public class LobbyManager : MonoBehaviour
         if (networkRoomManager == null) networkRoomManager = FindObjectOfType<NetworkRoomManager>();
 
         networkRoomManager.StartHost();
-        StartCoroutine(GetHostGameObject());
     }
 
     public void JoinGame()
@@ -27,41 +34,52 @@ public class LobbyManager : MonoBehaviour
         if (networkRoomManager == null) networkRoomManager = FindObjectOfType<NetworkRoomManager>();
 
         networkRoomManager.StartClient();
-        StartCoroutine(GetClientGameObject());
         if (string.IsNullOrEmpty(uIManager.ipAddress.text)) uIManager.ipAddress.text = "localhost";
         networkRoomManager.networkAddress = uIManager.ipAddress.text;
     }
 
-    IEnumerator GetHostGameObject()
+    public void GetClientInfo(GameObject client)
     {
-        yield return new WaitForSeconds(1f);
 
-        GameObject host = networkRoomManager.roomSlots[0].gameObject;
-        LobbyPlayer hostPlayer = host.GetComponent<LobbyPlayer>();
-        if (string.IsNullOrEmpty(uIManager.clientUsername.text))
+        LobbyPlayer clientPlayer = client.GetComponent<LobbyPlayer>();
+        //NetworkRoomPlayer roomPlayer = client.GetComponent<NetworkRoomPlayer>();
+        if (index == 0)
         {
-            uIManager.clientUsername.text = "Player[Host]";
+            clientPlayer.isHosting = true;
+            hostPlayer = client;
+            if (string.IsNullOrEmpty(uIManager.clientUsername.text))
+            {
+                uIManager.clientUsername.text = "Player[Host]";
+            }
+
         }
-        hostPlayer.username = uIManager.clientUsername.text;
-        hostPlayer.isHosting = true;
-        hostPlayer.SetPlayerInfo();
+        else if (index > 0)
+        {
+            clientPlayer.isHosting = false;
+
+            if (string.IsNullOrEmpty(uIManager.clientUsername.text))
+            {
+                uIManager.clientUsername.text = "Player[" + index + "]";
+            }
+        }
+        clientPlayer.username = uIManager.clientUsername.text;
+        clientPlayer.SetPlayerInfo();
     }
 
 
-    IEnumerator GetClientGameObject()
+    void IncreaseIndex(int oldindex, int newindex)
     {
-        yield return new WaitForSeconds(1f);
-
-        GameObject host = networkRoomManager.roomSlots[1].gameObject;
-        LobbyPlayer hostPlayer = host.GetComponent<LobbyPlayer>();
-        if (string.IsNullOrEmpty(uIManager.clientUsername.text))
-        {
-            uIManager.clientUsername.text = "Player[" + 1 + "]";
-        }
-        hostPlayer.username = uIManager.clientUsername.text;
-        hostPlayer.isHosting = false;
-        hostPlayer.SetPlayerInfo();
+        index = newindex;
     }
+
+    public void CmdIncreaseIndex()
+    {
+        index++;
+
+    }
+
+ 
+
 
 
 }

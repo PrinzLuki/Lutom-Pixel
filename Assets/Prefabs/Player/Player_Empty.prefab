@@ -122,8 +122,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _playerRigidbody: {fileID: 0}
-  _playerStats: {fileID: 0}
+  _playerRigidbody: {fileID: 6866975217536437512}
+  _playerStats: {fileID: 6587523481351480427}
+  identity: {fileID: 2238357759046061811}
   canDoubleJump: 1
   horizontalInput: 0
   isGrounded: 0
@@ -134,6 +135,7 @@ MonoBehaviour:
   groundCheckScale: {x: 0.66, y: 0.2, z: 0}
   _animator: {fileID: 6866975217536437510}
   _spriteRenderer: {fileID: 6002458195435725208}
+  flipX: 0
 --- !u!114 &2238357759046061811
 MonoBehaviour:
   m_ObjectHideFlags: 0
