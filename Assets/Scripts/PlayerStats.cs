@@ -20,7 +20,43 @@ public class PlayerStats : NetworkBehaviour
     public float MaxSpeed { get => maxSpeed; }
     public float MaxJumpPower { get => maxJumpPower; }
 
+    public WeaponScriptableObject weaponScriptable;
+    public GameObject currentWeapon;
 
+    private void Start()
+    {
+        if (!hasAuthority) return;
+
+        if (weaponScriptable != null)
+        {
+            CmdSpawnGun(this.gameObject);
+        }
+
+    }
+
+    [Command]
+    void CmdSpawnGun(GameObject trg)
+    {
+        currentWeapon = Instantiate(weaponScriptable.weaponPrefab/*, trg.transform, false*/);
+        var currentWeaponStats = currentWeapon.GetComponent<Gun>();
+        currentWeaponStats.currentMunition = weaponScriptable.munition;
+        currentWeaponStats.currentSpeed = weaponScriptable.speed;
+
+        currentWeaponStats.gunEnd = currentWeapon.transform.GetChild(0);
+        currentWeaponStats.bulletSpawn = currentWeapon.transform.GetChild(1);
+
+        //currentWeapon.GetComponent<NetworkIdentity>().AssignClientAuthority(netIdentity.connectionToClient);
+        NetworkServer.Spawn(currentWeapon, trg);
+        currentWeapon.transform.parent = trg.transform;
+        currentWeapon.transform.localPosition = Vector3.zero;
+        //RpcSpawnGun(trg);
+    }
+
+    //[ClientRpc]
+    //void RpcSpawnGun(GameObject trg)
+    //{
+     
+    //}
 
     //[Client]
     //private void Update()

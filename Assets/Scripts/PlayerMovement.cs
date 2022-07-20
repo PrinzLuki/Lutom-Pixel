@@ -7,8 +7,6 @@ public class PlayerMovement : NetworkBehaviour
     [Header("References")]
     [SerializeField] private Rigidbody2D _playerRigidbody;
     [SerializeField] private PlayerStats _playerStats;
-    [SerializeField] NetworkIdentity identity;
-
 
     [Header("Player Input")]
     [SerializeField] private bool canDoubleJump;
@@ -26,6 +24,9 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private SpriteRenderer _spriteRenderer;
     public bool flipX;
     public bool isMoving;
+
+
+    public Vector3 mousePos;
 
     private void Start()
     {
@@ -55,8 +56,6 @@ public class PlayerMovement : NetworkBehaviour
         {
             Debug.LogError("Player is missing a SpriteRenderer component");
         }
-
-        identity = GetComponent<NetworkIdentity>();
     }
 
 
@@ -65,6 +64,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (!hasAuthority) return;
         horizontalInput = InputManager.instance.CurrentPosition();
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         MovePlayer();
         IsGrounded();
         Jump();
@@ -77,15 +77,29 @@ public class PlayerMovement : NetworkBehaviour
     {
         _playerRigidbody.velocity = new Vector2(horizontalInput * _playerStats.Speed, _playerRigidbody.velocity.y);
 
-
-        if (horizontalInput > 0)
+        #region Flip By Mouse
+        if (mousePos.x > transform.position.x)
         {
             flipX = false;
         }
-        if (horizontalInput < 0)
+
+        if (mousePos.x < transform.position.x)
         {
             flipX = true;
+
         }
+        #endregion
+
+        #region Flip By Input
+        //if (horizontalInput > 0)
+        //{
+        //    flipX = false;
+        //}
+        //if (horizontalInput < 0)
+        //{
+        //    flipX = true;
+        //}
+        #endregion
 
         //Execute on Client
         CmdFlipXOnClient();
