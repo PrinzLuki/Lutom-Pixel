@@ -29,40 +29,45 @@ public class PlayerStats : NetworkBehaviour
 
         if (weaponScriptable != null)
         {
-            CmdSpawnGun(this.gameObject);
+            CmdSpawnGunOnServer(this.gameObject);
         }
 
     }
 
+
     [Command]
-    void CmdSpawnGun(GameObject trg)
+    void CmdSpawnGunOnServer(GameObject trg)
     {
-        currentWeapon = Instantiate(weaponScriptable.weaponPrefab/*, trg.transform, false*/);
-        var currentWeaponStats = currentWeapon.GetComponent<Gun>();
-        currentWeaponStats.currentMunition = weaponScriptable.munition;
-        currentWeaponStats.currentSpeed = weaponScriptable.speed;
+        PlayerStats player = trg.GetComponent<PlayerStats>();
+        player.currentWeapon = Instantiate(player.weaponScriptable.weaponPrefab/*, trg.transform, false*/);
+        Gun currentWeaponStats = player.currentWeapon.GetComponent<Gun>();
+        currentWeaponStats.isEquipped = true;
+        //currentWeaponStats.currentMunition = weaponScriptable.munition;
+        //currentWeaponStats.currentSpeed = weaponScriptable.speed;
 
-        currentWeaponStats.gunEnd = currentWeapon.transform.GetChild(0);
-        currentWeaponStats.bulletSpawn = currentWeapon.transform.GetChild(1);
-
+        currentWeaponStats.gunEnd = player.currentWeapon.transform.GetChild(0);
+        currentWeaponStats.bulletSpawn = player.currentWeapon.transform.GetChild(1);
+        player.currentWeapon.transform.SetParent(trg.transform);
+        player.currentWeapon.transform.localPosition = Vector3.zero;
         //currentWeapon.GetComponent<NetworkIdentity>().AssignClientAuthority(netIdentity.connectionToClient);
-        NetworkServer.Spawn(currentWeapon, trg);
-        currentWeapon.transform.parent = trg.transform;
-        currentWeapon.transform.localPosition = Vector3.zero;
+        NetworkServer.Spawn(player.currentWeapon, trg);
         //RpcSpawnGun(trg);
     }
 
     //[ClientRpc]
     //void RpcSpawnGun(GameObject trg)
     //{
-     
+    //    if (NetworkServer.active) return;
+    //    PlayerStats player = trg.GetComponent<PlayerStats>();
+    //    player.currentWeapon = Instantiate(player.weaponScriptable.weaponPrefab/*, trg.transform, false*/);
+    //    player.currentWeapon.transform.SetParent(trg.transform);
+    //    player.currentWeapon.transform.localPosition = Vector3.zero;
     //}
 
     //[Client]
     //private void Update()
     //{
     //    //IsInteracting();
-    //    CmdIsInteracting();
 
     //}
 
@@ -81,16 +86,6 @@ public class PlayerStats : NetworkBehaviour
     //        }
     //    }
     //}
-
-
-    //[Command]
-    //private void CmdIsInteracting()
-    //{
-    //    RpcIsInteracting();
-    //}
-
-    //[ClientRpc]
-    //private void RpcIsInteracting() => IsInteracting();
 
 
     private void OnDrawGizmosSelected()

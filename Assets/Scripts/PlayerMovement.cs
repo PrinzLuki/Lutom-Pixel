@@ -49,8 +49,6 @@ public class PlayerMovement : NetworkBehaviour
             Debug.LogError("Player is missing an Animator component");
         }
 
-        //Child of transform is "Sprite" and the child of that is our SpriteRenderer
-        //_spriteRenderer = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         if (_animator == null)
         {
@@ -78,27 +76,27 @@ public class PlayerMovement : NetworkBehaviour
         _playerRigidbody.velocity = new Vector2(horizontalInput * _playerStats.Speed, _playerRigidbody.velocity.y);
 
         #region Flip By Mouse
-        if (mousePos.x > transform.position.x)
-        {
-            flipX = false;
-        }
-
-        if (mousePos.x < transform.position.x)
-        {
-            flipX = true;
-
-        }
-        #endregion
-
-        #region Flip By Input
-        //if (horizontalInput > 0)
+        //if (mousePos.x > transform.position.x)
         //{
         //    flipX = false;
         //}
-        //if (horizontalInput < 0)
+
+        //if (mousePos.x < transform.position.x)
         //{
         //    flipX = true;
+
         //}
+        #endregion
+
+        #region Flip By Input
+        if (horizontalInput > 0)
+        {
+            flipX = false;
+        }
+        if (horizontalInput < 0)
+        {
+            flipX = true;
+        }
         #endregion
 
         //Execute on Client
@@ -108,7 +106,6 @@ public class PlayerMovement : NetworkBehaviour
 
 
         SetRunAnimationOnClient();
-        //CmdSetRunAnimationOnServer(isMoving, this.gameObject);
     }
 
     #region Flip Character

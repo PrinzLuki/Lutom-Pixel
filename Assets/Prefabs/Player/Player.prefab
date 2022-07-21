@@ -263,7 +263,7 @@ MonoBehaviour:
   jumpPower: 5
   interactionRadius: 1
   showGizmos: 0
-  weaponScriptable: {fileID: 0}
+  weaponScriptable: {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
   currentWeapon: {fileID: 0}
 --- !u!114 &6866975217536437514
 MonoBehaviour:

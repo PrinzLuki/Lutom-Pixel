@@ -1,17 +1,17 @@
 using Mirror;
 using UnityEngine;
 
-public class Gun : NetworkBehaviour
+public class Gun : NetworkBehaviour, IInteractable
 {
     [Header("References")]
     [SerializeField] private Vector3 mousePos;
     [SerializeField] private Vector3 inputMousePos;
     //[SerializeField] private Transform weaponHolder;
     [Header("Instantiated Prefab")]
-    [SerializeField] private GameObject weaponPrefab;
+    //[SerializeField] private GameObject weaponPrefab;
     public Transform gunEnd;
     public Transform bulletSpawn;
-    public PhysicsMaterial2D bouncyMAT;
+    //public PhysicsMaterial2D bouncyMAT;
 
 
     [Header("Weapon")]
@@ -19,11 +19,18 @@ public class Gun : NetworkBehaviour
     public float currentMunition;
     public float currentSpeed;
     //public bool automatic;
-    public bool flipY;
+    //public bool flipY;
+    public bool isEquipped;
 
 
     private void Start()
     {
+        if (isEquipped)
+        {
+            GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+            GetComponent<Collider2D>().enabled = false;
+        }
+
         //if (weaponScriptable != null)
         //{
         //    currentMunition = weaponScriptable.munition;
@@ -35,11 +42,11 @@ public class Gun : NetworkBehaviour
         //    gunEnd = weaponPrefab.transform.GetChild(0);
         //    bulletSpawn = weaponPrefab.transform.GetChild(1);
         //}
-
+       
     }
 
     [Client]
-    void FixedUpdate()
+    void Update()
     {
 
         if (!hasAuthority) return;
@@ -126,17 +133,17 @@ public class Gun : NetworkBehaviour
 
     private void RotateWeaponOnClient(Quaternion rotationOfWeapon)
     {
-        //if (mousePos.x > transform.position.x)
-        //{
-        //    //transform.localScale = new Vector3(1, 1, 1);
-        //    flipY = false;
-        //}
+        if (mousePos.x > transform.position.x)
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+            //flipY = false;
+        }
 
-        //if (mousePos.x < transform.position.x)
-        //{
-        //    //transform.localScale = new Vector3(1, -1, 1);
-        //    flipY = true;
-        //}
+        if (mousePos.x < transform.position.x)
+        {
+            transform.localScale = new Vector3(1, -1, 1);
+            //flipY = true;
+        }
 
         transform.rotation = rotationOfWeapon;
     }
@@ -153,17 +160,17 @@ public class Gun : NetworkBehaviour
     {
         var trgGun = trg.GetComponent<Gun>();
 
-        //if (trgGun.mousePos.x > trg.transform.position.x)
-        //{
-        //    //trg.transform.localScale = new Vector3(1, 1, 1);
-        //    trgGun.flipY = false;
-        //}
+        if (trgGun.mousePos.x > trg.transform.position.x)
+        {
+            trg.transform.localScale = new Vector3(1, 1, 1);
+            //trgGun.flipY = false;
+        }
 
-        //if (trgGun.mousePos.x < trg.transform.position.x)
-        //{
-        //    //trg.transform.localScale = new Vector3(1, -1, 1);
-        //    trgGun.flipY = true;
-        //}
+        if (trgGun.mousePos.x < trg.transform.position.x)
+        {
+            trg.transform.localScale = new Vector3(1, -1, 1);
+            //trgGun.flipY = true;
+        }
 
         trgGun.transform.rotation = RotateWeapon(trgGun.inputMousePos, trgGun.transform);
         //var dir = trg.GetComponent<Gun>().inputMousePos - Camera.main.WorldToScreenPoint(trg.GetComponent<Gun>().weaponHolder.position);
@@ -181,6 +188,10 @@ public class Gun : NetworkBehaviour
         if (gunEnd != null)
             Gizmos.DrawLine(gunEnd.position, mousePos);
 
-        //Gizmos.DrawLine(transform.position, Input.mousePosition - Camera.main.WorldToScreenPoint(weaponHolder.transform.position));
+    }
+
+    public void Interact(PlayerStats playerStats)
+    {
+        //Pick up
     }
 }
