@@ -20,49 +20,7 @@ public class PlayerStats : NetworkBehaviour
     public float MaxSpeed { get => maxSpeed; }
     public float MaxJumpPower { get => maxJumpPower; }
 
-    public WeaponScriptableObject weaponScriptable;
-    public GameObject currentWeapon;
-
-    private void Start()
-    {
-        if (!hasAuthority) return;
-
-        if (weaponScriptable != null)
-        {
-            CmdSpawnGunOnServer(this.gameObject);
-        }
-
-    }
-
-
-    [Command]
-    void CmdSpawnGunOnServer(GameObject trg)
-    {
-        PlayerStats player = trg.GetComponent<PlayerStats>();
-        player.currentWeapon = Instantiate(player.weaponScriptable.weaponPrefab/*, trg.transform, false*/);
-        Gun currentWeaponStats = player.currentWeapon.GetComponent<Gun>();
-        currentWeaponStats.isEquipped = true;
-        //currentWeaponStats.currentMunition = weaponScriptable.munition;
-        //currentWeaponStats.currentSpeed = weaponScriptable.speed;
-
-        currentWeaponStats.gunEnd = player.currentWeapon.transform.GetChild(0);
-        currentWeaponStats.bulletSpawn = player.currentWeapon.transform.GetChild(1);
-        player.currentWeapon.transform.SetParent(trg.transform);
-        player.currentWeapon.transform.localPosition = Vector3.zero;
-        //currentWeapon.GetComponent<NetworkIdentity>().AssignClientAuthority(netIdentity.connectionToClient);
-        NetworkServer.Spawn(player.currentWeapon, trg);
-        //RpcSpawnGun(trg);
-    }
-
-    //[ClientRpc]
-    //void RpcSpawnGun(GameObject trg)
-    //{
-    //    if (NetworkServer.active) return;
-    //    PlayerStats player = trg.GetComponent<PlayerStats>();
-    //    player.currentWeapon = Instantiate(player.weaponScriptable.weaponPrefab/*, trg.transform, false*/);
-    //    player.currentWeapon.transform.SetParent(trg.transform);
-    //    player.currentWeapon.transform.localPosition = Vector3.zero;
-    //}
+   
 
     //[Client]
     //private void Update()

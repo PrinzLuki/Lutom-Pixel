@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 4765993411244706850}
   - component: {fileID: 6587523481351480427}
   - component: {fileID: 6866975217536437514}
+  - component: {fileID: 7591614201082595574}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -263,8 +264,6 @@ MonoBehaviour:
   jumpPower: 5
   interactionRadius: 1
   showGizmos: 0
-  weaponScriptable: {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
-  currentWeapon: {fileID: 0}
 --- !u!114 &6866975217536437514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,3 +293,25 @@ MonoBehaviour:
   flipX: 0
   isMoving: 0
   mousePos: {x: 0, y: 0, z: 0}
+--- !u!114 &7591614201082595574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6866975217536437509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba25b1db078c50a43969d6a345f4cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  playerParent: {fileID: 6866975217536437511}
+  mousePos: {x: 0, y: 0, z: 0}
+  inputMousePos: {x: 0, y: 0, z: 0}
+  weaponScriptable: {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
+  currentChildWeapon: {fileID: 0}
+  weaponGunEnd: {fileID: 0}
+  weaponBulletSpawn: {fileID: 0}
+  hasWeapon: 0
