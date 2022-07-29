@@ -48,3 +48,4 @@ MonoBehaviour:
   jumpControll: {fileID: -5393525643835832576, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}
   shootControll: {fileID: -4154448808092180909, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}
   interActionControll: {fileID: -3609155831326862831, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}
+  dropActionControll: {fileID: 3363071424129740287, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}

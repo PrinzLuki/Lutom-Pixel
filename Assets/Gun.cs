@@ -7,19 +7,17 @@ public class Gun : NetworkBehaviour, IWeapon
     public Transform gunEnd;
     public Transform bulletSpawn;
 
-    public void Drop(PlayerGun playerGun)
-    {
-        throw new System.NotImplementedException();
-    }
 
     public void PickUp(PlayerGun playerGun)
     {
         playerGun.PickUpGunOnClient(playerGun.gameObject, this.gameObject);
     }
 
-    [Command]
+    //Ohne authority daweil, da ich nicht weiﬂ wie das funktioniert
+    [Command(requiresAuthority = false)]
     public void CmdPickUp(PlayerGun playerGun)
     {
+        
         RpcPickUp(playerGun);
     }
 

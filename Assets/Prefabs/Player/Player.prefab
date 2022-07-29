@@ -311,7 +311,10 @@ MonoBehaviour:
   mousePos: {x: 0, y: 0, z: 0}
   inputMousePos: {x: 0, y: 0, z: 0}
   weaponScriptable: {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
-  currentChildWeapon: {fileID: 0}
+  currentWeapon: {fileID: 0}
   weaponGunEnd: {fileID: 0}
   weaponBulletSpawn: {fileID: 0}
   hasWeapon: 0
+  throwForce: 10
+  pickUpRadius: 1
+  showGizmos: 0

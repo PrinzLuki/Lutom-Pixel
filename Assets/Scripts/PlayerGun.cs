@@ -15,6 +15,7 @@ public class PlayerGun : NetworkBehaviour
     public Transform weaponGunEnd;
     public Transform weaponBulletSpawn;
     public bool hasWeapon;
+    public float throwForce;
 
     [Header("Gizmos")]
     [SerializeField] private float pickUpRadius = 1f;
@@ -50,11 +51,14 @@ public class PlayerGun : NetworkBehaviour
             inputMousePos = Input.mousePosition;
             mousePos = Camera.main.ScreenToWorldPoint(inputMousePos);
         }
-
-        PickUpWeapon(this.transform);
-
+        if (currentWeapon == null)
+        {
+            PickUpWeapon(this.transform);
+        }
         if (currentWeapon != null)
         {
+            DropWeapon(this.transform);
+            if (!hasWeapon) return;
             RotateWeaponOnClient(this.gameObject, currentWeapon.transform);
             CmdRotateWeaponOnServer(this.gameObject, currentWeapon.transform);
         }
@@ -185,7 +189,7 @@ public class PlayerGun : NetworkBehaviour
         playerGun.currentWeapon.GetComponent<Collider2D>().enabled = false;
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     public void CmdPickUpGunOnServer(GameObject trg, GameObject weapon)
     {
         RpcPickUpGunOnServer(trg, weapon);
@@ -222,6 +226,79 @@ public class PlayerGun : NetworkBehaviour
             }
         }
     }
+
+    private void DropWeapon(Transform player)
+    {
+        var playerGun = player.GetComponent<PlayerGun>();
+
+        if (InputManager.instance.Drop() && playerGun.hasWeapon)
+        {
+            DropGunOnClient(player.gameObject);
+            //CmdDropGunOnServer(player.gameObject);
+        }
+    }
+
+    [Command(requiresAuthority = false)]
+    public void DropGunOnClient(GameObject player)
+    {
+        PlayerGun playerGun = player.GetComponent<PlayerGun>();
+
+        playerGun.weaponGunEnd = null;
+        playerGun.weaponBulletSpawn = null;
+
+        var gunRigid = playerGun.currentWeapon.GetComponent<Rigidbody2D>();
+
+
+        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = new Vector2(
+            worldMousePosition.x - transform.position.x,
+            worldMousePosition.y - transform.position.y
+        ).normalized;
+
+
+        gunRigid.velocity = direction * throwForce;
+
+        gunRigid.bodyType = RigidbodyType2D.Dynamic;
+        playerGun.currentWeapon.GetComponent<Collider2D>().enabled = true;
+
+        playerGun.currentWeapon = null;
+        playerGun.hasWeapon = false;
+
+    }
+
+    //[Command(requiresAuthority = false)]
+    //public void CmdDropGunOnServer(GameObject trg)
+    //{
+    //    RpcDropGunOnServer(trg);
+    //}
+
+    //[ClientRpc]
+    //public void RpcDropGunOnServer(GameObject trg)
+    //{
+    //    PlayerGun playerGun = trg.GetComponent<PlayerGun>();
+
+    //    playerGun.weaponGunEnd = null;
+    //    playerGun.weaponBulletSpawn = null;
+
+    //    var gunRigid = playerGun.currentWeapon.GetComponent<Rigidbody2D>();
+
+
+    //    Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //    Vector2 direction = new Vector2(
+    //        worldMousePosition.x - transform.position.x,
+    //        worldMousePosition.y - transform.position.y
+    //    ).normalized;
+
+    //    gunRigid.velocity = direction * throwForce;
+
+    //    gunRigid.bodyType = RigidbodyType2D.Dynamic;
+    //    playerGun.currentWeapon.GetComponent<Collider2D>().enabled = true;
+
+    //    playerGun.currentWeapon = null;
+    //    playerGun.hasWeapon = false;
+    //}
+
+
 
     private void OnDrawGizmos()
     {
