@@ -1,35 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class SpawnPoint : MonoBehaviour
+public class SpawnPoint : NetworkBehaviour
 {
     [SerializeField] GameObject enemyPrefab;
-    [SerializeField] GameObject enemyContainer;
-    [SerializeField] float spawnDelay;
-    float spawnTimer;
+    [SerializeField] float spawnDelay = 5;
+    public List<GameObject> aliveEnemys;
 
-    private void Start()
+
+    private void Update()
     {
-        spawnTimer = spawnDelay;
-    }
-
-
-    void Update()
-    {
-        spawnTimer -= Time.deltaTime;
-        SpawnEnemys();
-    }
-
-    void SpawnEnemys()
-    {
-
-        if (spawnTimer <= 0)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            var temp = Instantiate(enemyPrefab, enemyContainer.transform);
-            temp.transform.position = this.transform.position;
-            spawnTimer = spawnDelay;
+            StartSpawn();
         }
-
     }
+
+   
+
+    //Server
+    [Command (requiresAuthority = false)]
+    void CmdStartEnemySpawn()
+    {
+        var enemy = Instantiate(enemyPrefab, this.gameObject.transform.position, Quaternion.identity);
+        NetworkServer.Spawn(enemy, connectionToClient);
+    }
+
+    //Client
+    void StartSpawn()
+    {
+        Debug.Log("StartSpawn");
+        CmdStartEnemySpawn();
+    }
+
 }
