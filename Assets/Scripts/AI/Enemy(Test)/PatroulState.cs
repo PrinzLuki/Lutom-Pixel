@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PatroulState : State<EnemyAI>
 {
-    public static PatroulState instance;
 
+    #region Singleton
+
+    public static PatroulState instance;
     public PatroulState()
     {
         if (instance == null)
@@ -24,9 +26,13 @@ public class PatroulState : State<EnemyAI>
         }
     }
 
+    #endregion
+
     public override void Enter(EnemyAI owner)
     {
+
         Debug.Log("Enter Patrouling");
+        RandomDirection(owner);
     }
 
     public override void Exit(EnemyAI owner)
@@ -36,7 +42,59 @@ public class PatroulState : State<EnemyAI>
 
     public override void Update(EnemyAI owner)
     {
-        owner.Patrouling();
+        owner.transform.Translate(owner.patroulingDirection * Time.deltaTime * owner.speed);
+        ObstacleAvoidance(owner);
+
+        RandomDirectionChange(owner, owner.percentDirectionChanging);
         Debug.Log("Update Patrouling");
     }
+
+    //Change Direction if obstacle is in front
+    void ObstacleAvoidance(EnemyAI owner)
+    {
+        Debug.Log("Obstacle Avoidance");
+        if (Physics2D.Raycast(owner.transform.position, owner.patroulingDirection, 1, owner.obstacleLayer))
+        {
+            Debug.Log("hit");
+           ChangeDirection(owner);
+        }
+    }
+
+    //Sets Random Direction in the EnterState
+    void RandomDirection(EnemyAI owner)
+    {
+        float percent = Random.Range(0f, 100f);
+        if(percent > 50)
+        {
+            owner.patroulingDirection = Vector2.right;
+        }
+        else
+        {
+            owner.patroulingDirection = Vector2.left;
+        }
+    }
+
+    //Randomly Calling ChangeDirection(EnemyAI owner)
+    void RandomDirectionChange(EnemyAI owner, float percentChance)
+    {
+        float percent = Random.Range(0f, 100f);
+        if (percent > percentChance)
+        {
+            ChangeDirection(owner);
+        }
+    }
+
+    //Changes Direction
+    void ChangeDirection(EnemyAI owner)
+    {
+        if (owner.patroulingDirection == Vector2.left)
+        {
+            owner.patroulingDirection = Vector2.right;
+        }
+        else
+        {
+            owner.patroulingDirection = Vector2.left;
+        }
+    }
+
 }

@@ -86,7 +86,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c120546b4900a642aa1cd548957aee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   speed: 2
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  percentDirectionChanging: 100
+  patroulingDirection: {x: -1, y: 0}
 --- !u!50 &5642188287155995759
 Rigidbody2D:
   serializedVersion: 4
