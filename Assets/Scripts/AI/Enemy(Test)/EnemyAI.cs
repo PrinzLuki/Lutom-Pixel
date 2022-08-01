@@ -13,7 +13,7 @@ public class EnemyAI : NetworkBehaviour
     float patroulingTimer;
     float directionLenght;
     public Vector2 patroulingDirection = Vector2.left;
-
+    public SpriteRenderer enemySprite;
 
     StateMachine<EnemyAI> stateMachine { get; set; }
 

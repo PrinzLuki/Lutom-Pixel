@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PatroulState : State<EnemyAI>
 {
-
     #region Singleton
 
     public static PatroulState instance;
@@ -53,10 +52,10 @@ public class PatroulState : State<EnemyAI>
     void ObstacleAvoidance(EnemyAI owner)
     {
         Debug.Log("Obstacle Avoidance");
-        if (Physics2D.Raycast(owner.transform.position, owner.patroulingDirection, 1, owner.obstacleLayer))
+        if (Physics2D.Raycast(owner.transform.position, owner.patroulingDirection * 0.5f, 0.5f, owner.obstacleLayer))
         {
             Debug.Log("hit");
-           ChangeDirection(owner);
+            ChangeDirection(owner);
         }
     }
 
@@ -64,13 +63,15 @@ public class PatroulState : State<EnemyAI>
     void RandomDirection(EnemyAI owner)
     {
         float percent = Random.Range(0f, 100f);
-        if(percent > 50)
+        if (percent > 50)
         {
             owner.patroulingDirection = Vector2.right;
+            FlipSprite(owner, false);
         }
         else
         {
             owner.patroulingDirection = Vector2.left;
+            FlipSprite(owner, true);
         }
     }
 
@@ -89,12 +90,20 @@ public class PatroulState : State<EnemyAI>
     {
         if (owner.patroulingDirection == Vector2.left)
         {
+            FlipSprite(owner, false);
             owner.patroulingDirection = Vector2.right;
         }
         else
         {
+            FlipSprite(owner, true);
             owner.patroulingDirection = Vector2.left;
         }
+    }
+
+    //Flipping the enemySprite
+    void FlipSprite(EnemyAI owner, bool isflipped)
+    {
+        owner.enemySprite.flipX = isflipped;
     }
 
 }

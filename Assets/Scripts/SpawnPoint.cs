@@ -6,7 +6,7 @@ using Mirror;
 public class SpawnPoint : NetworkBehaviour
 {
     [SerializeField] GameObject enemyPrefab;
-    [SerializeField] float spawnDelay = 5;
+    [SerializeField, Range(2.5f, 10)] float spawnDelay = 5;
     [SerializeField] int maxEnemyCount = 10;
 
     public List<GameObject> aliveEnemys;
@@ -15,7 +15,7 @@ public class SpawnPoint : NetworkBehaviour
 
     private void Start()
     {
-        spawnTime = spawnDelay;
+        spawnTime = spawnDelay + (Random.Range(-2f, 2f));
     }
 
     private void Update()
@@ -42,12 +42,12 @@ public class SpawnPoint : NetworkBehaviour
         CmdStartEnemySpawn();
     }
 
-
+    //Check for spawndelay and enemy Count
     bool CanSpawn()
     {
         if (spawnTime <= 0 && aliveEnemys.Count < maxEnemyCount)
         {
-            spawnTime = spawnDelay;
+            spawnTime = spawnDelay + (Random.Range(-2f, 2f));
             return true;
         }
 
