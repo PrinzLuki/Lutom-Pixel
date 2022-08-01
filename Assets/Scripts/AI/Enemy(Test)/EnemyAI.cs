@@ -36,21 +36,18 @@ public class EnemyAI : NetworkBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, patroulingDirection * 10);
     }
-    //public void Patrouling()
-    //{
 
+    //Flipping the enemySprite
+    [Command(requiresAuthority = false)]
+    public void FlipSprite(bool isflipped)
+    {
+        enemySprite.flipX = isflipped;
+        FlipRpcSprite(isflipped);
+    }
 
-
-    //    //patroulingTimer -= Time.deltaTime;
-
-    //    //if(patroulingTimer <= 0)
-    //    //{
-    //    //    patroulingTimer = Random.Range(1f, 7f);
-    //    //    if (patroulingDirection == Vector2.left) patroulingDirection = Vector2.right;
-    //    //    else if(patroulingDirection == Vector2.right) patroulingDirection = Vector2.left;
-    //    //}
-    //    //transform.Translate(patroulingDirection * Time.deltaTime * speed);
-
-    //}
-
+    [ClientRpc]
+    void FlipRpcSprite(bool isflipped)
+    {
+        enemySprite.flipX = isflipped;
+    }
 }

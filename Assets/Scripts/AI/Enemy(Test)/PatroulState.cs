@@ -66,12 +66,12 @@ public class PatroulState : State<EnemyAI>
         if (percent > 50)
         {
             owner.patroulingDirection = Vector2.right;
-            FlipSprite(owner, false);
+            owner.FlipSprite(false);
         }
         else
         {
             owner.patroulingDirection = Vector2.left;
-            FlipSprite(owner, true);
+            owner.FlipSprite(true);
         }
     }
 
@@ -90,20 +90,15 @@ public class PatroulState : State<EnemyAI>
     {
         if (owner.patroulingDirection == Vector2.left)
         {
-            FlipSprite(owner, false);
+            owner.FlipSprite(false);
             owner.patroulingDirection = Vector2.right;
         }
         else
         {
-            FlipSprite(owner, true);
+            owner.FlipSprite(true);
             owner.patroulingDirection = Vector2.left;
         }
     }
 
-    //Flipping the enemySprite
-    void FlipSprite(EnemyAI owner, bool isflipped)
-    {
-        owner.enemySprite.flipX = isflipped;
-    }
 
 }
