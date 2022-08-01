@@ -26,7 +26,7 @@ public class PlayerMovement : NetworkBehaviour
     public bool isMoving;
 
 
-    public Vector3 mousePos;
+    //public Vector3 mousePos;
 
     private void Start()
     {
@@ -62,7 +62,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (!hasAuthority) return;
         horizontalInput = InputManager.instance.CurrentPosition();
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         MovePlayer();
         IsGrounded();
         Jump();

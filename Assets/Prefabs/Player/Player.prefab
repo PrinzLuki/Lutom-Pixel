@@ -285,14 +285,13 @@ MonoBehaviour:
   isGrounded: 0
   groundLayer:
     serializedVersion: 2
-    m_Bits: 456
+    m_Bits: 4040
   groundCheckPosition: {x: -0.003, y: -0.4, z: 0}
   groundCheckScale: {x: 0.66, y: 0.2, z: 0}
   _animator: {fileID: 6866975217536437510}
   _spriteRenderer: {fileID: 6002458195435725208}
   flipX: 0
   isMoving: 0
-  mousePos: {x: 0, y: 0, z: 0}
 --- !u!114 &7591614201082595574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,7 +313,9 @@ MonoBehaviour:
   currentWeapon: {fileID: 0}
   weaponGunEnd: {fileID: 0}
   weaponBulletSpawn: {fileID: 0}
-  hasWeapon: 0
+  weaponMask:
+    serializedVersion: 2
+    m_Bits: 2048
   throwForce: 10
   pickUpRadius: 1
   showGizmos: 0

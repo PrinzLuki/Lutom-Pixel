@@ -14,7 +14,8 @@ public class PlayerGun : NetworkBehaviour
     public GameObject currentWeapon;
     public Transform weaponGunEnd;
     public Transform weaponBulletSpawn;
-    public bool hasWeapon;
+    public LayerMask weaponMask;
+    //public bool hasWeapon;
     public float throwForce;
 
     [Header("Gizmos")]
@@ -58,8 +59,7 @@ public class PlayerGun : NetworkBehaviour
         if (currentWeapon != null)
         {
             DropWeapon(this.transform);
-            if (!hasWeapon) return;
-            RotateWeaponOnClient(this.gameObject, currentWeapon.transform);
+            //RotateWeaponOnClient(this.gameObject, currentWeapon.transform);
             CmdRotateWeaponOnServer(this.gameObject, currentWeapon.transform);
         }
 
@@ -117,6 +117,8 @@ public class PlayerGun : NetworkBehaviour
     //private void RpcShootBullet() => ShootBullet();
     #endregion
 
+
+    #region Weapon Rotation
     private Quaternion RotateWeapon(Vector3 inputMouse, Transform rotationTrg)
     {
         var dir = inputMouse - Camera.main.WorldToScreenPoint(rotationTrg.position);
@@ -146,7 +148,7 @@ public class PlayerGun : NetworkBehaviour
     }
 
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdRotateWeaponOnServer(GameObject player, Transform weaponTransform)
     {
         RpcRotateWeaponOnServer(player, weaponTransform);
@@ -171,9 +173,12 @@ public class PlayerGun : NetworkBehaviour
         }
 
         weaponTransform.rotation = rotationOfWeapon;
-        weaponTransform.position = player.transform.position;
+        //weaponTransform.position = player.transform.position;
 
     }
+
+    #endregion
+
 
     public void PickUpGunOnClient(GameObject player, GameObject weapon)
     {
@@ -183,7 +188,6 @@ public class PlayerGun : NetworkBehaviour
         Gun gun = playerGun.currentWeapon.GetComponent<Gun>();
         playerGun.weaponGunEnd = gun.gunEnd;
         playerGun.weaponBulletSpawn = gun.bulletSpawn;
-        playerGun.hasWeapon = true;
 
         playerGun.currentWeapon.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         playerGun.currentWeapon.GetComponent<Collider2D>().enabled = false;
@@ -204,7 +208,7 @@ public class PlayerGun : NetworkBehaviour
         Gun gun = playerGun.currentWeapon.GetComponent<Gun>();
         playerGun.weaponGunEnd = gun.gunEnd;
         playerGun.weaponBulletSpawn = gun.bulletSpawn;
-        playerGun.hasWeapon = true;
+
 
         playerGun.currentWeapon.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         playerGun.currentWeapon.GetComponent<Collider2D>().enabled = false;
@@ -213,28 +217,30 @@ public class PlayerGun : NetworkBehaviour
     private void PickUpWeapon(Transform player)
     {
         var playerGun = player.GetComponent<PlayerGun>();
-        var colliders = Physics2D.OverlapCircleAll(player.position, pickUpRadius);
-        foreach (var collider in colliders)
+        var collider = Physics2D.OverlapCircle(player.position, pickUpRadius, weaponMask);
+
+        if (collider == null) return;
+
+        if (collider.GetComponent<IWeapon>() != null)
         {
-            if (collider.GetComponent<IWeapon>() != null)
+
+            if (InputManager.instance.Interact() && playerGun.currentWeapon == null)
             {
-                if (InputManager.instance.Interact() && !playerGun.hasWeapon)
-                {
-                    collider.GetComponent<IWeapon>().PickUp(this);
-                    collider.GetComponent<IWeapon>().CmdPickUp(this);
-                }
+                //collider.GetComponent<IWeapon>().PickUp(this);
+                collider.GetComponent<IWeapon>().CmdPickUp(this);
             }
         }
+
     }
 
     private void DropWeapon(Transform player)
     {
         var playerGun = player.GetComponent<PlayerGun>();
 
-        if (InputManager.instance.Drop() && playerGun.hasWeapon)
+        if (InputManager.instance.Drop() && playerGun.currentWeapon != null)
         {
-            DropGunOnClient(player.gameObject);
-            //CmdDropGunOnServer(player.gameObject);
+            //DropGunOnClient(player.gameObject);
+            CmdDropGunOnServer(player.gameObject);
         }
     }
 
@@ -262,41 +268,40 @@ public class PlayerGun : NetworkBehaviour
         playerGun.currentWeapon.GetComponent<Collider2D>().enabled = true;
 
         playerGun.currentWeapon = null;
-        playerGun.hasWeapon = false;
 
     }
 
-    //[Command(requiresAuthority = false)]
-    //public void CmdDropGunOnServer(GameObject trg)
-    //{
-    //    RpcDropGunOnServer(trg);
-    //}
+    [Command(requiresAuthority = false)]
+    public void CmdDropGunOnServer(GameObject trg)
+    {
+        RpcDropGunOnServer(trg);
+    }
 
-    //[ClientRpc]
-    //public void RpcDropGunOnServer(GameObject trg)
-    //{
-    //    PlayerGun playerGun = trg.GetComponent<PlayerGun>();
+    [ClientRpc]
+    public void RpcDropGunOnServer(GameObject trg)
+    {
+        PlayerGun playerGun = trg.GetComponent<PlayerGun>();
 
-    //    playerGun.weaponGunEnd = null;
-    //    playerGun.weaponBulletSpawn = null;
+        playerGun.weaponGunEnd = null;
+        playerGun.weaponBulletSpawn = null;
 
-    //    var gunRigid = playerGun.currentWeapon.GetComponent<Rigidbody2D>();
+        var gunRigid = playerGun.currentWeapon.GetComponent<Rigidbody2D>();
 
 
-    //    Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    //    Vector2 direction = new Vector2(
-    //        worldMousePosition.x - transform.position.x,
-    //        worldMousePosition.y - transform.position.y
-    //    ).normalized;
+        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = new Vector2(
+            worldMousePosition.x - transform.position.x,
+            worldMousePosition.y - transform.position.y
+        ).normalized;
 
-    //    gunRigid.velocity = direction * throwForce;
+        gunRigid.velocity = direction * throwForce;
 
-    //    gunRigid.bodyType = RigidbodyType2D.Dynamic;
-    //    playerGun.currentWeapon.GetComponent<Collider2D>().enabled = true;
+        gunRigid.bodyType = RigidbodyType2D.Dynamic;
+        playerGun.currentWeapon.GetComponent<Collider2D>().enabled = true;
 
-    //    playerGun.currentWeapon = null;
-    //    playerGun.hasWeapon = false;
-    //}
+        playerGun.currentWeapon.GetComponent<Gun>().parent = null;
+        playerGun.currentWeapon = null;
+    }
 
 
 

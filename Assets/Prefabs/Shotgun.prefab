@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9136725513119245028}
   - component: {fileID: 6530463291718715179}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: GunEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6300053859135280086}
   - component: {fileID: 6092007871886507594}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: BulletSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 1718954587043252504}
   - component: {fileID: -198592442586901241}
   - component: {fileID: 1373411291344559947}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: Shotgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -313,6 +313,7 @@ MonoBehaviour:
   weaponScriptableObject: {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
   gunEnd: {fileID: 9136725513119245028}
   bulletSpawn: {fileID: 6300053859135280086}
+  parent: {fileID: 0}
 --- !u!114 &-198592442586901241
 MonoBehaviour:
   m_ObjectHideFlags: 0
