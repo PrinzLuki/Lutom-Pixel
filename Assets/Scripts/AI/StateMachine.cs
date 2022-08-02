@@ -14,7 +14,6 @@ public class StateMachine<T>
 
     public void Update()
     {
-        Debug.Log(currentState);
         if (currentState != null)
         {
             currentState.Update(owner);

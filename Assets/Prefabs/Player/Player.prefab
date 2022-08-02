@@ -256,8 +256,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  maxHealth: 10
-  health: 10
+  maxHealth: 100
+  health: 100
   maxSpeed: 5
   speed: 5
   maxJumpPower: 5

@@ -74,6 +74,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   health: 10
+  attackDmg: 0.1
+  speed: 1
 --- !u!114 &5642188287155995763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,11 +90,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  speed: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 512
-  percentDirectionChanging: 100
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  percentDirectionChanging: 99.7
   patroulingDirection: {x: -1, y: 0}
   enemySprite: {fileID: 1674463914225900324}
 --- !u!212 &1674463914225900324

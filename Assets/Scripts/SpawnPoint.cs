@@ -8,8 +8,6 @@ public class SpawnPoint : NetworkBehaviour
     [SerializeField] GameObject enemyPrefab;
     [SerializeField, Range(2.5f, 10)] float spawnDelay = 5;
     [SerializeField] int maxEnemyCount = 10;
-
-    public List<GameObject> aliveEnemys;
     float spawnTime = 5;
 
 
@@ -18,39 +16,32 @@ public class SpawnPoint : NetworkBehaviour
         spawnTime = spawnDelay + (Random.Range(-2f, 2f));
     }
 
+    [Server]
     private void Update()
     {
-        StartSpawn();
+        CmdStartEnemySpawn();
     }
 
     //Server
-    [Command(requiresAuthority = false)]
     void CmdStartEnemySpawn()
     {
+        spawnTime -= Time.deltaTime;
         if (CanSpawn())
         {
-            var enemy = Instantiate(enemyPrefab, this.gameObject.transform.position, Quaternion.identity);
-            NetworkServer.Spawn(enemy, connectionToClient);
-            aliveEnemys.Add(enemy);
+            var enemy = Instantiate(enemyPrefab, this.gameObject.transform.position, Quaternion.identity, this.transform);
+            NetworkServer.Spawn(enemy);
+            GetComponentInParent<SpawnManager>().allAliveEnemies.Add(enemy);
         }
-    }
-
-    //Client
-    void StartSpawn()
-    {
-        spawnTime -= Time.deltaTime;
-        CmdStartEnemySpawn();
     }
 
     //Check for spawndelay and enemy Count
     bool CanSpawn()
     {
-        if (spawnTime <= 0 && aliveEnemys.Count < maxEnemyCount)
+        if (spawnTime <= 0)
         {
             spawnTime = spawnDelay + (Random.Range(-2f, 2f));
             return true;
         }
-
         return false;
     }
 }

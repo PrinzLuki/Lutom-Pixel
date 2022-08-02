@@ -6,23 +6,26 @@ using Mirror;
 public class EnemyAI : NetworkBehaviour
 {
     Rigidbody2D enemyRb;
-    public float speed = 1;
     public LayerMask obstacleLayer;
+    public LayerMask playerLayer;
     public float percentDirectionChanging = 60;
     //Patroluing
     float patroulingTimer;
     float directionLenght;
-    public Vector2 patroulingDirection = Vector2.left;
+    public Vector2 patroulingDirection = Vector2.zero;
     public SpriteRenderer enemySprite;
 
+    EnemyStats stats;
     StateMachine<EnemyAI> stateMachine { get; set; }
+    public EnemyStats Stats { get => stats; set => stats = value; }
 
     private void Start()
     {
+        stats = GetComponent<EnemyStats>();
         patroulingTimer = Random.Range(1f, 7f);
         enemyRb = GetComponent<Rigidbody2D>();
         stateMachine = new StateMachine<EnemyAI>(this);
-        stateMachine.ChangeState(PatroulState.Instance);
+        stateMachine.ChangeState(DemonState.Instance);
     }
 
 
@@ -34,7 +37,6 @@ public class EnemyAI : NetworkBehaviour
     private void OnDrawGizmos2D()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, patroulingDirection * 10);
     }
 
     //Flipping the enemySprite
