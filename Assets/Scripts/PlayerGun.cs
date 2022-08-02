@@ -35,6 +35,7 @@ public class PlayerGun : NetworkBehaviour
     [SerializeField] private float pickUpRadius = 1f;
     [SerializeField] private bool showGizmos;
 
+
     [Client]
     void Update()
     {
@@ -53,8 +54,6 @@ public class PlayerGun : NetworkBehaviour
         {
             RotateWeapon();
             DropWeapon();
-            //RotateWeaponOnClient(this.gameObject, currentWeapon.transform);
-            //CmdRotateWeaponOnServer(this.gameObject);
 
             //if (weaponScriptable.automatic)
             //{
@@ -73,8 +72,6 @@ public class PlayerGun : NetworkBehaviour
             //}
         }
 
-
-
     }
 
     #region IsMouseOverGameWindow Check
@@ -83,6 +80,11 @@ public class PlayerGun : NetworkBehaviour
     #endregion
 
     #region Get Set WeaponStats
+
+    /// <summary>
+    /// Gets the weapons stats from the picked up scriptable weapon object (sets the current munition and speed)
+    /// </summary>
+    /// <param name="weapon"></param>
     public void GetWeaponStats(GameObject weapon)
     {
         weaponScriptable = weapon.GetComponent<Gun>().weaponScriptableObject;
@@ -91,6 +93,10 @@ public class PlayerGun : NetworkBehaviour
         currentSpeed = weaponScriptable.speed;
     }
 
+    /// <summary>
+    /// Resets the weapons stats from the (sets the current munition and speed to null/0)
+    /// </summary>
+    /// <param name="weapon"></param>
     public void ResetWeaponStats(GameObject weapon)
     {
         weaponScriptable = null;
@@ -144,6 +150,13 @@ public class PlayerGun : NetworkBehaviour
     #endregion
 
     #region Weapon Rotation
+
+    /// <summary>
+    /// Returns the quaternion rotation of the 2D weapon  (target)
+    /// </summary>
+    /// <param name="inputMouse"></param>
+    /// <param name="rotationTrg"></param>
+    /// <returns></returns>
     private Quaternion GetWeaponRotation(Vector3 inputMouse, Transform rotationTrg)
     {
         var dir = inputMouse - Camera.main.WorldToScreenPoint(rotationTrg.position);
@@ -152,7 +165,9 @@ public class PlayerGun : NetworkBehaviour
         return q;
     }
 
-
+    /// <summary>
+    /// Rotates the weapon and calls the function on the server too
+    /// </summary>
     public void RotateWeapon()
     {
         weaponRotation = GetWeaponRotation(inputMousePos, currentWeaponGameObject.transform);
@@ -172,11 +187,24 @@ public class PlayerGun : NetworkBehaviour
     }
 
 
+    /// <summary>
+    /// Rotates the Weapon on the server and calls a clientrpc function
+    /// </summary>
+    /// <param name="weapon"></param>
+    /// <param name="flipValue"></param>
+    /// <param name="rotation"></param>
     [Command]
     private void CmdRotateWeaponOnServer(GameObject weapon, bool flipValue, Quaternion rotation)
     {
         RpcRotateWeaponOnServer(weapon, flipValue, rotation);
     }
+
+    /// <summary>
+    /// Rotates the same weapon as on the client but so, that everyone else sees it
+    /// </summary>
+    /// <param name="weapon"></param>
+    /// <param name="flipValue"></param>
+    /// <param name="rotation"></param>
 
     [ClientRpc]
     private void RpcRotateWeaponOnServer(GameObject weapon, bool flipValue, Quaternion rotation)
@@ -200,28 +228,12 @@ public class PlayerGun : NetworkBehaviour
 
     #endregion
 
-    [Command(requiresAuthority = false)]
-    public void CmdPickUpGunOnServer(GameObject trg, GameObject weapon)
-    {
-        RpcPickUpGunOnServer(trg, weapon);
-    }
+    #region PickUp
 
-    [ClientRpc]
-    public void RpcPickUpGunOnServer(GameObject trg, GameObject weapon)
-    {
-        PlayerGun playerGun = trg.GetComponent<PlayerGun>();
-
-        playerGun.currentWeaponGameObject = weapon;
-        Gun gun = playerGun.currentWeaponGameObject.GetComponent<Gun>();
-        playerGun.weaponGunEnd = gun.gunEnd;
-        playerGun.weaponBulletSpawn = gun.bulletSpawn;
-
-        playerGun.GetWeaponStats(weapon);
-
-        playerGun.currentWeaponGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
-        playerGun.currentWeaponGameObject.GetComponent<Collider2D>().enabled = false;
-    }
-
+    /// <summary>
+    /// Picks up the weapon - calls the IWeapon Pick Up function
+    /// </summary>
+    /// <param name="player"></param>
     private void PickUpWeapon(Transform player)
     {
         var playerGun = player.GetComponent<PlayerGun>();
@@ -240,6 +252,45 @@ public class PlayerGun : NetworkBehaviour
 
     }
 
+    /// <summary>
+    /// Picks up the weapon on the Server
+    /// </summary>
+    /// <param name="trg"></param>
+    /// <param name="weapon"></param>
+    [Command(requiresAuthority = false)]
+    public void CmdPickUpGunOnServer(GameObject trg, GameObject weapon)
+    {
+        RpcPickUpGunOnServer(trg, weapon);
+    }
+
+
+    /// <summary>
+    /// Sends everybody an rpc that the weapon has been picked up
+    /// </summary>
+    /// <param name="trg"></param>
+    /// <param name="weapon"></param>
+    [ClientRpc]
+    public void RpcPickUpGunOnServer(GameObject trg, GameObject weapon)
+    {
+        PlayerGun playerGun = trg.GetComponent<PlayerGun>();
+
+        playerGun.currentWeaponGameObject = weapon;
+        Gun gun = playerGun.currentWeaponGameObject.GetComponent<Gun>();
+        playerGun.weaponGunEnd = gun.gunEnd;
+        playerGun.weaponBulletSpawn = gun.bulletSpawn;
+
+        playerGun.GetWeaponStats(weapon);
+
+        playerGun.currentWeaponGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+        playerGun.currentWeaponGameObject.GetComponent<Collider2D>().enabled = false;
+    }
+    #endregion
+
+    #region Drop
+
+    /// <summary>
+    /// Drops the weapon - calls the IWeapon Drop function
+    /// </summary>
     private void DropWeapon()
     {
         throwDirection = new Vector2(
@@ -254,12 +305,24 @@ public class PlayerGun : NetworkBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Drops the weapon on the server
+    /// </summary>
+    /// <param name="trg"></param>
+    /// <param name="direction"></param>
     [Command(requiresAuthority = false)]
     public void CmdDropGunOnServer(GameObject trg, Vector2 direction)
     {
         RpcDropGunOnServer(trg, direction);
     }
 
+
+    /// <summary>
+    /// Send everybody an rpc that the weapon has been dropped
+    /// </summary>
+    /// <param name="trg"></param>
+    /// <param name="direction"></param>
     [ClientRpc]
     public void RpcDropGunOnServer(GameObject trg, Vector2 direction)
     {
@@ -283,8 +346,9 @@ public class PlayerGun : NetworkBehaviour
         playerGun.currentWeaponGameObject = null;
     }
 
+    #endregion
 
-
+    #region Gizmos
     private void OnDrawGizmos()
     {
         if (!showGizmos) return;
@@ -293,4 +357,6 @@ public class PlayerGun : NetworkBehaviour
         if (weaponGunEnd != null)
             Gizmos.DrawLine(weaponGunEnd.position, mousePos);
     }
+
+    #endregion
 }

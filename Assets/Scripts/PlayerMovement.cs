@@ -12,7 +12,6 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private bool canDoubleJump;
     [SerializeField] private float horizontalInput;
     [SerializeField] private bool isGrounded;
-    public bool CanDoubleJump { get => CanDoubleJump; set => CanDoubleJump = value; }
 
     [Header("Gizmos")]
     public LayerMask groundLayer;
@@ -22,12 +21,14 @@ public class PlayerMovement : NetworkBehaviour
     [Header("Animations & Effects")]
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    public bool flipX;
-    public bool isMoving;
+    [SerializeField] private bool flipX;
+    [SerializeField] private bool isMoving;
 
+    public bool CanDoubleJump { get => CanDoubleJump; set => CanDoubleJump = value; }
+    public bool FlipX { get => flipX; set => flipX = value; }
+    public bool IsMoving { get => isMoving; set => isMoving = value; }
 
-    //public Vector3 mousePos;
-
+    [Client]
     private void Start()
     {
 
@@ -56,17 +57,18 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-
     [Client]
     private void Update()
     {
         if (!hasAuthority) return;
         horizontalInput = InputManager.instance.CurrentPosition();
-        //mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         MovePlayer();
         IsGrounded();
         Jump();
     }
+
+    #region Movement
+
 
     /// <summary>
     /// Moves the player with the multiplied amount of "playerSpeed"
@@ -91,21 +93,23 @@ public class PlayerMovement : NetworkBehaviour
         #region Flip By Input
         if (horizontalInput > 0)
         {
-            flipX = false;
+            FlipX = false;
         }
         if (horizontalInput < 0)
         {
-            flipX = true;
+            FlipX = true;
         }
         #endregion
 
         //Execute on Client
         CmdFlipXOnClient();
         //Execute on Server
-        CmdFlipXOnServer(flipX, this.gameObject);
+        CmdFlipXOnServer(FlipX, this.gameObject);
 
         SetRunAnimationOnClient();
     }
+
+    #endregion
 
     #region Flip Character
     /// <summary>
@@ -113,7 +117,7 @@ public class PlayerMovement : NetworkBehaviour
     /// </summary>
     void CmdFlipXOnClient()
     {
-        _spriteRenderer.flipX = flipX;
+        _spriteRenderer.flipX = FlipX;
     }
 
     /// <summary>
@@ -189,6 +193,7 @@ public class PlayerMovement : NetworkBehaviour
     }
     #endregion
 
+    #region Animation
     /// <summary>
     /// Checks if player is moving, if yes - the animation will be set and activated
     /// </summary>
@@ -196,20 +201,26 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (horizontalInput != 0)
         {
-            isMoving = true;
+            IsMoving = true;
         }
         else
         {
-            isMoving = false;
+            IsMoving = false;
         }
 
-        _animator.SetBool("isMoving", isMoving);
+        _animator.SetBool("isMoving", IsMoving);
     }
+
+    #endregion
+
+    #region Gizmos
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawCube(transform.position + groundCheckPosition, groundCheckScale);
     }
+
+    #endregion
 
 }
