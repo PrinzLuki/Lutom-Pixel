@@ -17,6 +17,6 @@ MonoBehaviour:
   damage: 2
   timeUntilDestroyed: 4
   bouncy: 0
-  bouncyMAT: {fileID: 6200000, guid: ca4d78f15b3baa541b164cd6b7468d7e, type: 2}
+  bouncyMAT: {fileID: 0}
   living: 0
   sticky: 0

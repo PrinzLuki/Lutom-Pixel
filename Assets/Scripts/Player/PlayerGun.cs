@@ -105,6 +105,8 @@ public class PlayerGun : NetworkBehaviour
 
     private void Shoot()
     {
+        if (currentWeaponGameObject == null && currentBulletGameObject == null) return;
+
         shootDirection = mousePos - currentWeaponGameObject.transform.position;
 
         if (Input.GetMouseButton(0) && currentMunition > 0 && weaponScriptable.automatic)

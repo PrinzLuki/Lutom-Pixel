@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4277327b8c3af0a4ba3946a7266f0fca, type: 3}
+  m_Name: BouncyBullet
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 8336525490738794815, guid: 6c3e768f0081d474b83e174621fe964b, type: 3}
+  bulletItem: {fileID: 8336525490738794815, guid: 02cf5e6ffbac72944bc5ea3d6bf6e045, type: 3}
+  damage: 1
+  timeUntilDestroyed: 4
+  bouncy: 1
+  bouncyMAT: {fileID: 6200000, guid: ca4d78f15b3baa541b164cd6b7468d7e, type: 2}
+  living: 1
+  sticky: 0
