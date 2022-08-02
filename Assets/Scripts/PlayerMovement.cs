@@ -104,7 +104,6 @@ public class PlayerMovement : NetworkBehaviour
         //Execute on Server
         CmdFlipXOnServer(flipX, this.gameObject);
 
-
         SetRunAnimationOnClient();
     }
 

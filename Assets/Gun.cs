@@ -6,7 +6,7 @@ public class Gun : NetworkBehaviour, IWeapon
     public WeaponScriptableObject weaponScriptableObject;
     public Transform gunEnd;
     public Transform bulletSpawn;
-    
+
     public Transform parent;
 
 
@@ -18,34 +18,31 @@ public class Gun : NetworkBehaviour, IWeapon
         }
     }
 
-    //Ohne authority daweil, da ich nicht weiﬂ wie das funktioniert
     [Command(requiresAuthority = false)]
     public void CmdPickUp(PlayerGun playerGun)
     {
+        //netIdentity.AssignClientAuthority(playerGun.netIdentity.connectionToClient);
         RpcPickUp(playerGun);
     }
 
     [ClientRpc]
     public void RpcPickUp(PlayerGun playerGun)
     {
-        parent = playerGun.transform;
         playerGun.CmdPickUpGunOnServer(playerGun.gameObject, this.gameObject);
+        parent = playerGun.transform;
     }
 
-    //[Command(requiresAuthority = false)]
-    //public void CmdDrop(PlayerGun playerGun)
-    //{
-    //    RpcDrop(playerGun);
+    [Command(requiresAuthority = false)]
+    public void CmdDrop(PlayerGun playerGun, Vector2 direction)
+    {
+        RpcDrop(playerGun, direction);
+        //netIdentity.RemoveClientAuthority();
+    }
 
-    //}
-
-    //[ClientRpc]
-    //public void RpcDrop(PlayerGun playerGun)
-    //{
-    //    playerGun.CmdDropGunOnServer(playerGun.gameObject);
-    //    parent = null;
-    //}
-
-
-
+    [ClientRpc]
+    public void RpcDrop(PlayerGun playerGun, Vector2 direction)
+    {
+        parent = playerGun.transform;
+        playerGun.CmdDropGunOnServer(playerGun.gameObject, direction);
+    }
 }
