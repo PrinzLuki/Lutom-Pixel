@@ -9,6 +9,7 @@ public class PlayerGun : NetworkBehaviour
     [SerializeField] private Vector3 inputMousePos;
 
     [Header("Stats")]
+    public bool canShoot;
     public float currentMunition;
     public float currentSpeed;
 
@@ -25,6 +26,7 @@ public class PlayerGun : NetworkBehaviour
     public bool flipWeapon;
 
     public Vector2 throwDirection;
+    public Vector3 shootDirection;
 
     [Header("Bullet")]
     public BulletScriptableObject bulletScriptable;
@@ -50,27 +52,14 @@ public class PlayerGun : NetworkBehaviour
         {
             PickUpWeapon(this.transform);
         }
-        if (currentWeaponGameObject != null)
+        else
         {
             RotateWeapon();
             DropWeapon();
-
-            //if (weaponScriptable.automatic)
-            //{
-            //    if (Input.GetMouseButton(0) && currentMunition > 0)
-            //    {
-            //        CmdShootBullet();
-
-            //    }
-            //}
-            //else
-            //{
-            //    if (Input.GetMouseButtonDown(0) && currentMunition > 0)
-            //    {
-            //        CmdShootBullet();
-            //    }
-            //}
+            if (!canShoot) return;
+            Shoot();
         }
+
 
     }
 
@@ -108,44 +97,41 @@ public class PlayerGun : NetworkBehaviour
     #endregion
 
     #region Shoot
-    //private void ShootBullet()
-    //{
-    //    var shootDirection = mousePos;
-    //    shootDirection = shootDirection - weaponHolder.transform.position;
-    //    GameObject bulletInstance = Instantiate(bulletScriptable.prefab, bulletSpawn.position, Quaternion.Euler(new Vector3(0, 0, 0)));
 
-    //    Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
-    //    bulletRigidbody.velocity = new Vector2(shootDirection.x * weaponScriptable.speed, shootDirection.y * weaponScriptable.speed);
-
-    //    Physics2D.IgnoreCollision(bulletInstance.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
-
-    //    currentMunition--;
-    //    if (currentMunition <= 0) currentMunition = 0;
-
-    //    //NetworkServer.Spawn(bulletInstance, this.gameObject);
-    //}
-
-    //[Command]
-    private void CmdShootBullet()
+    private void Shoot()
     {
-        RpcShootBullet();
+        shootDirection = mousePos - currentWeaponGameObject.transform.position;
+
+        if (Input.GetMouseButton(0) && currentMunition > 0 && weaponScriptable.automatic)
+        {
+            CmdShootBullet(this.gameObject, shootDirection);
+        }
+        else if (Input.GetMouseButtonDown(0) && currentMunition > 0)
+        {
+            CmdShootBullet(this.gameObject, shootDirection);
+        }
+    }
+
+    [Command]
+    private void CmdShootBullet(GameObject player, Vector3 direction)
+    {
+        RpcShootBullet(player, direction);
     }
 
     [ClientRpc]
-    private void RpcShootBullet()
+    private void RpcShootBullet(GameObject player, Vector3 direction)
     {
+        PlayerGun playerGun = player.GetComponent<PlayerGun>();
 
-        var shootDirection = mousePos;
-        shootDirection = shootDirection - currentWeaponGameObject.transform.position;
-        GameObject bulletInstance = Instantiate(bulletScriptable.prefab, weaponBulletSpawn.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        GameObject bulletInstance = Instantiate(playerGun.bulletScriptable.prefab, playerGun.weaponBulletSpawn.position, playerGun.weaponBulletSpawn.rotation);
 
         Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
-        bulletRigidbody.velocity = new Vector2(shootDirection.x * currentSpeed, shootDirection.y * currentSpeed);
+        bulletRigidbody.velocity = new Vector2(direction.x * playerGun.currentSpeed, direction.y * playerGun.currentSpeed);
 
         Physics2D.IgnoreCollision(bulletInstance.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
 
-        currentMunition--;
-        if (currentMunition <= 0) currentMunition = 0;
+        playerGun.currentMunition--;
+        if (playerGun.currentMunition <= 0) playerGun.currentMunition = 0;
     }
     #endregion
 
@@ -278,6 +264,7 @@ public class PlayerGun : NetworkBehaviour
         Gun gun = playerGun.currentWeaponGameObject.GetComponent<Gun>();
         playerGun.weaponGunEnd = gun.gunEnd;
         playerGun.weaponBulletSpawn = gun.bulletSpawn;
+        playerGun.canShoot = true;
 
         playerGun.GetWeaponStats(weapon);
 
@@ -330,6 +317,7 @@ public class PlayerGun : NetworkBehaviour
 
         playerGun.weaponGunEnd = null;
         playerGun.weaponBulletSpawn = null;
+        playerGun.canShoot = false;
 
         if (playerGun.currentWeaponGameObject == null) return;
 
