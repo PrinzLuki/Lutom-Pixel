@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4277327b8c3af0a4ba3946a7266f0fca, type: 3}
-  m_Name: TestBullet
+  m_Name: DefaultBullet
   m_EditorClassIdentifier: 
   prefab: {fileID: 8336525490738794815, guid: 61d5a916608d6a84ebbb620902948c2b, type: 3}
   damage: 2
   timeUntilDestroyed: 4
   bouncy: 0
   bouncyMAT: {fileID: 6200000, guid: ca4d78f15b3baa541b164cd6b7468d7e, type: 2}
-  living: 1
+  living: 0
   sticky: 0

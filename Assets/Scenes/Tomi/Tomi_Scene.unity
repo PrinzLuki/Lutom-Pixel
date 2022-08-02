@@ -933,6 +933,7 @@ MonoBehaviour:
   playerSpawnMethod: 1
   spawnPrefabs:
   - {fileID: 2770220800326088166, guid: d4fbda4b7bfc8c74f83784933edd25d7, type: 3}
+  - {fileID: 2770220800326088166, guid: bd1873ca28b6d294fad4139a01bd3423, type: 3}
 --- !u!4 &1687256242
 Transform:
   m_ObjectHideFlags: 0
@@ -1403,8 +1404,10 @@ MonoBehaviour:
   - {fileID: 1653789219}
   weaponScriptables:
   - {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
+  - {fileID: 11400000, guid: 196c6c6dfb0909e48b81e9ba795f83e2, type: 2}
   weaponSpawnCount: 1
   spawnDelay: 5
+  waitForPlayers: 1
 --- !u!4 &1932296369
 Transform:
   m_ObjectHideFlags: 0

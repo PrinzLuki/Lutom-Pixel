@@ -18,6 +18,8 @@ public class Gun : NetworkBehaviour, IWeapon
         }
     }
 
+    #region PickUp
+
     [Command(requiresAuthority = false)]
     public void CmdPickUp(PlayerGun playerGun)
     {
@@ -31,7 +33,9 @@ public class Gun : NetworkBehaviour, IWeapon
         playerGun.CmdPickUpGunOnServer(playerGun.gameObject, this.gameObject);
         parent = playerGun.transform;
     }
+    #endregion
 
+    #region Drop
     [Command(requiresAuthority = false)]
     public void CmdDrop(PlayerGun playerGun, Vector2 direction)
     {
@@ -42,7 +46,9 @@ public class Gun : NetworkBehaviour, IWeapon
     [ClientRpc]
     public void RpcDrop(PlayerGun playerGun, Vector2 direction)
     {
-        parent = playerGun.transform;
+        //parent = playerGun.transform;
         playerGun.CmdDropGunOnServer(playerGun.gameObject, direction);
     }
+
+    #endregion
 }
