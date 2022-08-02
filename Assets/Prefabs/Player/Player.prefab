@@ -261,7 +261,7 @@ MonoBehaviour:
   maxSpeed: 0
   speed: 5
   maxJumpPower: 0
-  jumpPower: 5
+  jumpPower: 6
   interactionRadius: 1
   showGizmos: 0
 --- !u!114 &6866975217536437514

@@ -197,8 +197,8 @@ MonoBehaviour:
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
-  showGizmos: 1
-  showOverlay: 1
+  showGizmos: 0
+  showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
 --- !u!114 &-2936819213323929246
 MonoBehaviour:
@@ -212,5 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76aafd0f69d1d8d46906791c05f1c94a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   bulletScriptable: {fileID: 11400000, guid: 0f976e7b3f08735469bc7f549efcbba5, type: 2}
   despawnTime: 5
