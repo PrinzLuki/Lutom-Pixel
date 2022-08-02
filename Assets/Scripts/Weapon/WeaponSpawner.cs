@@ -12,9 +12,10 @@ public class WeaponSpawner : NetworkBehaviour
     public float spawnDelay;
     public bool waitForPlayers = true;
 
-    [Server]
+    //[Server]
     private void Start()
     {
+        if (!isServer) return;
 
         if (weaponScriptables == null)
         {

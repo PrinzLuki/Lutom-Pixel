@@ -1,7 +1,7 @@
 using Mirror;
 using UnityEngine;
 
-public class PlayerStats : NetworkBehaviour
+public class PlayerStats : NetworkBehaviour, IDamageable
 {
     [SerializeField] private float maxHealth;
     [SerializeField] private float health;
@@ -20,7 +20,30 @@ public class PlayerStats : NetworkBehaviour
     public float MaxSpeed { get => maxSpeed; }
     public float MaxJumpPower { get => maxJumpPower; }
 
-   
+    void Start()
+    {
+        Debug.Log(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
+
+    public void GetDamage(float dmg)
+    {
+        if (!hasAuthority) return;
+
+        health -= dmg;
+        //UIManager.instance.UpdatePlayerHealthUI(Health, MaxHealth);
+
+        if (health <= 0)
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
+
+    [Command]
+    public void ServerSyncHealth(float oldHealth, float newHealth)
+    {
+        health = newHealth;
+    }
+
 
     //[Client]
     //private void Update()

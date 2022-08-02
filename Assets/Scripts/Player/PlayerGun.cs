@@ -94,6 +94,11 @@ public class PlayerGun : NetworkBehaviour
         currentSpeed = 0;
     }
 
+    public void ReloadWeapon()
+    {
+        currentMunition = weaponScriptable.munition;
+    }
+
     #endregion
 
     #region Shoot
