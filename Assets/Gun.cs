@@ -6,7 +6,7 @@ public class Gun : NetworkBehaviour, IWeapon
     public WeaponScriptableObject weaponScriptableObject;
     public Transform gunEnd;
     public Transform bulletSpawn;
-
+    
     public Transform parent;
 
 
@@ -16,12 +16,6 @@ public class Gun : NetworkBehaviour, IWeapon
         {
             transform.position = parent.position;
         }
-    }
-
-    public void PickUp(PlayerGun playerGun)
-    {
-        parent = playerGun.transform;
-        playerGun.PickUpGunOnClient(playerGun.gameObject, this.gameObject);
     }
 
     //Ohne authority daweil, da ich nicht weiﬂ wie das funktioniert

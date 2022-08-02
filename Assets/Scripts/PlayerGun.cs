@@ -8,39 +8,30 @@ public class PlayerGun : NetworkBehaviour
     [SerializeField] private Vector3 mousePos;
     [SerializeField] private Vector3 inputMousePos;
 
+    [Header("Stats")]
+    public float currentMunition;
+    public float currentSpeed;
 
     [Header("Weapon")]
     public WeaponScriptableObject weaponScriptable;
-    public GameObject currentWeapon;
+    [SyncVar]
+    public GameObject currentWeaponGameObject;
     public Transform weaponGunEnd;
     public Transform weaponBulletSpawn;
     public LayerMask weaponMask;
-    //public bool hasWeapon;
     public float throwForce;
+
+    public Quaternion weaponRotation;
+    public bool flipWeapon;
+
+    [Header("Bullet")]
+    public BulletScriptableObject bulletScriptable;
+    public GameObject currentBulletGameObject;
+
 
     [Header("Gizmos")]
     [SerializeField] private float pickUpRadius = 1f;
     [SerializeField] private bool showGizmos;
-
-
-    private void Start()
-    {
-        if (!hasAuthority) return;
-
-        #region Shoot
-        //if (weaponScriptable != null)
-        //{
-        //    currentMunition = weaponScriptable.munition;
-        //    currentSpeed = weaponScriptable.speed;
-
-        //    weaponPrefab = Instantiate(weaponScriptable.weaponPrefab, this.transform, false);
-        //    weaponPrefab.transform.parent = weaponHolder.transform;
-
-        //    gunEnd = weaponPrefab.transform.GetChild(0);
-        //    bulletSpawn = weaponPrefab.transform.GetChild(1);
-        //}
-        #endregion
-    }
 
     [Client]
     void Update()
@@ -52,42 +43,55 @@ public class PlayerGun : NetworkBehaviour
             inputMousePos = Input.mousePosition;
             mousePos = Camera.main.ScreenToWorldPoint(inputMousePos);
         }
-        if (currentWeapon == null)
+        if (currentWeaponGameObject == null)
         {
             PickUpWeapon(this.transform);
         }
-        if (currentWeapon != null)
+        if (currentWeaponGameObject != null)
         {
+            RotateWeapon();
             DropWeapon(this.transform);
             //RotateWeaponOnClient(this.gameObject, currentWeapon.transform);
-            CmdRotateWeaponOnServer(this.gameObject, currentWeapon.transform);
+            //CmdRotateWeaponOnServer(this.gameObject);
+
+            //if (weaponScriptable.automatic)
+            //{
+            //    if (Input.GetMouseButton(0) && currentMunition > 0)
+            //    {
+            //        CmdShootBullet();
+
+            //    }
+            //}
+            //else
+            //{
+            //    if (Input.GetMouseButtonDown(0) && currentMunition > 0)
+            //    {
+            //        CmdShootBullet();
+            //    }
+            //}
         }
 
-        #region Shoot
-        //if (weaponScriptable == null) return;
 
-        //if (weaponScriptable.automatic)
-        //{
-        //    if (Input.GetMouseButton(0) && currentMunition > 0)
-        //    {
-        //        //ShootBullet();
-        //        //CmdShootBullet();
-
-        //    }
-        //}
-        //else
-        //{
-        //    if (Input.GetMouseButtonDown(0) && currentMunition > 0)
-        //    {
-        //        //ShootBullet();
-        //        //CmdShootBullet();
-        //    }
-        //}
-        #endregion
 
     }
 
     bool IsMouseOverGameWindow { get { return !(0 > Input.mousePosition.x || 0 > Input.mousePosition.y || Screen.width < Input.mousePosition.x || Screen.height < Input.mousePosition.y); } }
+
+    public void GetWeaponStats(GameObject weapon)
+    {
+        weaponScriptable = weapon.GetComponent<Gun>().weaponScriptableObject;
+
+        currentMunition = weaponScriptable.munition;
+        currentSpeed = weaponScriptable.speed;
+    }
+
+    public void ResetWeaponStats(GameObject weapon)
+    {
+        weaponScriptable = null;
+
+        currentMunition = 0;
+        currentSpeed = 0;
+    }
 
     #region Shoot
     //private void ShootBullet()
@@ -108,18 +112,32 @@ public class PlayerGun : NetworkBehaviour
     //}
 
     //[Command]
-    //private void CmdShootBullet()
-    //{
-    //    RpcShootBullet();
-    //}
+    private void CmdShootBullet()
+    {
+        RpcShootBullet();
+    }
 
-    //[ClientRpc]
-    //private void RpcShootBullet() => ShootBullet();
+    [ClientRpc]
+    private void RpcShootBullet()
+    {
+
+        var shootDirection = mousePos;
+        shootDirection = shootDirection - currentWeaponGameObject.transform.position;
+        GameObject bulletInstance = Instantiate(bulletScriptable.prefab, weaponBulletSpawn.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+
+        Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
+        bulletRigidbody.velocity = new Vector2(shootDirection.x * currentSpeed, shootDirection.y * currentSpeed);
+
+        Physics2D.IgnoreCollision(bulletInstance.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
+
+        currentMunition--;
+        if (currentMunition <= 0) currentMunition = 0;
+    }
     #endregion
 
 
     #region Weapon Rotation
-    private Quaternion RotateWeapon(Vector3 inputMouse, Transform rotationTrg)
+    private Quaternion GetWeaponRotation(Vector3 inputMouse, Transform rotationTrg)
     {
         var dir = inputMouse - Camera.main.WorldToScreenPoint(rotationTrg.position);
         var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -127,71 +145,53 @@ public class PlayerGun : NetworkBehaviour
         return q;
     }
 
-    private void RotateWeaponOnClient(GameObject player, Transform weaponTransform)
+
+    public void RotateWeapon()
     {
-        PlayerGun playerGun = player.GetComponent<PlayerGun>();
+        weaponRotation = GetWeaponRotation(inputMousePos, currentWeaponGameObject.transform);
 
-        Quaternion rotationOfWeapon = playerGun.RotateWeapon(playerGun.inputMousePos, weaponTransform);
-
-        if (playerGun.mousePos.x > player.transform.position.x)
+        if (mousePos.x > transform.position.x)
         {
-            weaponTransform.localScale = new Vector3(1, 1, 1);
+            flipWeapon = false;
         }
 
-        if (playerGun.mousePos.x < player.transform.position.x)
+        if (mousePos.x < transform.position.x)
         {
-            weaponTransform.localScale = new Vector3(1, -1, 1);
+            flipWeapon = true;
         }
 
-        weaponTransform.rotation = rotationOfWeapon;
-        weaponTransform.position = player.transform.position;
+
+        CmdRotateWeaponOnServer(currentWeaponGameObject.gameObject, flipWeapon, weaponRotation);
     }
 
 
-    [Command(requiresAuthority = false)]
-    private void CmdRotateWeaponOnServer(GameObject player, Transform weaponTransform)
+    [Command]
+    private void CmdRotateWeaponOnServer(GameObject weapon, bool flipValue, Quaternion rotation)
     {
-        RpcRotateWeaponOnServer(player, weaponTransform);
+        RpcRotateWeaponOnServer(weapon, flipValue, rotation);
     }
 
     [ClientRpc]
-    private void RpcRotateWeaponOnServer(GameObject player, Transform weaponTransform)
+    private void RpcRotateWeaponOnServer(GameObject weapon, bool flipValue, Quaternion rotation)
     {
-        PlayerGun playerGun = player.GetComponent<PlayerGun>();
-        //Transform weaponTransform = playerGun.currentWeapon.transform;
+        if (weapon == null) return;
+        Transform weaponTransform = weapon.transform;
 
-        Quaternion rotationOfWeapon = playerGun.RotateWeapon(playerGun.inputMousePos, weaponTransform);
-
-        if (playerGun.mousePos.x > player.transform.position.x)
+        if (!flipValue)
         {
             weaponTransform.localScale = new Vector3(1, 1, 1);
         }
-
-        if (playerGun.mousePos.x < player.transform.position.x)
+        else
         {
             weaponTransform.localScale = new Vector3(1, -1, 1);
         }
 
-        weaponTransform.rotation = rotationOfWeapon;
-        //weaponTransform.position = player.transform.position;
+
+        weaponTransform.localRotation = rotation;
 
     }
 
     #endregion
-
-
-    public void PickUpGunOnClient(GameObject player, GameObject weapon)
-    {
-        PlayerGun playerGun = player.GetComponent<PlayerGun>();
-
-        playerGun.currentWeapon = weapon;
-        Gun gun = playerGun.currentWeapon.GetComponent<Gun>();
-        playerGun.weaponGunEnd = gun.gunEnd;
-        playerGun.weaponBulletSpawn = gun.bulletSpawn;
-
-        playerGun.currentWeapon.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
-        playerGun.currentWeapon.GetComponent<Collider2D>().enabled = false;
-    }
 
     [Command(requiresAuthority = false)]
     public void CmdPickUpGunOnServer(GameObject trg, GameObject weapon)
@@ -204,14 +204,15 @@ public class PlayerGun : NetworkBehaviour
     {
         PlayerGun playerGun = trg.GetComponent<PlayerGun>();
 
-        playerGun.currentWeapon = weapon;
-        Gun gun = playerGun.currentWeapon.GetComponent<Gun>();
+        playerGun.currentWeaponGameObject = weapon;
+        Gun gun = playerGun.currentWeaponGameObject.GetComponent<Gun>();
         playerGun.weaponGunEnd = gun.gunEnd;
         playerGun.weaponBulletSpawn = gun.bulletSpawn;
 
+        playerGun.GetWeaponStats(weapon);
 
-        playerGun.currentWeapon.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
-        playerGun.currentWeapon.GetComponent<Collider2D>().enabled = false;
+        playerGun.currentWeaponGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+        playerGun.currentWeaponGameObject.GetComponent<Collider2D>().enabled = false;
     }
 
     private void PickUpWeapon(Transform player)
@@ -224,9 +225,8 @@ public class PlayerGun : NetworkBehaviour
         if (collider.GetComponent<IWeapon>() != null)
         {
 
-            if (InputManager.instance.Interact() && playerGun.currentWeapon == null)
+            if (InputManager.instance.Interact() && playerGun.currentWeaponGameObject == null)
             {
-                //collider.GetComponent<IWeapon>().PickUp(this);
                 collider.GetComponent<IWeapon>().CmdPickUp(this);
             }
         }
@@ -237,38 +237,10 @@ public class PlayerGun : NetworkBehaviour
     {
         var playerGun = player.GetComponent<PlayerGun>();
 
-        if (InputManager.instance.Drop() && playerGun.currentWeapon != null)
+        if (InputManager.instance.Drop() && playerGun.currentWeaponGameObject != null)
         {
-            //DropGunOnClient(player.gameObject);
             CmdDropGunOnServer(player.gameObject);
         }
-    }
-
-    [Command(requiresAuthority = false)]
-    public void DropGunOnClient(GameObject player)
-    {
-        PlayerGun playerGun = player.GetComponent<PlayerGun>();
-
-        playerGun.weaponGunEnd = null;
-        playerGun.weaponBulletSpawn = null;
-
-        var gunRigid = playerGun.currentWeapon.GetComponent<Rigidbody2D>();
-
-
-        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = new Vector2(
-            worldMousePosition.x - transform.position.x,
-            worldMousePosition.y - transform.position.y
-        ).normalized;
-
-
-        gunRigid.velocity = direction * throwForce;
-
-        gunRigid.bodyType = RigidbodyType2D.Dynamic;
-        playerGun.currentWeapon.GetComponent<Collider2D>().enabled = true;
-
-        playerGun.currentWeapon = null;
-
     }
 
     [Command(requiresAuthority = false)]
@@ -285,22 +257,23 @@ public class PlayerGun : NetworkBehaviour
         playerGun.weaponGunEnd = null;
         playerGun.weaponBulletSpawn = null;
 
-        var gunRigid = playerGun.currentWeapon.GetComponent<Rigidbody2D>();
+        var gunRigid = playerGun.currentWeaponGameObject.GetComponent<Rigidbody2D>();
 
+        playerGun.ResetWeaponStats(playerGun.currentWeaponGameObject);
 
-        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(playerGun.inputMousePos);
         Vector2 direction = new Vector2(
-            worldMousePosition.x - transform.position.x,
-            worldMousePosition.y - transform.position.y
+            worldMousePosition.x - trg.transform.position.x,
+            worldMousePosition.y - trg.transform.position.y
         ).normalized;
 
-        gunRigid.velocity = direction * throwForce;
+        gunRigid.velocity = direction * playerGun.throwForce;
 
         gunRigid.bodyType = RigidbodyType2D.Dynamic;
-        playerGun.currentWeapon.GetComponent<Collider2D>().enabled = true;
+        playerGun.currentWeaponGameObject.GetComponent<Collider2D>().enabled = true;
 
-        playerGun.currentWeapon.GetComponent<Gun>().parent = null;
-        playerGun.currentWeapon = null;
+        playerGun.currentWeaponGameObject.GetComponent<Gun>().parent = null;
+        playerGun.currentWeaponGameObject = null;
     }
 
 

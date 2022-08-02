@@ -1404,6 +1404,7 @@ MonoBehaviour:
   weaponScriptables:
   - {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
   weaponSpawnCount: 1
+  spawnDelay: 5
 --- !u!4 &1932296369
 Transform:
   m_ObjectHideFlags: 0

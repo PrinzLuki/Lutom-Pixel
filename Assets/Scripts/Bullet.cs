@@ -7,6 +7,7 @@ public class Bullet : NetworkBehaviour
 {
     public BulletScriptableObject bulletScriptable;
 
+    public bool isActive;
 
     private void Start()
     {

@@ -9,6 +9,8 @@ public class WeaponSpawner : NetworkBehaviour
     public List<WeaponScriptableObject> weaponScriptables;
     public int weaponSpawnCount;
 
+    public float spawnDelay;
+
     [Server]
     private void Start()
     {
@@ -18,21 +20,42 @@ public class WeaponSpawner : NetworkBehaviour
             return;
         }
 
-        weaponSpawnPoints = new List<Transform>();
 
-        for (int i = 0; i < transform.childCount; i++)
+        SpawnWeapons();
+
+    }
+
+    public void SpawnWeapons()
+    {
+        var playerCount = NetworkServer.connections.Count;
+        if (playerCount < 2)
         {
-            weaponSpawnPoints.Add(transform.GetChild(i));
+            StartCoroutine(WaitForPlayers());
         }
-
-        for (int i = 0; i < weaponSpawnPoints.Count; i++)
+        else
         {
-            for (int j = 0; j < weaponSpawnCount; j++)
+            weaponSpawnPoints = new List<Transform>();
+
+            for (int i = 0; i < transform.childCount; i++)
             {
-                GameObject weaponClone = Instantiate(weaponScriptables[Random.Range(0, weaponScriptables.Count)].weaponPrefab, weaponSpawnPoints[i].position, weaponSpawnPoints[i].rotation);
-                NetworkServer.Spawn(weaponClone);
+                weaponSpawnPoints.Add(transform.GetChild(i));
+            }
+
+            for (int i = 0; i < weaponSpawnPoints.Count; i++)
+            {
+                for (int j = 0; j < weaponSpawnCount; j++)
+                {
+                    GameObject weaponClone = Instantiate(weaponScriptables[Random.Range(0, weaponScriptables.Count)].weaponPrefab, weaponSpawnPoints[i].position, weaponSpawnPoints[i].rotation);
+                    NetworkServer.Spawn(weaponClone);
+                }
             }
         }
+    }
+
+    IEnumerator WaitForPlayers()
+    {
+        yield return new WaitForSeconds(spawnDelay);
+        SpawnWeapons();
     }
 
 }
