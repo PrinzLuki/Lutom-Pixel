@@ -11,6 +11,7 @@ public class BulletSpawner : NetworkBehaviour
 
     public float spawnDelay = 10f;
     public float timer;
+    public int waitForAmountOfPlayers = 2;
     public float waitForPlayerDelay;
     public bool waitForPlayers = true;
 
@@ -49,7 +50,7 @@ public class BulletSpawner : NetworkBehaviour
     public bool MoreThanTwoPlayers()
     {
         var playerCount = NetworkServer.connections.Count;
-        if (playerCount < 2)
+        if (playerCount < waitForAmountOfPlayers)
         {
             return false;
         }

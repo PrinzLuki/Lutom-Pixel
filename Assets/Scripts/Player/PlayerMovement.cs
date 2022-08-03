@@ -180,7 +180,7 @@ public class PlayerMovement : NetworkBehaviour
         var isTouchingGround = Physics2D.OverlapBox(transform.position + groundCheckPosition, groundCheckScale, 0, groundLayer);
 
         //velocity.y == 0 damit man nicht auf der wand klettern kann
-        if (isTouchingGround && _playerRigidbody.velocity.y == 0)
+        if (isTouchingGround && (_playerRigidbody.velocity.y == 0 || _playerRigidbody.velocity.y <= 0))
         {
             isGrounded = true;
         }

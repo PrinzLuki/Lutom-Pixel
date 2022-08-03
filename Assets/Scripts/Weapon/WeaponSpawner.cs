@@ -8,6 +8,7 @@ public class WeaponSpawner : NetworkBehaviour
     public List<Transform> weaponSpawnPoints;
     public List<WeaponScriptableObject> weaponScriptables;
     public int weaponSpawnCount;
+    public int waitForAmountOfPlayers = 2;
 
     public float spawnDelay;
     public bool waitForPlayers = true;
@@ -34,7 +35,7 @@ public class WeaponSpawner : NetworkBehaviour
     public void CheckPlayers()
     {
         var playerCount = NetworkServer.connections.Count;
-        if (playerCount < 2)
+        if (playerCount < waitForAmountOfPlayers)
         {
             StartCoroutine(WaitForPlayers());
         }

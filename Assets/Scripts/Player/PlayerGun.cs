@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerGun : NetworkBehaviour
 {
     [Header("References")]
+    public Camera playerCamera;
     [SerializeField] private Transform playerParent;
     [SerializeField] private Vector3 mousePos;
     [SerializeField] private Vector3 inputMousePos;
@@ -43,10 +44,11 @@ public class PlayerGun : NetworkBehaviour
     {
 
         if (!hasAuthority) return;
+        if (playerCamera == null) { Debug.Log("Player Camera is missing"); return; } 
         if (IsMouseOverGameWindow)
         {
             inputMousePos = Input.mousePosition;
-            mousePos = Camera.main.ScreenToWorldPoint(inputMousePos);
+            mousePos = playerCamera.ScreenToWorldPoint(inputMousePos); /*Camera.main.ScreenToWorldPoint(inputMousePos);*/
         }
         if (currentWeaponGameObject == null)
         {
@@ -130,6 +132,7 @@ public class PlayerGun : NetworkBehaviour
     {
         PlayerGun playerGun = player.GetComponent<PlayerGun>();
 
+        if (playerGun.weaponBulletSpawn == null) return;
         GameObject bulletInstance = Instantiate(playerGun.bulletScriptable.prefab, playerGun.weaponBulletSpawn.position, playerGun.weaponBulletSpawn.rotation);
 
         Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
@@ -152,7 +155,7 @@ public class PlayerGun : NetworkBehaviour
     /// <returns></returns>
     private Quaternion GetWeaponRotation(Vector3 inputMouse, Transform rotationTrg)
     {
-        var dir = inputMouse - Camera.main.WorldToScreenPoint(rotationTrg.position);
+        var dir = inputMouse - playerCamera.WorldToScreenPoint(rotationTrg.position);
         var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
         return q;
