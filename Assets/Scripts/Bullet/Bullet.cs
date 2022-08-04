@@ -26,7 +26,7 @@ public class Bullet : NetworkBehaviour
             bulletRigidbody.sharedMaterial = bulletScriptable.bouncyMAT;
         }
 
-        if (!bulletScriptable.living)
+        if (!bulletScriptable.living && other.gameObject.layer != 7) //Bullet
             Destroy(gameObject);
         if (bulletScriptable.sticky)
         {

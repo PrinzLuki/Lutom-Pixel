@@ -5,23 +5,31 @@ using Mirror;
 
 public class Shotgun : Weapon
 {
-
+    public Transform[] bulletSpawns;
 
     [ClientRpc]
     public override void RpcShootBullet(GameObject player, Vector3 direction)
     {
         PlayerGun playerGun = player.GetComponent<PlayerGun>();
-        Weapon gun = playerGun.currentWeaponGameObject.GetComponent<Weapon>();
+        Shotgun gun = playerGun.currentWeaponGameObject.GetComponent<Shotgun>();
 
-        if (gun.bulletSpawn == null) return;
-        GameObject bulletInstance = Instantiate(gun.bulletScriptable.prefab, gun.bulletSpawn.position, gun.bulletSpawn.rotation);
+        if (gun.bulletSpawns.Length <= 0) return;
 
-        Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
-        bulletRigidbody.velocity = new Vector2(direction.x * gun.currentSpeed, direction.y * gun.currentSpeed);
 
-        Physics2D.IgnoreCollision(bulletInstance.GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
+        foreach (Transform bulletSpawn in gun.bulletSpawns)
+        {
+            GameObject bulletInstance = Instantiate(gun.bulletScriptable.prefab, bulletSpawn.position, bulletSpawn.rotation);
 
-        gun.currentMunition--;
-        if (gun.currentMunition <= 0) gun.currentMunition = 0;
+            Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
+            bulletRigidbody.velocity = new Vector2(direction.x * gun.currentSpeed, direction.y * gun.currentSpeed);
+
+            Physics2D.IgnoreCollision(bulletInstance.GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
+
+            gun.currentMunition--;
+            if (gun.currentMunition <= 0) gun.currentMunition = 0;
+        }
+
+
+        
     }
 }
