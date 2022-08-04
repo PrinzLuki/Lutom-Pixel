@@ -18,14 +18,37 @@ public class InteractableBullet : NetworkBehaviour
     {
         if (other.transform.CompareTag("Player"))
         {
-            PlayerGun playerGun = other.transform.GetComponent<PlayerGun>();
+            PlayerGun playerGun = other.gameObject.GetComponent<PlayerGun>();
             if (playerGun.currentWeaponGameObject == null) return;
 
-            playerGun.bulletScriptable = bulletScriptable;
-            playerGun.ReloadWeapon();
+            CmdSetBullet(playerGun.currentWeaponGameObject);
+            CmdDeleteGameObject(gameObject);
+        }
+        if (other.gameObject.layer == 11) //Weapon
+        {
+
+            CmdSetBullet(other.gameObject);
             CmdDeleteGameObject(gameObject);
         }
     }
+
+
+    [Command(requiresAuthority = false)]
+    public void CmdSetBullet(GameObject weapon)
+    {
+        RpcSetBulletWeapon(weapon);
+    }
+
+    [ClientRpc]
+    public void RpcSetBulletWeapon(GameObject weapon)
+    {
+        Weapon gun = weapon.GetComponent<Weapon>();
+        gun.bulletScriptable = bulletScriptable;
+        gun.currentBulletGameObject = bulletScriptable.prefab;
+        gun.ReloadWeapon();
+    }
+
+
 
     [Command(requiresAuthority = false)]
     public void CmdDeleteGameObject(GameObject trg)

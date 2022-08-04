@@ -11,15 +11,15 @@ public class PlayerGun : NetworkBehaviour
 
     [Header("Stats")]
     public bool canShoot;
-    public float currentMunition;
-    public float currentSpeed;
+
 
     [Header("Weapon")]
     public WeaponScriptableObject weaponScriptable;
+    public Weapon gun;
     [SyncVar]
     public GameObject currentWeaponGameObject;
-    public Transform weaponGunEnd;
-    public Transform weaponBulletSpawn;
+    //public Transform weaponGunEnd;
+    //public Transform weaponBulletSpawn;
     public LayerMask weaponMask;
     public float throwForce;
 
@@ -29,9 +29,6 @@ public class PlayerGun : NetworkBehaviour
     public Vector2 throwDirection;
     public Vector3 shootDirection;
 
-    [Header("Bullet")]
-    public BulletScriptableObject bulletScriptable;
-    public GameObject currentBulletGameObject;
 
 
     [Header("Gizmos")]
@@ -44,7 +41,7 @@ public class PlayerGun : NetworkBehaviour
     {
 
         if (!hasAuthority) return;
-        if (playerCamera == null) { Debug.Log("Player Camera is missing"); return; } 
+        if (playerCamera == null) { Debug.Log("Player Camera is missing"); return; }
         if (IsMouseOverGameWindow)
         {
             inputMousePos = Input.mousePosition;
@@ -70,79 +67,26 @@ public class PlayerGun : NetworkBehaviour
 
     #endregion
 
-    #region Get Set WeaponStats
-
-    /// <summary>
-    /// Gets the weapons stats from the picked up scriptable weapon object (sets the current munition and speed)
-    /// </summary>
-    /// <param name="weapon"></param>
-    public void GetWeaponStats(GameObject weapon)
-    {
-        weaponScriptable = weapon.GetComponent<Gun>().weaponScriptableObject;
-
-        currentMunition = weaponScriptable.munition;
-        currentSpeed = weaponScriptable.speed;
-    }
-
-    /// <summary>
-    /// Resets the weapons stats from the (sets the current munition and speed to null/0)
-    /// </summary>
-    /// <param name="weapon"></param>
-    public void ResetWeaponStats(GameObject weapon)
-    {
-        weaponScriptable = null;
-
-        currentMunition = 0;
-        currentSpeed = 0;
-    }
-
-    public void ReloadWeapon()
-    {
-        currentMunition = weaponScriptable.munition;
-    }
-
-    #endregion
 
     #region Shoot
 
     private void Shoot()
     {
-        if (currentWeaponGameObject == null && currentBulletGameObject == null) return;
+        if (currentWeaponGameObject == null) return;
 
         shootDirection = mousePos - currentWeaponGameObject.transform.position;
 
-        if (Input.GetMouseButton(0) && currentMunition > 0 && weaponScriptable.automatic)
+        if (Input.GetMouseButton(0) && gun.currentMunition > 0 && weaponScriptable.automatic)
         {
-            CmdShootBullet(this.gameObject, shootDirection);
+            gun.CmdShootBullet(this.gameObject, shootDirection);
         }
-        else if (Input.GetMouseButtonDown(0) && currentMunition > 0)
+        else if (Input.GetMouseButtonDown(0) && gun.currentMunition > 0)
         {
-            CmdShootBullet(this.gameObject, shootDirection);
+            gun.CmdShootBullet(this.gameObject, shootDirection);
         }
     }
 
-    [Command]
-    private void CmdShootBullet(GameObject player, Vector3 direction)
-    {
-        RpcShootBullet(player, direction);
-    }
 
-    [ClientRpc]
-    private void RpcShootBullet(GameObject player, Vector3 direction)
-    {
-        PlayerGun playerGun = player.GetComponent<PlayerGun>();
-
-        if (playerGun.weaponBulletSpawn == null) return;
-        GameObject bulletInstance = Instantiate(playerGun.bulletScriptable.prefab, playerGun.weaponBulletSpawn.position, playerGun.weaponBulletSpawn.rotation);
-
-        Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
-        bulletRigidbody.velocity = new Vector2(direction.x * playerGun.currentSpeed, direction.y * playerGun.currentSpeed);
-
-        Physics2D.IgnoreCollision(bulletInstance.GetComponent<Collider2D>(), this.GetComponent<Collider2D>());
-
-        playerGun.currentMunition--;
-        if (playerGun.currentMunition <= 0) playerGun.currentMunition = 0;
-    }
     #endregion
 
     #region Weapon Rotation
@@ -271,12 +215,13 @@ public class PlayerGun : NetworkBehaviour
         PlayerGun playerGun = trg.GetComponent<PlayerGun>();
 
         playerGun.currentWeaponGameObject = weapon;
-        Gun gun = playerGun.currentWeaponGameObject.GetComponent<Gun>();
-        playerGun.weaponGunEnd = gun.gunEnd;
-        playerGun.weaponBulletSpawn = gun.bulletSpawn;
+        Weapon gun = playerGun.currentWeaponGameObject.GetComponent<Weapon>();
+        playerGun.gun = gun;
+        //playerGun.weaponGunEnd = gun.gunEnd;
+        //playerGun.weaponBulletSpawn = gun.bulletSpawn;
         playerGun.canShoot = true;
 
-        playerGun.GetWeaponStats(weapon);
+        //playerGun.GetWeaponStats(weapon);
 
         playerGun.currentWeaponGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         playerGun.currentWeaponGameObject.GetComponent<Collider2D>().enabled = false;
@@ -298,7 +243,7 @@ public class PlayerGun : NetworkBehaviour
         if (InputManager.instance.Drop() && currentWeaponGameObject != null)
         {
             //CmdDropGunOnServer(this.gameObject, throwDirection);
-            currentWeaponGameObject.GetComponent<Gun>().CmdDrop(this, throwDirection);
+            currentWeaponGameObject.GetComponent<Weapon>().CmdDrop(this, throwDirection);
         }
     }
 
@@ -325,22 +270,23 @@ public class PlayerGun : NetworkBehaviour
     {
         PlayerGun playerGun = trg.GetComponent<PlayerGun>();
 
-        playerGun.weaponGunEnd = null;
-        playerGun.weaponBulletSpawn = null;
+        //playerGun.weaponGunEnd = null;
+        //playerGun.weaponBulletSpawn = null;
         playerGun.canShoot = false;
 
         if (playerGun.currentWeaponGameObject == null) return;
 
         var gunRigid = playerGun.currentWeaponGameObject.GetComponent<Rigidbody2D>();
 
-        playerGun.ResetWeaponStats(playerGun.currentWeaponGameObject);
+        //playerGun.ResetWeaponStats(playerGun.currentWeaponGameObject);
 
         gunRigid.velocity = direction * playerGun.throwForce;
 
         gunRigid.bodyType = RigidbodyType2D.Dynamic;
         playerGun.currentWeaponGameObject.GetComponent<Collider2D>().enabled = true;
 
-        playerGun.currentWeaponGameObject.GetComponent<Gun>().parent = null;
+        playerGun.currentWeaponGameObject.GetComponent<Weapon>().parent = null;
+        playerGun.gun = null;
         playerGun.currentWeaponGameObject = null;
     }
 
@@ -352,8 +298,8 @@ public class PlayerGun : NetworkBehaviour
         if (!showGizmos) return;
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position, pickUpRadius);
-        if (weaponGunEnd != null)
-            Gizmos.DrawLine(weaponGunEnd.position, mousePos);
+        if (gun.gunEnd != null)
+            Gizmos.DrawLine(gun.gunEnd.position, mousePos);
     }
 
     #endregion
