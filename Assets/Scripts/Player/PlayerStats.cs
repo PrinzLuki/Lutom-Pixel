@@ -10,6 +10,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private float maxJumpPower;
     [SerializeField] private float jumpPower = 5.0f;
     [SerializeField] private float interactionRadius = 1f;
+    [SerializeField] private bool isImmortal;
     [SerializeField] private bool showGizmos;
 
     public float Health { get => health; set => health = value; }
@@ -20,15 +21,11 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     public float MaxSpeed { get => maxSpeed; }
     public float MaxJumpPower { get => maxJumpPower; }
 
-    void Start()
-    {
-        Debug.Log(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-    }
 
     public void GetDamage(float dmg)
     {
         if (!hasAuthority) return;
-
+        if (isImmortal) return;
         health -= dmg;
         //UIManager.instance.UpdatePlayerHealthUI(Health, MaxHealth);
 
