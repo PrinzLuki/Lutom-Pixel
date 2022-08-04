@@ -191,7 +191,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 1245309366, guid: 56e8479f3dcc9134aa41877e3f23888b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -355,6 +355,7 @@ MonoBehaviour:
   maxJumpPower: 0
   jumpPower: 6
   interactionRadius: 1
+  isImmortal: 1
   showGizmos: 0
 --- !u!114 &6866975217536437514
 MonoBehaviour:
@@ -377,9 +378,9 @@ MonoBehaviour:
   isGrounded: 0
   groundLayer:
     serializedVersion: 2
-    m_Bits: 4032
+    m_Bits: 8128
   groundCheckPosition: {x: -0.003, y: -0.46, z: 0}
-  groundCheckScale: {x: 0.66, y: 0.3, z: 0}
+  groundCheckScale: {x: 0.32, y: 0.3, z: 0}
   _animator: {fileID: 6866975217536437510}
   _spriteRenderer: {fileID: 6002458195435725208}
   flipX: 0
@@ -403,12 +404,9 @@ MonoBehaviour:
   mousePos: {x: 0, y: 0, z: 0}
   inputMousePos: {x: 0, y: 0, z: 0}
   canShoot: 0
-  currentMunition: 0
-  currentSpeed: 0
   weaponScriptable: {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
+  gun: {fileID: 0}
   currentWeaponGameObject: {fileID: 0}
-  weaponGunEnd: {fileID: 0}
-  weaponBulletSpawn: {fileID: 0}
   weaponMask:
     serializedVersion: 2
     m_Bits: 2048
@@ -417,7 +415,5 @@ MonoBehaviour:
   flipWeapon: 0
   throwDirection: {x: 0, y: 0}
   shootDirection: {x: 0, y: 0, z: 0}
-  bulletScriptable: {fileID: 11400000, guid: 0f976e7b3f08735469bc7f549efcbba5, type: 2}
-  currentBulletGameObject: {fileID: 0}
   pickUpRadius: 1
   showGizmos: 0
