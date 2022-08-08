@@ -34,10 +34,6 @@ public class EnemyAI : NetworkBehaviour
         stateMachine.Update();
     }
 
-    private void OnDrawGizmos2D()
-    {
-        Gizmos.color = Color.red;
-    }
 
     //Flipping the enemySprite
     [Command(requiresAuthority = false)]
@@ -51,5 +47,12 @@ public class EnemyAI : NetworkBehaviour
     void FlipRpcSprite(bool isflipped)
     {
         enemySprite.flipX = isflipped;
+    }
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position + (Vector3.up * 0.4f), patroulingDirection * 0.8f);
+        Gizmos.DrawRay(transform.position + (Vector3.down * 0.4f) , patroulingDirection * 0.6f);
+        Gizmos.DrawRay(transform.position, Vector2.up * 5);
     }
 }

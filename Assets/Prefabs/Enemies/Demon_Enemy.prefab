@@ -92,7 +92,7 @@ MonoBehaviour:
   syncInterval: 0.1
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 4672
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -139,7 +139,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 337101745, guid: cd44260135d95e54f80d92ac4a52327f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

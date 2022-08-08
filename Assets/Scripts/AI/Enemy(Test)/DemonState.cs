@@ -49,9 +49,18 @@ public class DemonState : State<EnemyAI>
     //Change Direction if obstacle is in front
     void ObstacleAvoidance(EnemyAI owner)
     {
-        if (Physics2D.Raycast(owner.transform.position, owner.patroulingDirection * 0.5f, 0.5f, owner.obstacleLayer))
+        if (Physics2D.Raycast(owner.transform.position + (Vector3.up * 0.4f), owner.patroulingDirection * 0.4f, 1f, owner.obstacleLayer))
         {
             ChangeDirection(owner);
+        }
+        else if (Physics2D.Raycast(owner.transform.position + (Vector3.down * 0.4f), owner.patroulingDirection * 0.4f, 1f, owner.obstacleLayer))
+        {
+            Jump(owner);
+        }
+        else if (Physics2D.Raycast(owner.transform.position + (Vector3.up * 3), Vector3.up * 5f, 5f, owner.obstacleLayer))
+        {
+            if (Random.Range(0, 100) < 20)
+                JumpPlatform(owner);
         }
     }
 
@@ -79,6 +88,20 @@ public class DemonState : State<EnemyAI>
         }
     }
 
+    void Jump(EnemyAI owner)
+    {
+        var rb = owner.GetComponent<Rigidbody2D>();
+        rb.velocity = Vector2.up;
+    }
+
+
+    void JumpPlatform(EnemyAI owner)
+    {
+        var rb = owner.GetComponent<Rigidbody2D>();
+        rb.velocity = Vector2.up * 3;
+    }
+
+
     //Changes Direction
     void ChangeDirection(EnemyAI owner)
     {
@@ -94,11 +117,11 @@ public class DemonState : State<EnemyAI>
 
     void FlipSprite(EnemyAI owner)
     {
-        if(owner.patroulingDirection == Vector2.left)
+        if (owner.patroulingDirection == Vector2.left)
         {
             owner.FlipSprite(true);
         }
-        else if(owner.patroulingDirection == Vector2.right)
+        else if (owner.patroulingDirection == Vector2.right)
         {
             owner.FlipSprite(false);
         }

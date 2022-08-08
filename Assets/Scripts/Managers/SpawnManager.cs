@@ -10,9 +10,24 @@ public class SpawnManager : NetworkBehaviour
 
     public List<GameObject> allAliveEnemies;
 
+    private void Start()
+    {
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            var child = transform.GetChild(i);
+            spawnPos.Add(child);
+        }
+    }
+
+
     [Server]
     public override void OnStartServer()
     {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            var child = transform.GetChild(i);
+            spawnPos.Add(child);
+        }
         for (int i = 0; i < spawnPos.Count; i++)
         {
             var spawn = Instantiate(spawnPointPrefab, this.gameObject.transform);
