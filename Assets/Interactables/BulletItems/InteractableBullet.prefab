@@ -215,4 +215,4 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   bulletScriptable: {fileID: 11400000, guid: 0f976e7b3f08735469bc7f549efcbba5, type: 2}
-  despawnTime: 5
+  despawnTime: 10

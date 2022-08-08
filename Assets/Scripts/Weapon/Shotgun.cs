@@ -23,6 +23,7 @@ public class Shotgun : Weapon
             Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
             bulletRigidbody.velocity = new Vector2(direction.x * gun.currentSpeed, direction.y * gun.currentSpeed);
 
+
             Physics2D.IgnoreCollision(bulletInstance.GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
 
             gun.currentMunition--;
@@ -30,6 +31,6 @@ public class Shotgun : Weapon
         }
 
 
-        
+
     }
 }

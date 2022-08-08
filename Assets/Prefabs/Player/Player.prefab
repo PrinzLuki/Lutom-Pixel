@@ -46,8 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 6866975217536437509}
+  xAxisValue: 0
   yAxisValue: 0
   zAxisValue: -10
+  smoothFactor: 2
+  minValues: {x: 5, y: 0, z: -10}
+  maxValues: {x: 54.3, y: 0, z: -10}
 --- !u!20 &6561541493183026651
 Camera:
   m_ObjectHideFlags: 0
@@ -380,7 +384,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8128
   groundCheckPosition: {x: -0.003, y: -0.46, z: 0}
-  groundCheckScale: {x: 0.32, y: 0.3, z: 0}
+  groundCheckScale: {x: 0.64, y: 0.3, z: 0}
   _animator: {fileID: 6866975217536437510}
   _spriteRenderer: {fileID: 6002458195435725208}
   flipX: 0

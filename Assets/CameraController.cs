@@ -7,9 +7,13 @@ using Mirror;
 public class CameraController : MonoBehaviour
 {
     public GameObject player;
+    public float xAxisValue = 0f;
     public float yAxisValue = 0f;
     public float zAxisValue = -10f;
 
+    public float smoothFactor = 2;
+
+    public Vector3 minValues, maxValues;
 
     private void Start()
     {
@@ -27,7 +31,18 @@ public class CameraController : MonoBehaviour
         if (!player.GetComponent<NetworkIdentity>().hasAuthority) { return; }
 
         if (player == null) return;
+
+        //Vector3 targetPosition = player.transform.position; /*new Vector3(player.transform.position.x, yAxisValue, zAxisValue);*/
+
+        //Vector3 boundPosition = new Vector3(
+        //    Mathf.Clamp(targetPosition.x, minValues.x, maxValues.x),
+        //    Mathf.Clamp(targetPosition.y, minValues.y, maxValues.y),
+        //    Mathf.Clamp(targetPosition.z, minValues.z, maxValues.z));
+
+        //Vector3 smoothPosition = Vector3.Lerp(transform.position, boundPosition, smoothFactor * Time.deltaTime); 
+
         transform.position = new Vector3(player.transform.position.x, yAxisValue, zAxisValue);
+
     }
 
 }
