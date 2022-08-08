@@ -3,46 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Mirror;
+using UnityEngine.UI;
 
 public class PlayerUI : NetworkBehaviour
 {
-    [SerializeField] GameObject ownerHealth;
+    //public Image healthFill;
 
-    [SerializeField] GameObject playerUIObj;
+    //public PlayerStats stats;
 
-    [SerializeField] List<GameObject> otherPlayerHealths;
+    //private void Start()
+    //{
+    //    stats = GetComponent<PlayerStats>();
+    //    stats.onHealthChanged.AddListener(CmdSetHealthFill);
+    //}
 
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
+    //[Command]
+    //public void CmdSetHealthFill(float health, float maxHealth)
+    //{
+    //    RpcSetHealthFill(health, maxHealth);
+    //}
 
-        if (!hasAuthority)
-        {
-            playerUIObj.SetActive(false);
-        }
-        ownerHealth.SetActive(true);
-        CmdSyncHealthBarCount();
-    }
-
-    [Command(requiresAuthority = false)]
-    void CmdSyncHealthBarCount()
-    {
-        Debug.Log(NetworkManager.singleton.numPlayers - 1);
-        for(int i = 0; i < NetworkManager.singleton.numPlayers - 1; i++)
-        {
-            otherPlayerHealths[i].SetActive(true);
-        }
-        RpcSyncHealthBarCout(NetworkManager.singleton.numPlayers - 1);
-    }
-
-    [ClientRpc]
-    void RpcSyncHealthBarCout(int num)
-    {
-        for (int i = 0; i < num; i++)
-        {
-            otherPlayerHealths[i].SetActive(true);
-        }
-    }
-
-
+    //[ClientRpc]
+    //public void RpcSetHealthFill(float health, float maxHealth)
+    //{
+    //    healthFill.fillAmount = health / maxHealth;
+    //}
 }

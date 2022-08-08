@@ -5,25 +5,19 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    public bool isLocalhealth;
-    public Image healthFill;
+    public GameObject parent;
 
-    public PlayerStats stats;
+    public Slider healthSlider;
 
-    private void Start()
-    {
-        SetPlayerStatsTohealth();
-        stats.onHealthChanged.AddListener(SetHealthFill);
-    }
 
-    public void SetPlayerStatsTohealth()
-    {
-        if (isLocalhealth)
-            stats = GetComponentInParent<Transform>().GetComponentInParent<PlayerStats>();
-    }
 
-    public void SetHealthFill(float health, float maxHealth)
-    {
-        healthFill.fillAmount = health / maxHealth;
-    }
+    //private void Start()
+    //{
+    //    stats.onHealthChanged.AddListener(SetHealthFill);
+    //}
+
+    //public void SetHealthFill(float health, float maxHealth)
+    //{
+    //    healthFill.fillAmount = health / maxHealth;
+    //}
 }

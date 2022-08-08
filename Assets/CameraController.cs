@@ -20,6 +20,9 @@ public class CameraController : MonoBehaviour
         if (!player.GetComponent<NetworkIdentity>().hasAuthority) { GetComponent<Camera>().enabled = false; return; }
         var parallaxManager = FindObjectOfType<ParallaxManager>();
 
+
+        if (parallaxManager == null) { Debug.Log("ParralaxManager: " + parallaxManager); return; }
+
         for (int i = 0; i < parallaxManager.parallaxTransforms.Count; i++)
         {
             parallaxManager.parallaxTransforms[i].GetComponent<Parallax>().cam = this.gameObject;

@@ -45,7 +45,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         }
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     public void CmdServerSyncHealth(float oldHealth, float newHealth)
     {
         health = newHealth;
