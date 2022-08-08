@@ -9,8 +9,8 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private float maxSpeed = 15.0f;
     [SerializeField] private float minSpeed = 5.0f;
     [SerializeField] private float speed = 5.0f;
-    [SerializeField] private float maxJumpPower = 6.0f;
-    [SerializeField] private float minJumpPower = 12.0f;
+    [SerializeField] private float maxJumpPower = 12.0f;
+    [SerializeField] private float minJumpPower = 6.0f;
     [SerializeField] private float jumpPower = 6.0f;
     [SerializeField] private float interactionRadius = 1f;
     [SerializeField] private bool isImmortal;

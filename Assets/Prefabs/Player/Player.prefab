@@ -1826,8 +1826,10 @@ MonoBehaviour:
   maxHealth: 100
   health: 100
   maxSpeed: 15
+  minSpeed: 5
   speed: 5
   maxJumpPower: 12
+  minJumpPower: 6
   jumpPower: 6
   interactionRadius: 1
   isImmortal: 0

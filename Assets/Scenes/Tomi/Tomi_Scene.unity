@@ -2891,6 +2891,8 @@ MonoBehaviour:
   itemGameObjects:
   - {fileID: 4324150623030115701, guid: bead54fdadcc3244ba118f97923ce1e4, type: 3}
   - {fileID: 2070927913671954398, guid: a6d7960f173eba240a16bf5acc1cdac2, type: 3}
+  - {fileID: 2897293437349085834, guid: ffd53d84ac745814581755771c2ed42a, type: 3}
+  - {fileID: 2897293437349085834, guid: e56498c4c8f5afd4b9678e869b5c4bde, type: 3}
   itemSpawnCount: 1
   spawnDelay: 5
   timer: 0
@@ -24663,6 +24665,8 @@ MonoBehaviour:
   - {fileID: 8336525490738794815, guid: 02cf5e6ffbac72944bc5ea3d6bf6e045, type: 3}
   - {fileID: 4324150623030115701, guid: bead54fdadcc3244ba118f97923ce1e4, type: 3}
   - {fileID: 2070927913671954398, guid: a6d7960f173eba240a16bf5acc1cdac2, type: 3}
+  - {fileID: 2897293437349085834, guid: ffd53d84ac745814581755771c2ed42a, type: 3}
+  - {fileID: 2897293437349085834, guid: e56498c4c8f5afd4b9678e869b5c4bde, type: 3}
 --- !u!4 &1687256242
 Transform:
   m_ObjectHideFlags: 0
@@ -25096,6 +25100,7 @@ MonoBehaviour:
   - {fileID: 1653789219}
   weaponScriptables:
   - {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
+  - {fileID: 11400000, guid: 196c6c6dfb0909e48b81e9ba795f83e2, type: 2}
   weaponSpawnCount: 1
   waitForAmountOfPlayers: 2
   spawnDelay: 5
@@ -25202,6 +25207,7 @@ MonoBehaviour:
   bulletSpawnPoints: []
   bulletScriptables:
   - {fileID: 11400000, guid: 0f976e7b3f08735469bc7f549efcbba5, type: 2}
+  - {fileID: 11400000, guid: f68b8d9788cc5894a82f2ce0996c9de8, type: 2}
   bulletSpawnCount: 1
   spawnDelay: 10
   timer: 0
