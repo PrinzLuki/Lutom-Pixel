@@ -61,6 +61,7 @@ public class PlayerMovement : NetworkBehaviour
     private void Update()
     {
         if (!hasAuthority) return;
+        if (InputManager.instance == null) { Debug.LogWarning("Input Instance missing!"); return; }
         horizontalInput = InputManager.instance.CurrentPosition();
         MovePlayer();
         IsGrounded();
