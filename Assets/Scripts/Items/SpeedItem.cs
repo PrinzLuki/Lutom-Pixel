@@ -3,12 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpeedItem : NetworkBehaviour, IInteractable
+public class SpeedItem : Item
 {
-    public float speed = 10;
-    public void Interact(PlayerStats playerStats)
+
+    [ClientRpc]
+    public override void RpcSetStat(GameObject player, float speedValue, ItemType type)
     {
-        playerStats.Speed += speed;
-        NetworkServer.Destroy(gameObject);
+        var playerStats = player.GetComponent<PlayerStats>();
+        if (playerStats.currentItemType != type)
+        {
+            playerStats.ResetStats();
+        }
+        playerStats.Speed += speedValue;
+        if (playerStats.Speed > playerStats.MaxSpeed) playerStats.Speed = playerStats.MaxSpeed;
+        playerStats.currentItemType = type;
     }
+
 }

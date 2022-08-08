@@ -3,20 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealItem : NetworkBehaviour, IInteractable
+public class HealItem : Item
 {
-    public float healValue = 2;
 
-    public void Interact(PlayerStats playerStats)
+    [ClientRpc]
+    public override void RpcSetStat(GameObject player, float healingValue, ItemType type)
     {
-        playerStats.Health += healValue;
-        if (playerStats.Health >= playerStats.MaxHealth)
-            playerStats.Health = playerStats.MaxHealth;
-
-        NetworkServer.Destroy(gameObject);
+        var playerStats = player.GetComponent<PlayerStats>();
+        playerStats.GetHealth(healingValue);
     }
-
-
-
 
 }
