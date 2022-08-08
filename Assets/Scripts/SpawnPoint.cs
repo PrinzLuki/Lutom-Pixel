@@ -37,7 +37,7 @@ public class SpawnPoint : NetworkBehaviour
     //Check for spawndelay and enemy Count
     bool CanSpawn()
     {
-        if (spawnTime <= 0)
+        if (spawnTime <= 0 && maxEnemyCount > GetComponentInParent<SpawnManager>().allAliveEnemies.Count)
         {
             spawnTime = spawnDelay + (Random.Range(-2f, 2f));
             return true;

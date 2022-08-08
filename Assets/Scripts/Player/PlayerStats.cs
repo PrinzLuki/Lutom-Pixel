@@ -1,10 +1,11 @@
 using Mirror;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerStats : NetworkBehaviour, IDamageable
 {
-    [SerializeField] private float maxHealth;
-    [SerializeField] private float health;
+    [SerializeField, SyncVar(hook = nameof(CmdServerSyncMaxHealth))] private float maxHealth;
+    [SerializeField, SyncVar(hook = nameof(CmdServerSyncHealth))] private float health;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float speed = 5.0f;
     [SerializeField] private float maxJumpPower;
@@ -13,21 +14,30 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private bool isImmortal;
     [SerializeField] private bool showGizmos;
 
+    public UnityEvent<float, float> onHealthChanged; 
+
     public float Health { get => health; set => health = value; }
     public float Speed { get => speed; set => speed = value; }
     public float JumpPower { get => jumpPower; set => jumpPower = value; }
-
     public float MaxHealth { get => maxHealth; }
     public float MaxSpeed { get => maxSpeed; }
     public float MaxJumpPower { get => maxJumpPower; }
 
+    private void Update()
+    {
+        if (isLocalPlayer)
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+                GetDamage(10);
+    }
 
     public void GetDamage(float dmg)
     {
         if (!hasAuthority) return;
         if (isImmortal) return;
+
         health -= dmg;
-        //UIManager.instance.UpdatePlayerHealthUI(Health, MaxHealth);
+
+        onHealthChanged?.Invoke(Health, MaxHealth);
 
         if (health <= 0)
         {
@@ -36,10 +46,17 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     }
 
     [Command]
-    public void ServerSyncHealth(float oldHealth, float newHealth)
+    public void CmdServerSyncHealth(float oldHealth, float newHealth)
     {
         health = newHealth;
     }
+
+    [Command]
+    public void CmdServerSyncMaxHealth(float oldHealth, float newHealth)
+    {
+        maxHealth = newHealth;
+    }
+
 
 
     //[Client]

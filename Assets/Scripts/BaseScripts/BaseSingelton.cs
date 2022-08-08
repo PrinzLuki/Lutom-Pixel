@@ -9,30 +9,14 @@ public class BaseSingelton<T> : NetworkBehaviour where T : BaseSingelton<T>
 
     private void Awake()
     {
-        //if(instance == null)
-        //{
-        //    instance = (T)this;
-        //}
-        //else if(instance != this)
-        //{
-        //    Destroy(gameObject);
-        //}
-        //DontDestroyOnLoad(gameObject);
-
-
-
-
-        instance = FindObjectOfType<T>();
-
         if (instance == null)
         {
-            var instanceObj = new GameObject("Instance_Singleton");
-            instance = gameObject.AddComponent<T>();
+            instance = (T)this;
         }
-        else if (instance != null && instance != this)
+        else if (instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 }

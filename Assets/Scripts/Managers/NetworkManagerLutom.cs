@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class NetworkManagerLutom : NetworkManager
 {
-
-
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         base.OnServerAddPlayer(conn);
@@ -17,5 +15,9 @@ public class NetworkManagerLutom : NetworkManager
         base.OnClientConnect();
     }
 
-   
+    public override void OnServerConnect(NetworkConnectionToClient conn)
+    {
+        base.OnServerConnect(conn);
+
+    }
 }
