@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using Mirror;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerUI : NetworkBehaviour
 {
     [Header("Health UI Large")]
     public GameObject healthObjLarge;
     public Slider healthFillLarge;
+    public TextMeshProUGUI healthValue;
     [Header("Health UI Small")]
     public GameObject healthObjSmall;
     public Slider healthFillSmall;
@@ -39,5 +41,6 @@ public class PlayerUI : NetworkBehaviour
     {
         healthFillLarge.value = health / maxHealth;
         healthFillSmall.value = health / maxHealth;
+        healthValue.text = (healthFillLarge.value * maxHealth).ToString();
     }
 }

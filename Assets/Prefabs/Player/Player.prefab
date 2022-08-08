@@ -1911,6 +1911,7 @@ MonoBehaviour:
   syncInterval: 0.1
   healthObjLarge: {fileID: 2005788043560354421}
   healthFillLarge: {fileID: 903878614461829957}
+  healthValue: {fileID: 903878616181080308}
   healthObjSmall: {fileID: 8755357350858409416}
   healthFillSmall: {fileID: 4604140618085885127}
   stats: {fileID: 6587523481351480427}
