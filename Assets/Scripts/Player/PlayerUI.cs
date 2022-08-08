@@ -41,6 +41,6 @@ public class PlayerUI : NetworkBehaviour
     {
         healthFillLarge.value = health / maxHealth;
         healthFillSmall.value = health / maxHealth;
-        healthValue.text = (healthFillLarge.value * maxHealth).ToString();
+        healthValue.text = ((int)(healthFillLarge.value * maxHealth)).ToString();
     }
 }

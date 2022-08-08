@@ -3,19 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpeedItem : Item
+public class JumpItem : Item
 {
 
     [ClientRpc]
-    public override void RpcSetStat(GameObject player, float speedValue, ItemType type)
+    public override void RpcSetStat(GameObject player, float jumpValue, ItemType type)
     {
         var playerStats = player.GetComponent<PlayerStats>();
         if (playerStats.currentItemType != type)
         {
             playerStats.ResetStats();
         }
-        playerStats.Speed += speedValue;
-        if (playerStats.Speed > playerStats.MaxSpeed) playerStats.Speed = playerStats.MaxSpeed;
+        playerStats.JumpPower += jumpValue;
+        if (playerStats.JumpPower > playerStats.MaxJumpPower) playerStats.JumpPower = playerStats.MaxJumpPower;
         playerStats.currentItemType = type;
     }
 

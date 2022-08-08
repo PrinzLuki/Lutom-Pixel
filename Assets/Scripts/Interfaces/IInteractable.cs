@@ -1,5 +1,7 @@
+using UnityEngine;
+
 public interface IInteractable
 {
-    public void Interact(PlayerStats playerStats);
+    public void Interact(GameObject gameObject);
 
 }

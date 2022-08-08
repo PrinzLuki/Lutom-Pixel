@@ -1825,9 +1825,11 @@ MonoBehaviour:
   syncInterval: 0.1
   maxHealth: 100
   health: 100
-  maxSpeed: 0
+  maxSpeed: 15
+  minSpeed: 5
   speed: 5
-  maxJumpPower: 0
+  maxJumpPower: 12
+  minJumpPower: 6
   jumpPower: 6
   interactionRadius: 1
   isImmortal: 0
@@ -1835,6 +1837,7 @@ MonoBehaviour:
   onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
+  currentItemType: 3
 --- !u!114 &6866975217536437514
 MonoBehaviour:
   m_ObjectHideFlags: 0

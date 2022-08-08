@@ -27,6 +27,13 @@ public class BulletSpawner : NetworkBehaviour
             return;
         }
 
+        bulletSpawnPoints = new List<Transform>();
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            bulletSpawnPoints.Add(transform.GetChild(i));
+        }
+
         timer = spawnDelay;
 
     }
@@ -62,13 +69,7 @@ public class BulletSpawner : NetworkBehaviour
 
     private void SpawnBullets()
     {
-        bulletSpawnPoints = new List<Transform>();
-
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            bulletSpawnPoints.Add(transform.GetChild(i));
-        }
-
+     
         for (int j = 0; j < bulletSpawnCount; j++)
         {
             var randomI = Random.Range(0, bulletSpawnPoints.Count);
