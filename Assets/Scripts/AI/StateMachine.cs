@@ -26,7 +26,7 @@ public class StateMachine<T>
         {
             newState.Enter(owner);
         }
-        else if (currentState != null)
+        else if (currentState != null && newState != currentState)
         {
             currentState.Exit(owner);
             newState.Enter(owner);

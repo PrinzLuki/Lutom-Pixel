@@ -5,7 +5,7 @@ using Mirror;
 
 public class SpawnPoint : NetworkBehaviour
 {
-    [SerializeField] GameObject enemyPrefab;
+    [SerializeField] List<GameObject> enemyPrefabs;
     [SerializeField, Range(2.5f, 10)] float spawnDelay = 5;
     [SerializeField] int maxEnemyCount = 10;
     float spawnTime = 5;
@@ -28,7 +28,7 @@ public class SpawnPoint : NetworkBehaviour
         spawnTime -= Time.deltaTime;
         if (CanSpawn())
         {
-            var enemy = Instantiate(enemyPrefab, this.gameObject.transform.position, Quaternion.identity, this.transform);
+            var enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], this.gameObject.transform.position, Quaternion.identity, this.transform);
             NetworkServer.Spawn(enemy);
             GetComponentInParent<SpawnManager>().allAliveEnemies.Add(enemy);
         }

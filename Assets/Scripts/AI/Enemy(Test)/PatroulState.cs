@@ -65,7 +65,6 @@ public class PatroulState : State<EnemyAI>
         }
         else if (Physics2D.Raycast(owner.transform.position + (Vector3.down * 0.4f), owner.patroulingDirection * 0.45f, 0.45f, owner.groundLayer))
         {
-            Debug.Log("Jump");
             Jump(owner);
         }
     }
@@ -139,10 +138,8 @@ public class PatroulState : State<EnemyAI>
         var colls = Physics2D.OverlapBoxAll(owner.transform.position, Vector2.one, 1, owner.playerLayer);
         for (int i = 0; i < colls.Length; i++)
         {
-            Debug.Log("Attack");
             if (colls[i].transform.GetComponent<IDamageable>() != null)
             {
-                Debug.Log("GetDamage");
                 colls[i].transform.GetComponent<IDamageable>().GetDamage(owner.GetComponent<EnemyStats>().AttackDmg);
             }
         }
