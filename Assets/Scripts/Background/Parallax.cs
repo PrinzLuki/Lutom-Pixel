@@ -5,7 +5,8 @@ using UnityEngine;
 public class Parallax : MonoBehaviour
 {
     private float length, startpos;
-    public GameObject cam;
+    public GameObject camObj;
+    public CameraController cam;
     public float parallaxEffect;
 
     private void Start()
@@ -16,10 +17,12 @@ public class Parallax : MonoBehaviour
 
     void Update()
     {
-        if (cam == null) return;
+        if (camObj == null) return;
 
-        float temp = (cam.transform.position.x * (1 - parallaxEffect));
-        float dist = (cam.transform.position.x * parallaxEffect);
+        if (cam.isClamped) return;
+
+        float temp = (camObj.transform.position.x * (1 - parallaxEffect));
+        float dist = (camObj.transform.position.x * parallaxEffect);
 
         transform.position = new Vector3(startpos + dist, transform.position.y, transform.position.z);
 

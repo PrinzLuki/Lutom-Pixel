@@ -6,6 +6,8 @@ using UnityEngine.Events;
 
 public class PlayerStats : NetworkBehaviour, IDamageable
 {
+    [Header("Stats")]
+    [SerializeField] private bool isImmortal;
     [SerializeField, SyncVar(hook = nameof(CmdServerSyncMaxHealth))] private float maxHealth;
     [SerializeField, SyncVar(hook = nameof(CmdServerSyncHealth))] private float health;
     [SerializeField] private float maxSpeed = 15.0f;
@@ -15,11 +17,13 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private float minJumpPower = 6.0f;
     [SerializeField] private float jumpPower = 6.0f;
     [SerializeField] private float interactionRadius = 1f;
-    [SerializeField] private bool isImmortal;
+    [Header("Gizmos")]
     [SerializeField] private bool showGizmos;
 
-    private Vector3 spawnPoint;
+    [Header("Respawn/Death")]
+    [SerializeField] private Vector3 spawnPoint;
     [SerializeField] private float respawnDelay;
+    [SerializeField] private float deathUpForce = 1f;
 
     public UnityEvent<float, float> onHealthChanged;
 
@@ -73,6 +77,9 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         playerUI.deadImage.gameObject.SetActive(true);
 
         playerUI.enabled = false;
+
+        //maybe make Skull jump a bit
+
         GetComponent<Collider2D>().enabled = false;
         GetComponent<PlayerMovement>().enabled = false;
         GetComponent<PlayerStats>().enabled = false;
@@ -81,6 +88,8 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         GetComponent<SpriteRenderer>().sprite = playerUI.deadImage.sprite;
 
         GetComponent<Animator>().enabled = false;
+
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
     }
 
     private void RespawnPlayer()
@@ -98,6 +107,9 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         GetComponent<Animator>().enabled = true;
         GetComponent<Collider2D>().enabled = true;
+
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+
 
         GetHealth(MaxHealth);
     }

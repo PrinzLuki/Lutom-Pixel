@@ -13,19 +13,33 @@ public class CameraController : MonoBehaviour
 
     public float smoothFactor = 2;
 
-    public Vector3 minValues, maxValues;
+    public float leftLimit, rightLimit;
+    public bool isClamped;
+
+    private void Awake()
+    {
+        var levelManager = FindObjectOfType<LevelManager>();
+        if(levelManager == null)
+        {
+            Debug.Log("LevelManager is missing - Create one and set the Level Borders");
+            return;
+        }
+        leftLimit = levelManager.leftLevelLimit;
+        rightLimit = levelManager.rightLevelLimit;
+    }
 
     private void Start()
     {
         if (!player.GetComponent<NetworkIdentity>().hasAuthority) { GetComponent<Camera>().enabled = false; return; }
-        var parallaxManager = FindObjectOfType<ParallaxManager>();
-
+        var parallaxManager = FindObjectOfType<ParallaxManager>();        
 
         if (parallaxManager == null) { Debug.Log("ParralaxManager: " + parallaxManager); return; }
 
         for (int i = 0; i < parallaxManager.parallaxTransforms.Count; i++)
         {
-            parallaxManager.parallaxTransforms[i].GetComponent<Parallax>().cam = this.gameObject;
+            var parallax = parallaxManager.parallaxTransforms[i].GetComponent<Parallax>();
+            parallax.camObj = this.gameObject;
+            parallax.cam = this;
         }
     }
 
@@ -34,17 +48,16 @@ public class CameraController : MonoBehaviour
         if (!player.GetComponent<NetworkIdentity>().hasAuthority) { return; }
 
         if (player == null) return;
+        if(transform.localPosition.x != 0 )
+        {
+            isClamped = true;
+        }
+        else
+        {
+            isClamped = false;  
+        }
 
-        //Vector3 targetPosition = player.transform.position; /*new Vector3(player.transform.position.x, yAxisValue, zAxisValue);*/
-
-        //Vector3 boundPosition = new Vector3(
-        //    Mathf.Clamp(targetPosition.x, minValues.x, maxValues.x),
-        //    Mathf.Clamp(targetPosition.y, minValues.y, maxValues.y),
-        //    Mathf.Clamp(targetPosition.z, minValues.z, maxValues.z));
-
-        //Vector3 smoothPosition = Vector3.Lerp(transform.position, boundPosition, smoothFactor * Time.deltaTime); 
-
-        transform.position = new Vector3(player.transform.position.x, yAxisValue, zAxisValue);
+        transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, leftLimit, rightLimit), yAxisValue, zAxisValue);
 
     }
 
