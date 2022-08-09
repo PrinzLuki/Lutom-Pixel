@@ -76,6 +76,7 @@ MonoBehaviour:
   health: 10
   attackDmg: 0.1
   speed: 1
+  chaseSpeed: 2
 --- !u!114 &5642188287155995763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,13 +91,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  jumpPower: 30
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 4672
+    m_Bits: 512
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
-  percentDirectionChanging: 99.7
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  platformLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  percentDirectionChanging: 99.99
+  target: {fileID: 0}
+  jumpTimer: 5
   patroulingDirection: {x: -1, y: 0}
   enemySprite: {fileID: 1674463914225900324}
 --- !u!212 &1674463914225900324
@@ -185,7 +195,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.004023671, y: 0.028277785}
+  m_Offset: {x: -0.004023671, y: 0.0064364076}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -196,7 +206,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.6539651, y: 0.9112552}
+  m_Size: {x: 0.6539651, y: 0.95493805}
   m_EdgeRadius: 0
 --- !u!114 &4695946041638267959
 MonoBehaviour:

@@ -2,24 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DemonState : State<EnemyAI>
+public class PatroulState : State<EnemyAI>
 {
     #region Singleton
 
-    public static DemonState instance;
-    public DemonState()
+    public static PatroulState instance;
+    public PatroulState()
     {
         if (instance == null)
             instance = this;
     }
 
-    public static DemonState Instance
+    public static PatroulState Instance
     {
         get
         {
             if (instance == null)
             {
-                new DemonState();
+                new PatroulState();
             }
             return instance;
         }
@@ -29,12 +29,12 @@ public class DemonState : State<EnemyAI>
 
     public override void Enter(EnemyAI owner)
     {
-
         RandomDirection(owner);
     }
 
     public override void Exit(EnemyAI owner)
     {
+
     }
 
     public override void Update(EnemyAI owner)
@@ -42,25 +42,31 @@ public class DemonState : State<EnemyAI>
         owner.transform.Translate(owner.patroulingDirection * Time.deltaTime * owner.Stats.Speed);
         ObstacleAvoidance(owner);
         RandomDirectionChange(owner, owner.percentDirectionChanging);
-        FlipSprite(owner);
         Attack(owner);
+        FlipSprite(owner);
     }
 
     //Change Direction if obstacle is in front
     void ObstacleAvoidance(EnemyAI owner)
     {
-        if (Physics2D.Raycast(owner.transform.position + (Vector3.up * 0.4f), owner.patroulingDirection * 0.4f, 1f, owner.obstacleLayer))
+        if (Physics2D.Raycast(owner.transform.position + (Vector3.down * 0.2f), Vector3.up * 2f, 2f, owner.platformLayer))
+        {
+            owner.jumpTimer -= Time.deltaTime;
+
+            if(Random.Range(0, 100) < 10 && owner.jumpTimer <= 0)
+            {
+                owner.jumpTimer = 5;
+                owner.stateMachine.ChangeState(JumpPlatformState.Instance);
+            }
+        }
+        if (Physics2D.Raycast(owner.transform.position + (Vector3.up * 0.4f), owner.patroulingDirection * 0.45f, 0.45f, owner.groundLayer))
         {
             ChangeDirection(owner);
         }
-        else if (Physics2D.Raycast(owner.transform.position + (Vector3.down * 0.4f), owner.patroulingDirection * 0.4f, 1f, owner.obstacleLayer))
+        else if (Physics2D.Raycast(owner.transform.position + (Vector3.down * 0.4f), owner.patroulingDirection * 0.45f, 0.45f, owner.groundLayer))
         {
+            Debug.Log("Jump");
             Jump(owner);
-        }
-        else if (Physics2D.Raycast(owner.transform.position + (Vector3.up * 3), Vector3.up * 5f, 5f, owner.obstacleLayer))
-        {
-            if (Random.Range(0, 100) < 20)
-                JumpPlatform(owner);
         }
     }
 
@@ -91,15 +97,15 @@ public class DemonState : State<EnemyAI>
     void Jump(EnemyAI owner)
     {
         var rb = owner.GetComponent<Rigidbody2D>();
-        rb.velocity = Vector2.up;
+        rb.AddForce(Vector3.up * owner.jumpPower, ForceMode2D.Impulse);
     }
 
 
-    void JumpPlatform(EnemyAI owner)
-    {
-        var rb = owner.GetComponent<Rigidbody2D>();
-        rb.velocity = Vector2.up * 3;
-    }
+    //void JumpPlatform(EnemyAI owner)
+    //{
+    //    var rb = owner.GetComponent<Rigidbody2D>();
+    //    rb.velocity = Vector2.up * 3;
+    //}
 
 
     //Changes Direction

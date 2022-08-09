@@ -8,9 +8,11 @@ public class EnemyStats : NetworkBehaviour, IDamageable
     [SerializeField] float health = 10;
     [SerializeField] float attackDmg = 1;
     [SerializeField] float speed = 1;
+    [SerializeField] float chaseSpeed = 2;
 
-    public float Speed { get => speed; set => speed = value; }
-    public float AttackDmg { get => attackDmg; set => attackDmg = value; }
+    public float Speed { get => speed; }
+    public float AttackDmg { get => attackDmg; }
+    public float ChaseSpeed { get => chaseSpeed; }
 
     public void GetDamage(float dmg)
     {
