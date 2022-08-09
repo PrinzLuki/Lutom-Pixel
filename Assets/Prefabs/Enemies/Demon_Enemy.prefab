@@ -77,6 +77,7 @@ MonoBehaviour:
   attackDmg: 0.1
   speed: 1
   chaseSpeed: 2
+  jumpPower: 2
 --- !u!114 &5642188287155995763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,6 +107,7 @@ MonoBehaviour:
     m_Bits: 4096
   percentDirectionChanging: 99.99
   target: {fileID: 0}
+  isChasing: 0
   jumpTimer: 5
   patroulingDirection: {x: -1, y: 0}
   enemySprite: {fileID: 1674463914225900324}

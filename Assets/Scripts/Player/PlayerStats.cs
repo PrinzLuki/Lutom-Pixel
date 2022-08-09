@@ -1,5 +1,7 @@
 using Mirror;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class PlayerStats : NetworkBehaviour, IDamageable
@@ -15,6 +17,9 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private float interactionRadius = 1f;
     [SerializeField] private bool isImmortal;
     [SerializeField] private bool showGizmos;
+
+    private Vector3 spawnPoint;
+    [SerializeField] private float respawnDelay;
 
     public UnityEvent<float, float> onHealthChanged;
 
@@ -40,7 +45,9 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         if (health <= 0)
         {
-            this.gameObject.SetActive(false);
+            health = 0;
+            KillPlayer();
+            StartCoroutine(WaitTillRespawn());
         }
     }
 
@@ -57,6 +64,48 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         {
             health = maxHealth;
         }
+    }
+
+
+    private void KillPlayer()
+    {
+        var playerUI = GetComponent<PlayerUI>();
+        playerUI.deadImage.gameObject.SetActive(true);
+
+        playerUI.enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<PlayerMovement>().enabled = false;
+        GetComponent<PlayerStats>().enabled = false;
+        GetComponent<PlayerGun>().enabled = false;
+
+        GetComponent<SpriteRenderer>().sprite = playerUI.deadImage.sprite;
+
+        GetComponent<Animator>().enabled = false;
+    }
+
+    private void RespawnPlayer()
+    {
+        transform.position = spawnPoint;
+
+        var playerUI = GetComponent<PlayerUI>();
+
+        playerUI.deadImage.gameObject.SetActive(false);
+
+        playerUI.enabled = true;
+        GetComponent<PlayerMovement>().enabled = true;
+        GetComponent<PlayerStats>().enabled = true;
+        GetComponent<PlayerGun>().enabled = true;
+
+        GetComponent<Animator>().enabled = true;
+        GetComponent<Collider2D>().enabled = true;
+
+        GetHealth(MaxHealth);
+    }
+
+    IEnumerator WaitTillRespawn()
+    {
+        yield return new WaitForSeconds(respawnDelay);
+        RespawnPlayer();
     }
 
     public void ResetStats()
@@ -78,13 +127,15 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         maxHealth = newHealth;
     }
 
-
+    private void Start()
+    {
+        spawnPoint = transform.position;
+    }
 
     [Client]
     private void Update()
     {
         IsInteracting();
-
     }
 
 

@@ -12,6 +12,7 @@ public class PlayerUI : NetworkBehaviour
     public GameObject healthObjLarge;
     public Slider healthFillLarge;
     public TextMeshProUGUI healthValue;
+    public Image deadImage;
     [Header("Health UI Small")]
     public GameObject healthObjSmall;
     public Slider healthFillSmall;

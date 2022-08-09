@@ -31,6 +31,7 @@ public class SpawnManager : NetworkBehaviour
         for (int i = 0; i < spawnPos.Count; i++)
         {
             var spawn = Instantiate(spawnPointPrefab, this.gameObject.transform);
+            spawn.GetComponent<EnemyStats>().spawnManager = this;
             NetworkServer.Spawn(spawn);
             spawn.transform.position = spawnPos[i].position;
         }

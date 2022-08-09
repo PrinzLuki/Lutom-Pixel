@@ -14,6 +14,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private bool isGrounded;
 
     [Header("Gizmos")]
+    public bool showGizmos;
     public LayerMask groundLayer;
     [SerializeField] private Vector3 groundCheckPosition = new Vector3(-0.003f, -0.4f, 0);
     [SerializeField] private Vector3 groundCheckScale = new Vector3(0.66f, 0.2f, 0);
@@ -217,6 +218,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (!showGizmos) return;
         Gizmos.color = Color.green;
         Gizmos.DrawCube(transform.position + groundCheckPosition, groundCheckScale);
     }
