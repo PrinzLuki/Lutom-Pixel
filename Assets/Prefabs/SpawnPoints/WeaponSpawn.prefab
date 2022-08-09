@@ -95,7 +95,7 @@ Transform:
   - {fileID: 2757776766387261422}
   - {fileID: 2757776767183852086}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2757776767436167518
 MonoBehaviour:
@@ -112,8 +112,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   weaponSpawnPoints:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2264412920167598532, guid: bd1873ca28b6d294fad4139a01bd3423, type: 3}
+  - {fileID: 2264412920167598532, guid: d4fbda4b7bfc8c74f83784933edd25d7, type: 3}
   weaponScriptables:
   - {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
   - {fileID: 11400000, guid: 196c6c6dfb0909e48b81e9ba795f83e2, type: 2}
@@ -136,5 +136,5 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 
+  m_AssetId: ddc520cde87d3e743b9c458621f0b023
   hasSpawned: 0

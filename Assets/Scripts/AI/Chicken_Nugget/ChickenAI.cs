@@ -90,5 +90,21 @@ public class ChickenAI : BaseAI
         else sprite.flipX = false;
 
         flip = isFlipped;
+        CmdFlipSprite(isFlipped, this.gameObject);
     }
+
+    //Server
+    [Command(requiresAuthority = false)]
+    void CmdFlipSprite(bool isFlipped, GameObject targetObj)
+    {
+        RpcFlipSprite(isFlipped, targetObj);
+    }
+
+    //Client
+    [ClientRpc] 
+    void RpcFlipSprite(bool isFlipped, GameObject targetObj)
+    {
+        targetObj.GetComponent<SpriteRenderer>().flipX = isFlipped;
+    }
+
 }

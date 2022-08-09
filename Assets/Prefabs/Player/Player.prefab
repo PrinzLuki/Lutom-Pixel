@@ -1832,7 +1832,7 @@ MonoBehaviour:
   minJumpPower: 6
   jumpPower: 6
   interactionRadius: 1
-  isImmortal: 0
+  isImmortal: 1
   showGizmos: 0
   onHealthChanged:
     m_PersistentCalls:
