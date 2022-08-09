@@ -1,7 +1,6 @@
 using Mirror;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class PlayerStats : NetworkBehaviour, IDamageable
@@ -50,7 +49,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         if (health <= 0)
         {
             health = 0;
-            KillPlayer();
+            CmdKillPlayer(this.gameObject);
             StartCoroutine(WaitTillRespawn());
         }
     }
@@ -70,54 +69,68 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         }
     }
 
-
-    private void KillPlayer()
+    [Command]
+    private void CmdKillPlayer(GameObject player)
     {
-        var playerUI = GetComponent<PlayerUI>();
+        RpcKillPlayer(player);
+    }
+
+    [ClientRpc]
+    private void RpcKillPlayer(GameObject player)
+    {
+        var playerUI = player.GetComponent<PlayerUI>();
+        var playerGun = player.GetComponent<PlayerGun>();
         playerUI.deadImage.gameObject.SetActive(true);
 
         playerUI.enabled = false;
 
-        //maybe make Skull jump a bit
+        player.GetComponent<Collider2D>().enabled = false;
+        player.GetComponent<PlayerMovement>().enabled = false;
+        player.GetComponent<PlayerStats>().enabled = false;
+        playerGun.CmdDropGunOnServer(this.gameObject, playerGun.throwDirection);
+        playerGun.enabled = false;
 
-        GetComponent<Collider2D>().enabled = false;
-        GetComponent<PlayerMovement>().enabled = false;
-        GetComponent<PlayerStats>().enabled = false;
-        GetComponent<PlayerGun>().enabled = false;
+        player.GetComponent<SpriteRenderer>().sprite = playerUI.deadImage.sprite;
 
-        GetComponent<SpriteRenderer>().sprite = playerUI.deadImage.sprite;
+        player.GetComponent<Animator>().enabled = false;
 
-        GetComponent<Animator>().enabled = false;
-
-        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
     }
 
-    private void RespawnPlayer()
+    [Command]
+    private void CmdRespawnPlayer(GameObject player)
     {
-        transform.position = spawnPoint;
+        RpcRespawnPlayer(player);
+    }
 
-        var playerUI = GetComponent<PlayerUI>();
+    [ClientRpc]
+    private void RpcRespawnPlayer(GameObject player)
+    {
+        player.transform.position = player.GetComponent<PlayerStats>().spawnPoint;
+
+        var playerUI = player.GetComponent<PlayerUI>();
+        var playerStats = player.GetComponent<PlayerStats>();
 
         playerUI.deadImage.gameObject.SetActive(false);
 
         playerUI.enabled = true;
-        GetComponent<PlayerMovement>().enabled = true;
-        GetComponent<PlayerStats>().enabled = true;
-        GetComponent<PlayerGun>().enabled = true;
+        player.GetComponent<PlayerMovement>().enabled = true;
+        playerStats.enabled = true;
+        player.GetComponent<PlayerGun>().enabled = true;
 
-        GetComponent<Animator>().enabled = true;
-        GetComponent<Collider2D>().enabled = true;
+        player.GetComponent<Animator>().enabled = true;
+        player.GetComponent<Collider2D>().enabled = true;
 
-        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
 
-        GetHealth(MaxHealth);
+        playerStats.GetHealth(MaxHealth);
     }
 
     IEnumerator WaitTillRespawn()
     {
         yield return new WaitForSeconds(respawnDelay);
-        RespawnPlayer();
+        CmdRespawnPlayer(this.gameObject);
     }
 
     public void ResetStats()
