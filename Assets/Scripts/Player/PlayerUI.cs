@@ -35,17 +35,18 @@ public class PlayerUI : NetworkBehaviour
         if (!hasAuthority) return;
         if (InputManager.instance == null) { Debug.LogWarning("Input Instance missing!"); return; }
 
-        Pause();
-    }
-
-    private void Pause()
-    {
         if (InputManager.instance.Pause() && isLocalPlayer)
         {
-            paused = !paused;
-            pauseWindow.SetActive(paused);
+            Pause();
         }
     }
+
+    public void Pause()
+    {
+        paused = !paused;
+        pauseWindow.SetActive(paused);
+    }
+
 
     #region Health Stats
     public void GetStats()
