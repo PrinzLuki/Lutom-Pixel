@@ -108,7 +108,7 @@ Rigidbody2D:
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!70 &2351888153890238926
@@ -215,3 +215,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   bulletScriptable: {fileID: 11400000, guid: 7f65e60b36dc2c34cac899e0e8a4563b, type: 2}
+  timer: 0
+  explosionTimer: 4
+  fieldOfImpact: 1.5
+  force: 10
+  explodeLayer:
+    serializedVersion: 2
+    m_Bits: 3976
+  readyToExplode: 0

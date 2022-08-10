@@ -15,4 +15,4 @@ MonoBehaviour:
   prefab: {fileID: 8336525490738794815, guid: 74281926697947d4b97859e210694a05, type: 3}
   bulletItem: {fileID: 8336525490738794815, guid: b7083190d1a74c64e8637d9228a8c5c4, type: 3}
   damage: 2
-  timeUntilDestroyed: 4
+  timeUntilDestroyed: 6
