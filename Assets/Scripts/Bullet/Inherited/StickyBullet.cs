@@ -20,16 +20,18 @@ public class StickyBullet : Bullet, IExplosion
         {
             Vector2 direction = obj.transform.position - transform.position;
 
-            obj.GetComponent<Rigidbody2D>().AddForce(direction * force , ForceMode2D.Impulse);
+            obj.GetComponent<Rigidbody2D>().AddForce(direction * force, ForceMode2D.Impulse);
             if (obj.GetComponent<IDamageable>() != null)
             {
                 obj.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage);
             }
         }
 
-        Destroy(gameObject);
+        GetComponent<Animator>().enabled = true;
 
+        Destroy(gameObject, GetComponent<Animator>().runtimeAnimatorController.animationClips[0].length);
     }
+
 
     public override void OnCollisionEnter2D(Collision2D other)
     {
