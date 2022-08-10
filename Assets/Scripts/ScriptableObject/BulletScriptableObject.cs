@@ -10,10 +10,6 @@ public class BulletScriptableObject : ScriptableObject
     public float damage;
     public float timeUntilDestroyed;
 
-    public bool bouncy;
-    public PhysicsMaterial2D bouncyMAT;
-    public bool living;
-    public bool sticky;
 
 
 }

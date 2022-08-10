@@ -22,7 +22,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [Header("Respawn/Death")]
     [SerializeField] private Vector3 spawnPoint;
     [SerializeField] private float respawnDelay;
-    [SerializeField] private float deathUpForce = 1f;
+    //[SerializeField] private float deathUpForce = 1f;
 
     public UnityEvent<float, float> onHealthChanged;
 
@@ -44,14 +44,13 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         health -= dmg;
 
-        onHealthChanged?.Invoke(Health, MaxHealth);
-
         if (health <= 0)
         {
             health = 0;
             CmdKillPlayer(this.gameObject);
             StartCoroutine(WaitTillRespawn());
         }
+        onHealthChanged?.Invoke(Health, MaxHealth);
     }
 
     public void GetHealth(float healValue)
@@ -61,12 +60,12 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         health += healValue;
 
-        onHealthChanged?.Invoke(Health, MaxHealth);
-
         if (health >= maxHealth)
         {
             health = maxHealth;
         }
+
+        onHealthChanged?.Invoke(Health, MaxHealth);
     }
 
     [Command]

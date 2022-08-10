@@ -208,7 +208,7 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 
+  m_AssetId: 1fdb58b7ddf8e1d478477b3b01b0720f
   hasSpawned: 0
 --- !u!114 &6566296774633843089
 MonoBehaviour:
@@ -228,6 +228,7 @@ MonoBehaviour:
   bulletScriptables:
   - {fileID: 11400000, guid: 0f976e7b3f08735469bc7f549efcbba5, type: 2}
   - {fileID: 11400000, guid: f68b8d9788cc5894a82f2ce0996c9de8, type: 2}
+  - {fileID: 11400000, guid: 7f65e60b36dc2c34cac899e0e8a4563b, type: 2}
   bulletSpawnCount: 1
   spawnDelay: 10
   timer: 0

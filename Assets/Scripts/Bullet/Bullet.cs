@@ -7,33 +7,22 @@ public class Bullet : NetworkBehaviour
 {
     public BulletScriptableObject bulletScriptable;
 
-    private void Start()
+    public virtual void Start()
     {
         Destroy(gameObject, bulletScriptable.timeUntilDestroyed);
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public virtual void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.GetComponent<IDamageable>() != null)
-        {
-            other.gameObject.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage);
-            Destroy(gameObject);
-        }
+        if (other.gameObject.GetComponent<IDamageable>() == null) return;
 
-        if (bulletScriptable.bouncy && bulletScriptable.bouncyMAT != null)
-        {
-            var bulletRigidbody = GetComponent<Rigidbody2D>();
-            bulletRigidbody.sharedMaterial = bulletScriptable.bouncyMAT;
-        }
+        other.gameObject.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage);
+        Destroy(gameObject);
 
-        if (!bulletScriptable.living && other.gameObject.layer != 7 && other.gameObject.layer != 12) //Bullet + Platforms
-            Destroy(gameObject);
-        if (bulletScriptable.sticky)
-        {
-            transform.parent = other.transform;
-            Destroy(this.GetComponent<Rigidbody2D>());
-            Destroy(this.GetComponent<Collider2D>());
-            //stickyBullet = false;
-        }
+        //if (!bulletScriptable.living && other.gameObject.layer != 7 && other.gameObject.layer != 12) //Bullet + Platforms
+        //    Destroy(gameObject);
+
+
     }
+
 }

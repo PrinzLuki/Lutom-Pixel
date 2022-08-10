@@ -24420,6 +24420,7 @@ MonoBehaviour:
   - {fileID: 2770220800326088166, guid: bd1873ca28b6d294fad4139a01bd3423, type: 3}
   - {fileID: 8336525490738794815, guid: 463c81f6a4836d440b782c7dc4e963d0, type: 3}
   - {fileID: 8336525490738794815, guid: 02cf5e6ffbac72944bc5ea3d6bf6e045, type: 3}
+  - {fileID: 8336525490738794815, guid: b7083190d1a74c64e8637d9228a8c5c4, type: 3}
   - {fileID: 4324150623030115701, guid: bead54fdadcc3244ba118f97923ce1e4, type: 3}
   - {fileID: 2070927913671954398, guid: a6d7960f173eba240a16bf5acc1cdac2, type: 3}
   - {fileID: 2897293437349085834, guid: ffd53d84ac745814581755771c2ed42a, type: 3}
@@ -25336,6 +25337,18 @@ PrefabInstance:
       value: 2961901129
       objectReference: {fileID: 0}
     - target: {fileID: 2757776767436167518, guid: ddc520cde87d3e743b9c458621f0b023, type: 3}
+      propertyPath: weaponScriptables.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757776767436167518, guid: ddc520cde87d3e743b9c458621f0b023, type: 3}
+      propertyPath: weaponScriptables.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 196c6c6dfb0909e48b81e9ba795f83e2, type: 2}
+    - target: {fileID: 2757776767436167518, guid: ddc520cde87d3e743b9c458621f0b023, type: 3}
+      propertyPath: weaponScriptables.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
+    - target: {fileID: 2757776767436167518, guid: ddc520cde87d3e743b9c458621f0b023, type: 3}
       propertyPath: weaponSpawnPoints.Array.data[0]
       value: 
       objectReference: {fileID: 483122533}
@@ -25553,6 +25566,22 @@ PrefabInstance:
       propertyPath: sceneId
       value: 1550439797
       objectReference: {fileID: 0}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0f976e7b3f08735469bc7f549efcbba5, type: 2}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7f65e60b36dc2c34cac899e0e8a4563b, type: 2}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: f68b8d9788cc5894a82f2ce0996c9de8, type: 2}
     - target: {fileID: 6566296774633843090, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
       propertyPath: m_Name
       value: BulletSpawn

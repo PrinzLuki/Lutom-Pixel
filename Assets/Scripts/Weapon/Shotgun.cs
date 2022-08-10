@@ -15,6 +15,7 @@ public class Shotgun : Weapon
 
         if (gun.bulletSpawns.Length <= 0) return;
 
+        var bullets = new List<Collider2D>();
 
         foreach (Transform bulletSpawn in gun.bulletSpawns)
         {
@@ -23,12 +24,23 @@ public class Shotgun : Weapon
             Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
             bulletRigidbody.velocity = new Vector2(direction.x * gun.currentSpeed, direction.y * gun.currentSpeed);
 
+            bullets.Add(bulletInstance.GetComponent<Collider2D>());
 
             Physics2D.IgnoreCollision(bulletInstance.GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
 
             gun.currentMunition--;
             if (gun.currentMunition <= 0) gun.currentMunition = 0;
         }
+
+        for (int i = 0; i < bullets.Count; i++)
+        {
+            for (int j = 0; j < bullets.Count; j++)
+            {
+                Physics2D.IgnoreCollision(bullets[i].GetComponent<Collider2D>(), bullets[j].GetComponent<Collider2D>());
+            }
+        }
+
+
 
 
 
