@@ -16,8 +16,10 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private float minJumpPower = 6.0f;
     [SerializeField] private float jumpPower = 6.0f;
     [SerializeField] private float interactionRadius = 1f;
+    [SerializeField] private LayerMask interactionMask;
     [Header("Gizmos")]
     [SerializeField] private bool showGizmos;
+
 
     [Header("Respawn/Death")]
     [SerializeField] private Vector3 spawnPoint;
@@ -165,9 +167,10 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     private void IsInteracting()
     {
-        var colliders = Physics2D.OverlapCircleAll(transform.position, interactionRadius);
-        foreach (var collider in colliders)
-        {
+        var collider = Physics2D.OverlapCircle(transform.position, interactionRadius, interactionMask);
+
+        if (collider == null) return;
+  
             if (collider.GetComponent<IInteractable>() != null)
             {
                 if (InputManager.instance.Interact())
@@ -175,7 +178,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
                     collider.GetComponent<IInteractable>().Interact(this.gameObject);
                 }
             }
-        }
+        
     }
 
 

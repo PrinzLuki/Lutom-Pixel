@@ -836,8 +836,9 @@ MonoBehaviour:
   yAxisValue: 0
   zAxisValue: -10
   smoothFactor: 2
-  minValues: {x: 5, y: 0, z: -10}
-  maxValues: {x: 54.3, y: 0, z: -10}
+  leftLimit: 0
+  rightLimit: 0
+  isClamped: 0
 --- !u!20 &6561541493183026651
 Camera:
   m_ObjectHideFlags: 0
@@ -1900,6 +1901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  isImmortal: 0
   maxHealth: 100
   health: 100
   maxSpeed: 15
@@ -1909,8 +1911,11 @@ MonoBehaviour:
   minJumpPower: 6
   jumpPower: 6
   interactionRadius: 1
-  isImmortal: 0
+  interactionMask:
+    serializedVersion: 2
+    m_Bits: 256
   showGizmos: 0
+  spawnPoint: {x: 0, y: 0, z: 0}
   respawnDelay: 5
   onHealthChanged:
     m_PersistentCalls:

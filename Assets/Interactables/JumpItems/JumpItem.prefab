@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2897293437349085825}
   - component: {fileID: 2897293437349085824}
   - component: {fileID: -5296289286625629865}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: JumpItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}

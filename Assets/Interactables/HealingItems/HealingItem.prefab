@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4324150623030115710}
   - component: {fileID: 4324150623030115711}
   - component: {fileID: 4324150623030115706}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HealingItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
