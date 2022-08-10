@@ -41,11 +41,26 @@ public class PlayerUI : NetworkBehaviour
         }
     }
 
-    public void Pause()
+    public void TogglePaused()
     {
         paused = !paused;
+    }
+
+    public void Pause()
+    {
+        TogglePaused();
         pauseWindow.SetActive(paused);
     }
+
+    public void Quit()
+    {
+        if (isServer)
+        {
+            NetworkServer.Shutdown();
+        }
+        NetworkClient.Disconnect();
+    }
+
 
 
     #region Health Stats
