@@ -8,7 +8,7 @@ public class Weapon : NetworkBehaviour, IWeapon
     public Transform bulletSpawn;
 
     public Transform parent;
-
+    public WeaponSpawner weaponSpawnerParent;
 
     public float currentMunition;
     public float currentSpeed;

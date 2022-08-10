@@ -9,12 +9,26 @@ public class DeathZone : NetworkBehaviour
     public float damageDelay;
     public float timer;
 
+    public bool isInWorld;
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        //if (other.GetComponent<IWeapon>() != null)
+        //{
+        //    Destroy(other.gameObject);
+        //    var weaponSpawner = other.GetComponent<Weapon>().weaponSpawnerParent;
+        //    weaponSpawner.spawnedWeapons.Remove(other.gameObject);
+        //    weaponSpawner.RespawnAWeapon();
+        //}
+
         if (other.gameObject.GetComponent<IDamageable>() == null) return;
 
-        GetDamage(other, damage);
+        if (isInWorld)
+            GetDamage(other, damage);
+        else
+            GetDamage(other, 999);
+
 
     }
 
@@ -41,5 +55,6 @@ public class DeathZone : NetworkBehaviour
     {
         other.GetComponent<IDamageable>().GetDamage(damage);
     }
+
 
 }
