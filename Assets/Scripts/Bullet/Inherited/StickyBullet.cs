@@ -35,7 +35,10 @@ public class StickyBullet : Bullet, IExplosion
 
     public override void OnCollisionEnter2D(Collision2D other)
     {
-        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        //GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+        Destroy(GetComponent<Rigidbody2D>());
+        Destroy(GetComponent<Collider2D>());
+        gameObject.transform.SetParent(other.transform);
         readyToExplode = true;
     }
 
