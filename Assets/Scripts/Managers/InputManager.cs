@@ -10,6 +10,7 @@ public class InputManager : BaseSingelton<InputManager>
     [SerializeField] InputActionReference shootControll;
     [SerializeField] InputActionReference interActionControll;
     [SerializeField] InputActionReference dropActionControll;
+    [SerializeField] InputActionReference pauseActionControll;
 
     private void OnEnable()
     {
@@ -18,6 +19,7 @@ public class InputManager : BaseSingelton<InputManager>
         shootControll.action.Enable();
         interActionControll.action.Enable();
         dropActionControll.action.Enable();
+        pauseActionControll.action.Enable();
 
     }
     private void OnDisable()
@@ -27,6 +29,7 @@ public class InputManager : BaseSingelton<InputManager>
         shootControll.action.Disable();
         interActionControll.action.Disable();
         dropActionControll.action.Disable();
+        pauseActionControll.action.Disable();
     }
 
     public float CurrentPosition()
@@ -52,6 +55,11 @@ public class InputManager : BaseSingelton<InputManager>
     public bool Drop()
     {
         return dropActionControll.action.triggered;
+    }
+
+    public bool Pause()
+    {
+        return pauseActionControll.action.triggered;
     }
 
 }

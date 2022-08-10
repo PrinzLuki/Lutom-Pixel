@@ -44,8 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee310117e22e2dd4d957ccdae292deef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   movementControll: {fileID: 3796428792523341791, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}
   jumpControll: {fileID: -5393525643835832576, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}
   shootControll: {fileID: -4154448808092180909, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}
   interActionControll: {fileID: -3609155831326862831, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}
   dropActionControll: {fileID: 3363071424129740287, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}
+  pauseActionControll: {fileID: 5651460537451407249, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}

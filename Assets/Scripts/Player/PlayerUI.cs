@@ -8,6 +8,9 @@ using TMPro;
 
 public class PlayerUI : NetworkBehaviour
 {
+    [Header("References")]
+    public PlayerStats stats;
+
     [Header("Health UI Large")]
     public GameObject healthObjLarge;
     public Slider healthFillLarge;
@@ -17,9 +20,35 @@ public class PlayerUI : NetworkBehaviour
     public GameObject healthObjSmall;
     public Slider healthFillSmall;
 
-    public PlayerStats stats;
+
+    [Header("Pause UI")]
+    public GameObject pauseWindow;
+    public bool paused;
 
     private void Start()
+    {
+        GetStats();
+    }
+
+    private void Update()
+    {
+        if (!hasAuthority) return;
+        if (InputManager.instance == null) { Debug.LogWarning("Input Instance missing!"); return; }
+
+        Pause();
+    }
+
+    private void Pause()
+    {
+        if (InputManager.instance.Pause() && isLocalPlayer)
+        {
+            paused = !paused;
+            pauseWindow.SetActive(paused);
+        }
+    }
+
+    #region Health Stats
+    public void GetStats()
     {
         stats = GetComponent<PlayerStats>();
         stats.onHealthChanged.AddListener(CmdSetHealthFill);
@@ -28,7 +57,6 @@ public class PlayerUI : NetworkBehaviour
             healthObjSmall.SetActive(true);
             healthObjLarge.SetActive(false);
         }
-
     }
 
     [Command]
@@ -44,4 +72,6 @@ public class PlayerUI : NetworkBehaviour
         healthFillSmall.value = health / maxHealth;
         healthValue.text = health.ToString();
     }
+
+    #endregion
 }
