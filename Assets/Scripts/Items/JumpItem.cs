@@ -17,6 +17,9 @@ public class JumpItem : Item
         playerStats.JumpPower += jumpValue;
         if (playerStats.JumpPower > playerStats.MaxJumpPower) playerStats.JumpPower = playerStats.MaxJumpPower;
         playerStats.currentItemType = type;
+
+        var playerUI = player.GetComponent<PlayerUI>();
+        playerUI.UpdateUIStats(playerStats, type);
     }
 
 }

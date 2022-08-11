@@ -138,6 +138,8 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     {
         speed = minSpeed;
         jumpPower = minJumpPower;
+
+        GetComponent<PlayerUI>().UpdateUIStats(this, ItemType.None);
     }
 
 
@@ -170,15 +172,15 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         var collider = Physics2D.OverlapCircle(transform.position, interactionRadius, interactionMask);
 
         if (collider == null) return;
-  
-            if (collider.GetComponent<IInteractable>() != null)
+
+        if (collider.GetComponent<IInteractable>() != null)
+        {
+            if (InputManager.instance.Interact())
             {
-                if (InputManager.instance.Interact())
-                {
-                    collider.GetComponent<IInteractable>().Interact(this.gameObject);
-                }
+                collider.GetComponent<IInteractable>().Interact(this.gameObject);
             }
-        
+        }
+
     }
 
 
