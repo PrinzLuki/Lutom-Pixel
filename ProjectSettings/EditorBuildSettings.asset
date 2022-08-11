@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tomi/Tomi_Lobby.unity
     guid: 43bf5fd315da47b4388b2f6cc134ff71
   - enabled: 1

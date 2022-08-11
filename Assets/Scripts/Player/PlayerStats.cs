@@ -124,7 +124,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
-
+        playerStats.ResetStats();
         playerStats.GetHealth(MaxHealth);
     }
 
