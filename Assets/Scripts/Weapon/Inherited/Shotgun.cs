@@ -13,6 +13,8 @@ public class Shotgun : Weapon
         PlayerGun playerGun = player.GetComponent<PlayerGun>();
         Shotgun gun = playerGun.currentWeaponGameObject.GetComponent<Shotgun>();
 
+        StartCoroutine(DoFlash(gun.muzzleFlash));
+
         if (gun.bulletSpawns.Length <= 0) return;
 
         var bullets = new List<Collider2D>();
