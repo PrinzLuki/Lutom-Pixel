@@ -93,6 +93,17 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "negative",
+                    "id": "77b4c139-e7fc-4f63-96e8-fb18259c7f80",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "positive",
                     "id": "3116a5be-2d4d-49e3-9ef2-b74005a2ae35",
                     "path": "<Keyboard>/d",
@@ -104,9 +115,42 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "positive",
+                    "id": "f774cbc9-fcf6-4c8f-8386-de429ac22be0",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "ab5f9632-3321-48fc-bacf-7c39ef9786a6",
                     "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "59b5ae56-1e55-4112-843c-0acc4be5b1c9",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "79902092-940b-4587-b02b-f9f8ecc41f51",
+                    "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
