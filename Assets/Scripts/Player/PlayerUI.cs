@@ -8,6 +8,7 @@ using TMPro;
 
 public class PlayerUI : NetworkBehaviour
 {
+
     [Header("References")]
     public PlayerStats stats;
 
@@ -32,6 +33,8 @@ public class PlayerUI : NetworkBehaviour
     [Header("Pause UI")]
     public GameObject pauseWindow;
     public bool paused;
+
+
 
     private void Start()
     {
@@ -106,6 +109,11 @@ public class PlayerUI : NetworkBehaviour
             healthObjSmall.SetActive(true);
             healthObjLarge.SetActive(false);
         }
+        else
+        {
+            healthObjSmall.SetActive(false);
+            healthObjLarge.SetActive(true);
+        }
     }
 
     [Command]
@@ -123,4 +131,5 @@ public class PlayerUI : NetworkBehaviour
     }
 
     #endregion
+
 }

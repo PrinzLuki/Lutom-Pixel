@@ -26,6 +26,9 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private float respawnDelay;
     //[SerializeField] private float deathUpForce = 1f;
 
+    [Header("GamePlayer")]
+    public int kills;
+
     public UnityEvent<float, float> onHealthChanged;
 
     public float Health { get => health; set => health = value; }
@@ -70,6 +73,8 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         onHealthChanged?.Invoke(Health, MaxHealth);
     }
 
+    #region Kill Player
+
     [Command]
     private void CmdKillPlayer(GameObject player)
     {
@@ -98,6 +103,10 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
     }
 
+
+    #endregion
+
+    #region Respawn Player
     [Command]
     private void CmdRespawnPlayer(GameObject player)
     {
@@ -134,6 +143,9 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         CmdRespawnPlayer(this.gameObject);
     }
 
+    #endregion
+
+    #region ResetStats
     public void ResetStats()
     {
         speed = minSpeed;
@@ -141,7 +153,9 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         GetComponent<PlayerUI>().UpdateUIStats(this, ItemType.None);
     }
+    #endregion
 
+    #region Health
 
     [Command(requiresAuthority = false)]
     public void CmdServerSyncHealth(float oldHealth, float newHealth)
@@ -154,6 +168,8 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     {
         maxHealth = newHealth;
     }
+
+    #endregion
 
     private void Start()
     {

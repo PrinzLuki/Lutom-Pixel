@@ -46,7 +46,7 @@ public class Weapon : NetworkBehaviour, IWeapon
 
         if (gun.bulletSpawn == null) return;
         GameObject bulletInstance = Instantiate(gun.bulletScriptable.prefab, gun.bulletSpawn.position, gun.bulletSpawn.rotation);
-
+        bulletInstance.GetComponent<Bullet>().parent = gun.parent;
         Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
         bulletRigidbody.velocity = new Vector2(direction.x * gun.currentSpeed, direction.y * gun.currentSpeed);
 

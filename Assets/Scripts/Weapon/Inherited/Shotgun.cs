@@ -22,6 +22,7 @@ public class Shotgun : Weapon
             GameObject bulletInstance = Instantiate(gun.bulletScriptable.prefab, bulletSpawn.position, bulletSpawn.rotation);
 
             Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
+            bulletInstance.GetComponent<Bullet>().parent = gun.parent;
             bulletRigidbody.velocity = new Vector2(direction.x * gun.currentSpeed, direction.y * gun.currentSpeed);
 
             bullets.Add(bulletInstance.GetComponent<Collider2D>());
