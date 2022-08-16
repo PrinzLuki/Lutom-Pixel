@@ -32,7 +32,6 @@ public class PlayerMovement : NetworkBehaviour
     [Client]
     private void Start()
     {
-
         _playerRigidbody = GetComponent<Rigidbody2D>();
         if (_playerRigidbody == null)
         {

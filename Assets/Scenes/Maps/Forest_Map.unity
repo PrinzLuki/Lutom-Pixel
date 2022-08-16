@@ -20972,6 +20972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c5616389eb0ed4db3431908b614971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camObj: {fileID: 0}
   cam: {fileID: 1388727782}
   parallaxEffect: 0.2
 --- !u!1 &391415882
@@ -21683,6 +21684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c5616389eb0ed4db3431908b614971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camObj: {fileID: 0}
   cam: {fileID: 1388727782}
   parallaxEffect: 1
 --- !u!1 &719597952
@@ -22128,6 +22130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c5616389eb0ed4db3431908b614971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camObj: {fileID: 0}
   cam: {fileID: 1388727782}
   parallaxEffect: 0
 --- !u!1 &881245480
@@ -26649,6 +26652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c5616389eb0ed4db3431908b614971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camObj: {fileID: 0}
   cam: {fileID: 1388727782}
   parallaxEffect: 0.4
 --- !u!1 &1316786830
@@ -26888,7 +26892,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1372841267
 Transform:
   m_ObjectHideFlags: 0
@@ -27762,6 +27766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c5616389eb0ed4db3431908b614971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camObj: {fileID: 0}
   cam: {fileID: 1388727782}
   parallaxEffect: 0.8
 --- !u!1 &1649371478
@@ -29481,6 +29486,8 @@ MonoBehaviour:
   weaponScriptables:
   - {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
   - {fileID: 11400000, guid: 196c6c6dfb0909e48b81e9ba795f83e2, type: 2}
+  spawnedWeapons: []
+  maxSpawnableWeapons: 2
   weaponSpawnCount: 1
   waitForAmountOfPlayers: 2
   spawnDelay: 5

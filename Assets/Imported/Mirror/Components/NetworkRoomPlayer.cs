@@ -110,11 +110,15 @@ namespace Mirror
 
         #region Room Client Virtuals
 
+        public string playerName;
         /// <summary>
         /// This is a hook that is invoked on clients for all room player objects when entering the room.
         /// <para>Note: isLocalPlayer is not guaranteed to be set until OnStartLocalPlayer is called.</para>
         /// </summary>
-        public virtual void OnClientEnterRoom() {}
+        public virtual void OnClientEnterRoom()
+        {
+            playerName = NetworkClient.connection.identity.name;
+        }
 
         /// <summary>
         /// This is a hook that is invoked on clients for all room player objects when exiting the room.
@@ -151,7 +155,7 @@ namespace Mirror
         {
             GUILayout.BeginArea(new Rect(20f + (index * 100), 200f, 90f, 130f));
 
-            GUILayout.Label($"Player [{index + 1}]");
+            GUILayout.Label($"{NetworkClient.connection.identity.name} [{index + 1}]");
 
             if (readyToBegin)
                 GUILayout.Label("Ready");
