@@ -52,3 +52,4 @@ MonoBehaviour:
   interActionControll: {fileID: -3609155831326862831, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}
   dropActionControll: {fileID: 3363071424129740287, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}
   pauseActionControll: {fileID: 5651460537451407249, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}
+  chatActionControll: {fileID: 8935326755666751111, guid: 02942ddeebe25e94ab89c5d8720c726b, type: 3}

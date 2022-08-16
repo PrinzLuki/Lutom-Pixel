@@ -6,6 +6,7 @@ using UnityEngine;
 public class Bullet : NetworkBehaviour
 {
     public BulletScriptableObject bulletScriptable;
+    public Transform parent;
 
     public virtual void Start()
     {
@@ -18,11 +19,6 @@ public class Bullet : NetworkBehaviour
 
         other.gameObject.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage);
         Destroy(gameObject);
-
-        //if (!bulletScriptable.living && other.gameObject.layer != 7 && other.gameObject.layer != 12) //Bullet + Platforms
-        //    Destroy(gameObject);
-
-
     }
 
 }

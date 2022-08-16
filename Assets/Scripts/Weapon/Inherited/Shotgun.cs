@@ -13,6 +13,8 @@ public class Shotgun : Weapon
         PlayerGun playerGun = player.GetComponent<PlayerGun>();
         Shotgun gun = playerGun.currentWeaponGameObject.GetComponent<Shotgun>();
 
+        StartCoroutine(DoFlash(gun.muzzleFlash));
+
         if (gun.bulletSpawns.Length <= 0) return;
 
         var bullets = new List<Collider2D>();
@@ -22,6 +24,7 @@ public class Shotgun : Weapon
             GameObject bulletInstance = Instantiate(gun.bulletScriptable.prefab, bulletSpawn.position, bulletSpawn.rotation);
 
             Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
+            bulletInstance.GetComponent<Bullet>().parent = gun.parent;
             bulletRigidbody.velocity = new Vector2(direction.x * gun.currentSpeed, direction.y * gun.currentSpeed);
 
             bullets.Add(bulletInstance.GetComponent<Collider2D>());

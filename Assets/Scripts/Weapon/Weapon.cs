@@ -1,4 +1,5 @@
 using Mirror;
+using System.Collections;
 using UnityEngine;
 
 public class Weapon : NetworkBehaviour, IWeapon
@@ -16,6 +17,9 @@ public class Weapon : NetworkBehaviour, IWeapon
     [Header("Bullet")]
     public BulletScriptableObject bulletScriptable;
     public GameObject currentBulletGameObject;
+
+    [Header("Animation")]
+    public GameObject muzzleFlash;
 
 
     public virtual void Update()
@@ -44,9 +48,12 @@ public class Weapon : NetworkBehaviour, IWeapon
         PlayerGun playerGun = player.GetComponent<PlayerGun>();
         Weapon gun = playerGun.currentWeaponGameObject.GetComponent<Weapon>();
 
+        StartCoroutine(DoFlash(gun.muzzleFlash));
+        //gun.muzzleFlash.SetActive(true);
+
         if (gun.bulletSpawn == null) return;
         GameObject bulletInstance = Instantiate(gun.bulletScriptable.prefab, gun.bulletSpawn.position, gun.bulletSpawn.rotation);
-
+        bulletInstance.GetComponent<Bullet>().parent = gun.parent;
         Rigidbody2D bulletRigidbody = bulletInstance.GetComponent<Rigidbody2D>();
         bulletRigidbody.velocity = new Vector2(direction.x * gun.currentSpeed, direction.y * gun.currentSpeed);
 
@@ -55,6 +62,17 @@ public class Weapon : NetworkBehaviour, IWeapon
         gun.currentMunition--;
         if (gun.currentMunition <= 0) gun.currentMunition = 0;
     }
+
+    public virtual IEnumerator DoFlash(GameObject muzzleFlash)
+    {
+        muzzleFlash.SetActive(true);
+
+        yield return new WaitForSeconds(0.3f);
+
+        muzzleFlash.SetActive(false);
+
+    }
+
 
     #region PickUp
 

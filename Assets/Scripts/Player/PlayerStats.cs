@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class PlayerStats : NetworkBehaviour, IDamageable
 {
+    [ContextMenuItem("Toggle Immortality", "EditorToggleImmortality")]
+
     [Header("Stats")]
     [SerializeField] private bool isImmortal;
     [SerializeField, SyncVar(hook = nameof(CmdServerSyncMaxHealth))] private float maxHealth;
@@ -25,6 +27,9 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private Vector3 spawnPoint;
     [SerializeField] private float respawnDelay;
     //[SerializeField] private float deathUpForce = 1f;
+
+    [Header("GamePlayer")]
+    public int kills;
 
     public UnityEvent<float, float> onHealthChanged;
 
@@ -70,6 +75,8 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         onHealthChanged?.Invoke(Health, MaxHealth);
     }
 
+    #region Kill Player
+
     [Command]
     private void CmdKillPlayer(GameObject player)
     {
@@ -98,6 +105,10 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
     }
 
+
+    #endregion
+
+    #region Respawn Player
     [Command]
     private void CmdRespawnPlayer(GameObject player)
     {
@@ -124,7 +135,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
-
+        playerStats.ResetStats();
         playerStats.GetHealth(MaxHealth);
     }
 
@@ -134,12 +145,19 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         CmdRespawnPlayer(this.gameObject);
     }
 
+    #endregion
+
+    #region ResetStats
     public void ResetStats()
     {
         speed = minSpeed;
         jumpPower = minJumpPower;
-    }
 
+        GetComponent<PlayerUI>().UpdateUIStats(this, ItemType.None);
+    }
+    #endregion
+
+    #region Health
 
     [Command(requiresAuthority = false)]
     public void CmdServerSyncHealth(float oldHealth, float newHealth)
@@ -153,9 +171,12 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         maxHealth = newHealth;
     }
 
+    #endregion
+
     private void Start()
     {
         spawnPoint = transform.position;
+
     }
 
     [Client]
@@ -170,15 +191,15 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         var collider = Physics2D.OverlapCircle(transform.position, interactionRadius, interactionMask);
 
         if (collider == null) return;
-  
-            if (collider.GetComponent<IInteractable>() != null)
+
+        if (collider.GetComponent<IInteractable>() != null)
+        {
+            if (InputManager.instance.Interact())
             {
-                if (InputManager.instance.Interact())
-                {
-                    collider.GetComponent<IInteractable>().Interact(this.gameObject);
-                }
+                collider.GetComponent<IInteractable>().Interact(this.gameObject);
             }
-        
+        }
+
     }
 
 
@@ -190,6 +211,25 @@ public class PlayerStats : NetworkBehaviour, IDamageable
             Gizmos.DrawSphere(transform.position, interactionRadius);
         }
     }
+
+    #region Cheats
+
+    [ContextMenu("Toggle Immortality")]
+    [Command]
+    public void CmdToggleImmortality()
+    {
+        RpcToggleImmortality();
+    }
+
+    [ClientRpc]
+    public void RpcToggleImmortality()
+    {
+        isImmortal = !isImmortal;
+    }
+
+    #endregion
+
+
 
 }
 

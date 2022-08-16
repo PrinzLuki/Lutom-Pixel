@@ -17,6 +17,9 @@ public class SpeedItem : Item
         playerStats.Speed += speedValue;
         if (playerStats.Speed > playerStats.MaxSpeed) playerStats.Speed = playerStats.MaxSpeed;
         playerStats.currentItemType = type;
+
+        var playerUI = player.GetComponent<PlayerUI>();
+        playerUI.UpdateUIStats(playerStats, type);
     }
 
 }

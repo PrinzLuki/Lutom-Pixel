@@ -9,6 +9,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private PlayerStats _playerStats;
 
     [Header("Player Input")]
+    [SerializeField] private bool canMove;
     [SerializeField] private bool canDoubleJump;
     [SerializeField] private float horizontalInput;
     [SerializeField] private bool isGrounded;
@@ -25,6 +26,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private bool flipX;
     [SerializeField] private bool isMoving;
 
+    public bool CanMove { get => canMove; set => canMove = value; }
     public bool CanDoubleJump { get => CanDoubleJump; set => CanDoubleJump = value; }
     public bool FlipX { get => flipX; set => flipX = value; }
     public bool IsMoving { get => isMoving; set => isMoving = value; }
@@ -61,6 +63,7 @@ public class PlayerMovement : NetworkBehaviour
     private void Update()
     {
         if (!hasAuthority) return;
+        if (!canMove) return;
         if (InputManager.instance == null) { Debug.LogWarning("Input Instance missing!"); return; }
         horizontalInput = InputManager.instance.CurrentPosition();
         MovePlayer();
@@ -201,6 +204,7 @@ public class PlayerMovement : NetworkBehaviour
     /// </summary>
     private void SetRunAnimationOnClient()
     {
+
         if (horizontalInput != 0)
         {
             IsMoving = true;
