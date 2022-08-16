@@ -282,6 +282,7 @@ public class PlayerGun : NetworkBehaviour
 
     #endregion
 
+
     #region Gizmos
     private void OnDrawGizmos()
     {

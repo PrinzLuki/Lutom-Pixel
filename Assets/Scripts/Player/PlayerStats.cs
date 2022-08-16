@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class PlayerStats : NetworkBehaviour, IDamageable
 {
+    [ContextMenuItem("Toggle Immortality", "EditorToggleImmortality")]
+
     [Header("Stats")]
     [SerializeField] private bool isImmortal;
     [SerializeField, SyncVar(hook = nameof(CmdServerSyncMaxHealth))] private float maxHealth;
@@ -174,6 +176,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     private void Start()
     {
         spawnPoint = transform.position;
+
     }
 
     [Client]
@@ -208,6 +211,25 @@ public class PlayerStats : NetworkBehaviour, IDamageable
             Gizmos.DrawSphere(transform.position, interactionRadius);
         }
     }
+
+    #region Cheats
+
+    [ContextMenu("Toggle Immortality")]
+    [Command]
+    public void CmdToggleImmortality()
+    {
+        RpcToggleImmortality();
+    }
+
+    [ClientRpc]
+    public void RpcToggleImmortality()
+    {
+        isImmortal = !isImmortal;
+    }
+
+    #endregion
+
+
 
 }
 
