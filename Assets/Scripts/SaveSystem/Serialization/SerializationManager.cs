@@ -43,7 +43,6 @@ public class SerializationManager
 
         try
         {
-
             object save = formatter.Deserialize(file);
             file.Close();
             return save;

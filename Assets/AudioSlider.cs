@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using System.IO;
 
 public class AudioSlider : MonoBehaviour
 {
@@ -15,7 +16,9 @@ public class AudioSlider : MonoBehaviour
 
     private void Start()
     {
+
         OnLoad();
+
         switch (audioType)
         {
             case AudioType.Master:
@@ -30,6 +33,7 @@ public class AudioSlider : MonoBehaviour
             default:
                 break;
         }
+
 
         ChangeVolume();
     }
@@ -51,6 +55,8 @@ public class AudioSlider : MonoBehaviour
         slider.value -= 10;
         ChangeVolume();
     }
+
+
     public void UpdateVolume(int volume, AudioMixerGroup mixerGroup)
     {
         audioMixer.SetFloat(mixerGroup.name, volume);
