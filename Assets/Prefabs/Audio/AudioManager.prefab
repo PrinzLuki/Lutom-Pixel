@@ -47,10 +47,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: a8cc1071d79060141aa66df73925c866, type: 2}
   audioSource: {fileID: 3128469243767018961}
-  clips:
+  songs:
   - {fileID: 8300000, guid: 2939cd7124bd59041a19183b0ee07bdb, type: 3}
   - {fileID: 8300000, guid: b62cff2865481774a9bd5812c5c4b1c3, type: 3}
   currentClip: 0
+  masterGroup: {fileID: 24300002, guid: a8cc1071d79060141aa66df73925c866, type: 2}
+  musicGroup: {fileID: 9175638632304469612, guid: a8cc1071d79060141aa66df73925c866, type: 2}
+  effectsGroup: {fileID: -7660745064631642046, guid: a8cc1071d79060141aa66df73925c866, type: 2}
+  otherSongPlaying: 0
+  sounds:
+  - name: jumpEffect
+    clip: {fileID: 8300000, guid: 7878b285d78137246a38bc755d0349a3, type: 3}
+    volume: 0.3
+    pitch: 2.5
+    loop: 0
+    type: 2
+    source: {fileID: 0}
 --- !u!82 &3128469243767018961
 AudioSource:
   m_ObjectHideFlags: 0

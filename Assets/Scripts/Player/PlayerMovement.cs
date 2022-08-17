@@ -162,6 +162,8 @@ public class PlayerMovement : NetworkBehaviour
                 _playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, 0);
                 _playerRigidbody.velocity = (new Vector2(_playerRigidbody.velocity.x, _playerStats.JumpPower));
                 canDoubleJump = true;
+
+                AudioManager.instance.Play("jumpEffect");
             }
             else
             {
@@ -170,6 +172,8 @@ public class PlayerMovement : NetworkBehaviour
                     canDoubleJump = false;
                     _playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, 0);
                     _playerRigidbody.velocity = (new Vector2(_playerRigidbody.velocity.x, _playerStats.JumpPower));
+
+                    AudioManager.instance.Play("jumpEffect");
                 }
             }
         }

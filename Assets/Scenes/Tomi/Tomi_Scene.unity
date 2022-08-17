@@ -22132,10 +22132,6 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1053224393811009732, guid: fc05d1b1fa64f554baa6f9299d51f8eb, type: 3}
-      propertyPath: sceneId
-      value: 3725031859
-      objectReference: {fileID: 0}
     - target: {fileID: 3128469243767018960, guid: fc05d1b1fa64f554baa6f9299d51f8eb, type: 3}
       propertyPath: m_RootOrder
       value: 16
