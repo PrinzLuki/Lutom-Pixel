@@ -11,6 +11,7 @@ public class PlayerUI : NetworkBehaviour
 
     [Header("References")]
     public PlayerStats stats;
+    public AudioManager audioManager;
 
     public Image deadImage;
     [Header("Health UI Large")]
@@ -35,10 +36,22 @@ public class PlayerUI : NetworkBehaviour
     public GameObject[] windows;
     public bool paused;
 
+    [Header("Music UI")]
+    public TextMeshProUGUI musicTitle;
 
 
     private void Start()
     {
+        audioManager = FindObjectOfType<AudioManager>();
+        if (audioManager == null)
+        {
+            Debug.Log("AudioManager has not been found");
+        }
+        else
+        {
+            musicTitle.text = audioManager.GetSongName();
+        }
+
         GetHealthStats();
     }
 
@@ -50,6 +63,12 @@ public class PlayerUI : NetworkBehaviour
         if (InputManager.instance.Pause() && isLocalPlayer)
         {
             Pause();
+        }
+
+        if (audioManager.otherSongPlaying)
+        {
+            musicTitle.text = audioManager.GetSongName();
+            audioManager.otherSongPlaying = false;
         }
     }
 
@@ -137,5 +156,16 @@ public class PlayerUI : NetworkBehaviour
     }
 
     #endregion
+
+
+    public void GetNextSong()
+    {
+        musicTitle.text = audioManager.ChangeToNextSong();
+    }
+
+    public void GetPrevSong()
+    {
+        musicTitle.text = audioManager.ChangeToPrevSong();
+    }
 
 }

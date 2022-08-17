@@ -8,19 +8,19 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Tomi/Tomi_Lobby.unity
     guid: 43bf5fd315da47b4388b2f6cc134ff71
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Tomi/Tomi_Scene.unity
     guid: 49097528026950c4488988911fa98465
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Lukas/Lukas_Lobby.unity
     guid: 87be13fc2f805a549911f4f107d53796
   - enabled: 0
     path: Assets/Scenes/Maps/Forest_Map.unity
     guid: afe2d7ea51810574487e3c6d54c5b6fb
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Maps/Snow_Map.unity
     guid: 00c32a46456d0db45a35b2e813566ef1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Lukas/LukasRoomScene.unity
     guid: 2a1567e89ffdf00468d148d70bfaf1e1
   m_configObjects: {}
