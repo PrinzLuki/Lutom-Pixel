@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 public class PlayerStats : NetworkBehaviour, IDamageable
 {
-    [ContextMenuItem("Toggle Immortality", "EditorToggleImmortality")]
 
     [Header("Stats")]
     [SerializeField] private bool isImmortal;
@@ -19,6 +18,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private float jumpPower = 6.0f;
     [SerializeField] private float interactionRadius = 1f;
     [SerializeField] private LayerMask interactionMask;
+
     [Header("Gizmos")]
     [SerializeField] private bool showGizmos;
 
@@ -26,10 +26,6 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [Header("Respawn/Death")]
     [SerializeField] private Vector3 spawnPoint;
     [SerializeField] private float respawnDelay;
-    //[SerializeField] private float deathUpForce = 1f;
-
-    [Header("GamePlayer")]
-    public int kills;
 
     public UnityEvent<float, float> onHealthChanged;
 
@@ -42,8 +38,16 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     public float MaxJumpPower { get => maxJumpPower; }
     public float MinJumpPower { get => minJumpPower; }
 
+    [Header("Current Item Type Collected")]
     public ItemType currentItemType;
 
+
+    #region Damage/Heal
+
+    /// <summary>
+    /// Players gets dmg amount of damage back
+    /// </summary>
+    /// <param name="dmg"></param>
     public void GetDamage(float dmg)
     {
         if (!hasAuthority) return;
@@ -55,11 +59,16 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         {
             health = 0;
             CmdKillPlayer(this.gameObject);
+            OnKillPlayer();
             StartCoroutine(WaitTillRespawn());
         }
         onHealthChanged?.Invoke(Health, MaxHealth);
     }
 
+    /// <summary>
+    /// Player gets healValue amount of health back
+    /// </summary>
+    /// <param name="healValue"></param>
     public void GetHealth(float healValue)
     {
         if (!hasAuthority) return;
@@ -75,14 +84,24 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         onHealthChanged?.Invoke(Health, MaxHealth);
     }
 
+    #endregion
+
     #region Kill Player
 
+    /// <summary>
+    /// Kills the player on the server
+    /// </summary>
+    /// <param name="player"></param>
     [Command]
     private void CmdKillPlayer(GameObject player)
     {
         RpcKillPlayer(player);
     }
 
+    /// <summary>
+    /// Kills the player on all clients (deactivates all scripts and sets booleans to false)
+    /// </summary>
+    /// <param name="player"></param>
     [ClientRpc]
     private void RpcKillPlayer(GameObject player)
     {
@@ -109,12 +128,21 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     #endregion
 
     #region Respawn Player
+
+    /// <summary>
+    /// Respawns player on server
+    /// </summary>
+    /// <param name="player"></param>
     [Command]
     private void CmdRespawnPlayer(GameObject player)
     {
         RpcRespawnPlayer(player);
     }
 
+    /// <summary>
+    /// Respawns player on all clients (every script and booleans are true and enabled again)
+    /// </summary>
+    /// <param name="player"></param>
     [ClientRpc]
     private void RpcRespawnPlayer(GameObject player)
     {
@@ -139,6 +167,10 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         playerStats.GetHealth(MaxHealth);
     }
 
+    /// <summary>
+    /// Waits till player can respawn - respawns player
+    /// </summary>
+    /// <returns></returns>
     IEnumerator WaitTillRespawn()
     {
         yield return new WaitForSeconds(respawnDelay);
@@ -148,6 +180,10 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     #endregion
 
     #region ResetStats
+
+    /// <summary>
+    /// Resets players stats
+    /// </summary>
     public void ResetStats()
     {
         speed = minSpeed;
@@ -159,12 +195,22 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     #region Health
 
+    /// <summary>
+    /// Syncs the players health on the server
+    /// </summary>
+    /// <param name="oldHealth"></param>
+    /// <param name="newHealth"></param>
     [Command(requiresAuthority = false)]
     public void CmdServerSyncHealth(float oldHealth, float newHealth)
     {
         health = newHealth;
     }
 
+    /// <summary>
+    /// Syncs the players health on all clients
+    /// </summary>
+    /// <param name="oldHealth"></param>
+    /// <param name="newHealth"></param>
     [Command]
     public void CmdServerSyncMaxHealth(float oldHealth, float newHealth)
     {
@@ -176,6 +222,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     private void Start()
     {
         spawnPoint = transform.position;
+        OnLoad();
 
     }
 
@@ -185,7 +232,9 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         IsInteracting();
     }
 
-
+    /// <summary>
+    /// Checks if there is something interactable in the players radius
+    /// </summary>
     private void IsInteracting()
     {
         var collider = Physics2D.OverlapCircle(transform.position, interactionRadius, interactionMask);
@@ -202,7 +251,6 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     }
 
-
     private void OnDrawGizmosSelected()
     {
         if (showGizmos)
@@ -212,8 +260,41 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         }
     }
 
+    #region Save Stats
+
+
+    public void OnKillPlayer()
+    {
+        SaveData.PlayerProfile.deaths += 1;
+        OnSave();
+    }
+
+
+    /// <summary>
+    /// Saves file (PlayerProfile) and everything that is in SaveData
+    /// </summary>
+    public void OnSave()
+    {
+        SerializationManager.Save("playerData", SaveData.PlayerProfile);
+    }
+
+    /// <summary>
+    /// Gets the SaveData file 
+    /// </summary>
+    public void OnLoad()
+    {
+        SaveData.PlayerProfile = (PlayerProfile)SerializationManager.Load(Application.persistentDataPath + "/saves/playerData.lutompixel");
+        Debug.Log("Current Deaths: "+ SaveData.PlayerProfile.deaths);
+    }
+
+    #endregion
+
     #region Cheats
 
+
+    /// <summary>
+    /// Toggles Player Immortality On Server
+    /// </summary>
     [ContextMenu("Toggle Immortality")]
     [Command]
     public void CmdToggleImmortality()
@@ -221,6 +302,9 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         RpcToggleImmortality();
     }
 
+    /// <summary>
+    /// Toggles Player Immortality On All Clients
+    /// </summary>
     [ClientRpc]
     public void RpcToggleImmortality()
     {
@@ -229,10 +313,11 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     #endregion
 
-
-
 }
 
+/// <summary>
+/// Interactable Item types
+/// </summary>
 public enum ItemType
 {
     HealItem,
