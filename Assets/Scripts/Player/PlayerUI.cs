@@ -32,6 +32,7 @@ public class PlayerUI : NetworkBehaviour
 
     [Header("Pause UI")]
     public GameObject pauseWindow;
+    public GameObject[] windows;
     public bool paused;
 
 
@@ -88,6 +89,11 @@ public class PlayerUI : NetworkBehaviour
     {
         TogglePaused();
         pauseWindow.SetActive(paused);
+
+        foreach (var window in windows)
+        {
+            window.SetActive(false);
+        }
     }
 
     public void Quit()

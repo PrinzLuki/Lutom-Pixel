@@ -30,6 +30,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
+        Camera.main.GetComponent<AudioListener>().enabled = false;
         if (!player.GetComponent<NetworkIdentity>().hasAuthority)
         {
             GetComponent<Camera>().enabled = false;
