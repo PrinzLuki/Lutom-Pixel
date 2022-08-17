@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         var levelManager = FindObjectOfType<LevelManager>();
-        if(levelManager == null)
+        if (levelManager == null)
         {
             Debug.Log("LevelManager is missing - Create one and set the Level Borders");
             return;
@@ -30,8 +30,13 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        if (!player.GetComponent<NetworkIdentity>().hasAuthority) { GetComponent<Camera>().enabled = false; return; }
-        var parallaxManager = FindObjectOfType<ParallaxManager>();        
+        if (!player.GetComponent<NetworkIdentity>().hasAuthority)
+        {
+            GetComponent<Camera>().enabled = false;
+            GetComponent<AudioListener>().enabled = false;
+            gameObject.SetActive(false); return;
+        }
+        var parallaxManager = FindObjectOfType<ParallaxManager>();
 
         if (parallaxManager == null) { Debug.Log("ParralaxManager: " + parallaxManager); return; }
 
@@ -48,13 +53,13 @@ public class CameraController : MonoBehaviour
         if (!player.GetComponent<NetworkIdentity>().hasAuthority) { return; }
 
         if (player == null) return;
-        if(transform.localPosition.x != 0 )
+        if (transform.localPosition.x != 0)
         {
             isClamped = true;
         }
         else
         {
-            isClamped = false;  
+            isClamped = false;
         }
 
         transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, leftLimit, rightLimit), yAxisValue, zAxisValue);

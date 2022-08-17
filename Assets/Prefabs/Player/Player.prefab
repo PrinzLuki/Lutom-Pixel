@@ -2131,6 +2131,7 @@ GameObject:
   - component: {fileID: 4901818609891805404}
   - component: {fileID: 230909546040259181}
   - component: {fileID: 6561541493183026651}
+  - component: {fileID: 3920852317374816953}
   m_Layer: 3
   m_Name: PlayerCam
   m_TagString: Untagged
@@ -2216,6 +2217,14 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!81 &3920852317374816953
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3721948719479732688}
+  m_Enabled: 1
 --- !u!1 &4136186440901458582
 GameObject:
   m_ObjectHideFlags: 0
@@ -4515,7 +4524,6 @@ MonoBehaviour:
   showGizmos: 0
   spawnPoint: {x: 0, y: 0, z: 0}
   respawnDelay: 5
-  kills: 0
   onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
