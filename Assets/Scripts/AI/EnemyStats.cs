@@ -26,6 +26,7 @@ public class EnemyStats : NetworkBehaviour, IDamageable
         if (health <= 0)
         {
             spawnManager.allAliveEnemies.Remove(this.gameObject);
+            //SaveData.PlayerProfile.kills += 1;
             NetworkServer.Destroy(gameObject);
         }
     }

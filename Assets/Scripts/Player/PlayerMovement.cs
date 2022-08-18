@@ -7,6 +7,7 @@ public class PlayerMovement : NetworkBehaviour
     [Header("References")]
     [SerializeField] private Rigidbody2D _playerRigidbody;
     [SerializeField] private PlayerStats _playerStats;
+    [SerializeField] private GameObject _playerSFX;
 
     [Header("Player Input")]
     [SerializeField] private bool canMove;
@@ -25,6 +26,10 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private bool flipX;
     [SerializeField] private bool isMoving;
+    [Header("JumpEffect")]
+    [SerializeField] private bool lastFlipped;
+    [SerializeField] private ParticleSystem jumpEffectPS;
+
 
     public bool CanMove { get => canMove; set => canMove = value; }
     public bool CanDoubleJump { get => CanDoubleJump; set => CanDoubleJump = value; }
@@ -53,7 +58,7 @@ public class PlayerMovement : NetworkBehaviour
         }
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        if (_animator == null)
+        if (_spriteRenderer == null)
         {
             Debug.LogError("Player is missing a SpriteRenderer component");
         }
@@ -113,6 +118,17 @@ public class PlayerMovement : NetworkBehaviour
         CmdFlipXOnServer(FlipX, this.gameObject);
 
         SetRunAnimationOnClient();
+        CheckFlip();
+
+    }
+
+    public void CheckFlip()
+    {
+        if (lastFlipped != flipX)
+        {
+            CmdPlayJumpEffect();
+            lastFlipped = flipX;
+        }
     }
 
     #endregion
@@ -163,7 +179,8 @@ public class PlayerMovement : NetworkBehaviour
                 _playerRigidbody.velocity = (new Vector2(_playerRigidbody.velocity.x, _playerStats.JumpPower));
                 canDoubleJump = true;
 
-                AudioManager.instance.Play("jumpEffect");
+                AudioManager.instance.PlayOnObject("jumpEffect", _playerSFX);
+                CmdPlayJumpEffect();
             }
             else
             {
@@ -173,7 +190,9 @@ public class PlayerMovement : NetworkBehaviour
                     _playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, 0);
                     _playerRigidbody.velocity = (new Vector2(_playerRigidbody.velocity.x, _playerStats.JumpPower));
 
-                    AudioManager.instance.Play("jumpEffect");
+                    AudioManager.instance.PlayOnObject("jumpEffect", _playerSFX);
+                    CmdPlayJumpEffect();
+
                 }
             }
         }
@@ -220,6 +239,26 @@ public class PlayerMovement : NetworkBehaviour
 
         _animator.SetBool("isMoving", IsMoving);
     }
+
+    #endregion
+
+    #region Effects
+
+    public void PlayEffect(ParticleSystem ps)
+    {
+        ps.Play();
+    }
+
+    #region Jump Effect
+    [Command]
+    public void CmdPlayJumpEffect()
+    {
+        RpcPlayJumpEffect();
+    }
+
+    [ClientRpc]
+    public void RpcPlayJumpEffect() => PlayEffect(jumpEffectPS);
+    #endregion
 
     #endregion
 

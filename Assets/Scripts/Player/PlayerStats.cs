@@ -6,6 +6,9 @@ using UnityEngine.Events;
 public class PlayerStats : NetworkBehaviour, IDamageable
 {
 
+    [Header("References")]
+    [SerializeField] private GameObject _playerSFX;
+
     [Header("Stats")]
     [SerializeField] private bool isImmortal;
     [SerializeField, SyncVar(hook = nameof(CmdServerSyncMaxHealth))] private float maxHealth;
