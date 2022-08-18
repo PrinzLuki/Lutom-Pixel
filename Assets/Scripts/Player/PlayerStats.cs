@@ -30,6 +30,11 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private Vector3 spawnPoint;
     [SerializeField] private float respawnDelay;
 
+    [Header("Effects")]
+    [Header("Get Damage Effect")]
+    public ParticleSystem getDamageEffect;
+    public ParticleSystem dieEffect;
+
     public UnityEvent<float, float> onHealthChanged;
 
     public float Health { get => health; set => health = value; }
@@ -58,12 +63,14 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         health -= dmg;
 
+        CmdPlayGetDamageVFX();
         CmdPlayGetDamageSFX();
 
         if (health <= 0)
         {
             health = 0;
             CmdKillPlayer(this.gameObject);
+            CmdPlayDieVFX();
             OnKillPlayer();
             StartCoroutine(WaitTillRespawn());
         }
@@ -236,6 +243,39 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [ClientRpc]
     public void RpcPlayGetDamageSFX() => AudioManager.instance.PlayOnObject("getHitEffect", _playerSFX);
 
+
+    #endregion
+
+    #region VFX
+
+    public void PlayEffect(ParticleSystem ps)
+    {
+        ps.Play();
+        GetComponent<SpriteRenderer>().color = Color.red;
+        StartCoroutine(DamageVFX());
+    }
+
+    IEnumerator DamageVFX()
+    {
+        yield return new WaitForSeconds(0.5f);
+        GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
+    [Command]
+    public void CmdPlayGetDamageVFX()
+    {
+        RpcPlayGetDamageVFX();
+    }
+    [ClientRpc]
+    public void RpcPlayGetDamageVFX() => PlayEffect(getDamageEffect);
+
+    [Command]
+    public void CmdPlayDieVFX()
+    {
+        RpcPlayDieVFX();
+    }
+    [ClientRpc]
+    public void RpcPlayDieVFX() => PlayEffect(dieEffect);
 
     #endregion
 

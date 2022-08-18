@@ -126,7 +126,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (lastFlipped != flipX)
         {
-            CmdPlayJumpEffect();
+            CmdPlayJumpVFX();
             lastFlipped = flipX;
         }
     }
@@ -180,7 +180,7 @@ public class PlayerMovement : NetworkBehaviour
                 canDoubleJump = true;
 
                 CmdPlayJumpSFX();
-                CmdPlayJumpEffect();
+                CmdPlayJumpVFX();
             }
             else
             {
@@ -191,7 +191,7 @@ public class PlayerMovement : NetworkBehaviour
                     _playerRigidbody.velocity = (new Vector2(_playerRigidbody.velocity.x, _playerStats.JumpPower));
 
                     CmdPlayJumpSFX();
-                    CmdPlayJumpEffect();
+                    CmdPlayJumpVFX();
 
                 }
             }
@@ -244,12 +244,9 @@ public class PlayerMovement : NetworkBehaviour
 
     #region Effects
 
-    public void PlayEffect(ParticleSystem ps)
-    {
-        ps.Play();
-    }
+    #region Jump Effect
 
-
+    #region Sound Effect
     [Command]
     public void CmdPlayJumpSFX()
     {
@@ -258,17 +255,28 @@ public class PlayerMovement : NetworkBehaviour
 
     [ClientRpc]
     public void RpcPlayJumpSFX() => AudioManager.instance.PlayOnObject("jumpEffect", _playerSFX);
+    #endregion
 
 
-    #region Jump Effect
-    [Command]
-    public void CmdPlayJumpEffect()
+    #region Visual Effect
+
+    public void PlayEffect(ParticleSystem ps)
     {
-        RpcPlayJumpEffect();
+        ps.Play();
     }
 
+
+    [Command]
+    public void CmdPlayJumpVFX()
+    {
+        RpcPlayJumpVFX();
+    }
+
+
     [ClientRpc]
-    public void RpcPlayJumpEffect() => PlayEffect(jumpEffectPS);
+    public void RpcPlayJumpVFX() => PlayEffect(jumpEffectPS);
+    #endregion
+
     #endregion
 
     #endregion
