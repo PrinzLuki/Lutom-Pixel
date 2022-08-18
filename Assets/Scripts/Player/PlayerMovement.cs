@@ -179,7 +179,7 @@ public class PlayerMovement : NetworkBehaviour
                 _playerRigidbody.velocity = (new Vector2(_playerRigidbody.velocity.x, _playerStats.JumpPower));
                 canDoubleJump = true;
 
-                AudioManager.instance.PlayOnObject("jumpEffect", _playerSFX);
+                CmdPlayJumpSFX();
                 CmdPlayJumpEffect();
             }
             else
@@ -190,7 +190,7 @@ public class PlayerMovement : NetworkBehaviour
                     _playerRigidbody.velocity = new Vector2(_playerRigidbody.velocity.x, 0);
                     _playerRigidbody.velocity = (new Vector2(_playerRigidbody.velocity.x, _playerStats.JumpPower));
 
-                    AudioManager.instance.PlayOnObject("jumpEffect", _playerSFX);
+                    CmdPlayJumpSFX();
                     CmdPlayJumpEffect();
 
                 }
@@ -248,6 +248,17 @@ public class PlayerMovement : NetworkBehaviour
     {
         ps.Play();
     }
+
+
+    [Command]
+    public void CmdPlayJumpSFX()
+    {
+        RpcPlayJumpSFX();
+    }
+
+    [ClientRpc]
+    public void RpcPlayJumpSFX() => AudioManager.instance.PlayOnObject("jumpEffect", _playerSFX);
+
 
     #region Jump Effect
     [Command]

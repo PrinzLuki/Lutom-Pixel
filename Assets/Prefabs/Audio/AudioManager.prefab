@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3128469243767018960}
   - component: {fileID: 3128469243767018975}
   - component: {fileID: 3128469243767018961}
+  - component: {fileID: 1053224393811009732}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -45,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e7200cd30d06c040be0f6420f3c2f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   audioMixer: {fileID: 24100000, guid: a8cc1071d79060141aa66df73925c866, type: 2}
   audioSource: {fileID: 3128469243767018961}
   songs:
@@ -61,6 +64,7 @@ MonoBehaviour:
     volume: 0.3
     pitch: 2.5
     loop: 0
+    spatialBand: 1
     type: 2
     source: {fileID: 0}
   - name: getHitEffect
@@ -68,6 +72,7 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     loop: 0
+    spatialBand: 1
     type: 2
     source: {fileID: 0}
 --- !u!82 &3128469243767018961
@@ -166,3 +171,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1053224393811009732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3128469243767018962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: fc05d1b1fa64f554baa6f9299d51f8eb
+  hasSpawned: 0

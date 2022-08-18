@@ -58,7 +58,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         health -= dmg;
 
-        AudioManager.instance.PlayOnObject("getHitEffect", _playerSFX);
+        CmdPlayGetDamageSFX();
 
         if (health <= 0)
         {
@@ -223,6 +223,22 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     }
 
     #endregion
+
+
+    #region SFX
+
+    [Command]
+    public void CmdPlayGetDamageSFX()
+    {
+        RpcPlayGetDamageSFX();
+    }
+
+    [ClientRpc]
+    public void RpcPlayGetDamageSFX() => AudioManager.instance.PlayOnObject("getHitEffect", _playerSFX);
+
+
+    #endregion
+
 
     private void Start()
     {

@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using Mirror;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : NetworkBehaviour
 {
     public static AudioManager instance;
 
@@ -97,7 +98,6 @@ public class AudioManager : MonoBehaviour
     public void PlayOnObject(string sound, GameObject obj)
     {
         Sound s = Array.Find(sounds, item => item.name == sound);
-
         AudioSource objectAudioSource = GetAudioSource(s, obj);
 
         switch (s.type)
@@ -118,22 +118,54 @@ public class AudioManager : MonoBehaviour
         objectAudioSource.volume = s.volume;
         objectAudioSource.pitch = s.pitch;
         objectAudioSource.loop = s.loop;
+        objectAudioSource.spatialBlend = s.spatialBand;
         objectAudioSource.Play();
     }
 
+    //[Command(requiresAuthority = false)]
+    //public void CmdPlayOnObject(string sound, GameObject obj)
+    //{
+    //    RpcPlayOnObject(sound, obj);
+    //}
+
+    //[ClientRpc]
+    //public void RpcPlayOnObject(string sound, GameObject obj)
+    //{
+    //    Sound s = Array.Find(sounds, item => item.name == sound);
+    //    AudioSource objectAudioSource = Array.Find(obj.GetComponents<AudioSource>(), item => item.clip == s.clip);
+
+    //    switch (s.type)
+    //    {
+    //        case AudioType.Master:
+    //            objectAudioSource.outputAudioMixerGroup = masterGroup;
+    //            break;
+    //        case AudioType.Music:
+    //            objectAudioSource.outputAudioMixerGroup = musicGroup;
+    //            break;
+    //        case AudioType.Effects:
+    //            objectAudioSource.outputAudioMixerGroup = effectsGroup;
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //    objectAudioSource.clip = s.clip;
+    //    objectAudioSource.volume = s.volume;
+    //    objectAudioSource.pitch = s.pitch;
+    //    objectAudioSource.loop = s.loop;
+    //    objectAudioSource.Play();
+    //}
+
+
     public AudioSource GetAudioSource(Sound s, GameObject obj)
     {
-        AudioSource[] audioSourcesOnObject = obj.GetComponents<AudioSource>();
-        //Debug.Log(audioSourcesOnObject.Length + " amount of AudioSources found on " + obj.name);
-
-        if (audioSourcesOnObject.Length <= 0)
+        if (obj.GetComponents<AudioSource>().Length <= 0)
         {
-            //Debug.Log("No AudioSources on GameObject - Creating one");
             AudioSource objectAudioSource = obj.AddComponent<AudioSource>();
             return objectAudioSource;
         }
         else
         {
+            AudioSource[] audioSourcesOnObject = obj.GetComponents<AudioSource>();
             AudioSource auds = Array.Find(audioSourcesOnObject, item => item.clip == s.clip);
             if (auds == null)
             {
@@ -149,8 +181,8 @@ public class AudioManager : MonoBehaviour
             }
 
         }
-
     }
+
 
     public string GetSongName()
     {
