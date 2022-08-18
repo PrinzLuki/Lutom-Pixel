@@ -63,6 +63,13 @@ MonoBehaviour:
     loop: 0
     type: 2
     source: {fileID: 0}
+  - name: getHitEffect
+    clip: {fileID: 8300000, guid: 4c1b6d7b46b33724085d5cd5ed1929a6, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    type: 2
+    source: {fileID: 0}
 --- !u!82 &3128469243767018961
 AudioSource:
   m_ObjectHideFlags: 0

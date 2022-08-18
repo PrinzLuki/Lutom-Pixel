@@ -94,25 +94,11 @@ public class AudioManager : MonoBehaviour
         s.source.Play();
     }
 
-    public void PlayOnObject(string sound, GameObject gameObject)
+    public void PlayOnObject(string sound, GameObject obj)
     {
         Sound s = Array.Find(sounds, item => item.name == sound);
 
-        AudioSource objectAudioSource = new AudioSource();
-
-        AudioSource[] audioSourcesOnObject = gameObject.GetComponents<AudioSource>();
-        if (audioSourcesOnObject.Length <= 0) objectAudioSource = gameObject.AddComponent<AudioSource>();
-        foreach (AudioSource audioSource in audioSourcesOnObject)
-        {
-            if (audioSource.clip == s.clip)
-            {
-                objectAudioSource = audioSource;
-            }
-            else
-            {
-                objectAudioSource = gameObject.AddComponent<AudioSource>();
-            }
-        }
+        AudioSource objectAudioSource = GetAudioSource(s, obj);
 
         switch (s.type)
         {
@@ -133,6 +119,37 @@ public class AudioManager : MonoBehaviour
         objectAudioSource.pitch = s.pitch;
         objectAudioSource.loop = s.loop;
         objectAudioSource.Play();
+    }
+
+    public AudioSource GetAudioSource(Sound s, GameObject obj)
+    {
+        AudioSource[] audioSourcesOnObject = obj.GetComponents<AudioSource>();
+        //Debug.Log(audioSourcesOnObject.Length + " amount of AudioSources found on " + obj.name);
+
+        if (audioSourcesOnObject.Length <= 0)
+        {
+            //Debug.Log("No AudioSources on GameObject - Creating one");
+            AudioSource objectAudioSource = obj.AddComponent<AudioSource>();
+            return objectAudioSource;
+        }
+        else
+        {
+            AudioSource auds = Array.Find(audioSourcesOnObject, item => item.clip == s.clip);
+            if (auds == null)
+            {
+                //Debug.Log("No AudioSource w that clip found - Creating one");
+                AudioSource objectAudioSource = obj.AddComponent<AudioSource>();
+                return objectAudioSource;
+            }
+            else
+            {
+                //Debug.Log("AudioSource found - using this one");
+                AudioSource objectAudioSource = auds;
+                return objectAudioSource;
+            }
+
+        }
+
     }
 
     public string GetSongName()

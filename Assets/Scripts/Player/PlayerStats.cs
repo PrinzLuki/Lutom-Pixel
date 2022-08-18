@@ -58,6 +58,8 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         health -= dmg;
 
+        AudioManager.instance.PlayOnObject("getHitEffect", _playerSFX);
+
         if (health <= 0)
         {
             health = 0;
@@ -287,7 +289,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     public void OnLoad()
     {
         SaveData.PlayerProfile = (PlayerProfile)SerializationManager.Load(Application.persistentDataPath + "/saves/playerData.lutompixel");
-        Debug.Log("Current Deaths: "+ SaveData.PlayerProfile.deaths);
+        Debug.Log("Current Deaths: " + SaveData.PlayerProfile.deaths);
     }
 
     #endregion
