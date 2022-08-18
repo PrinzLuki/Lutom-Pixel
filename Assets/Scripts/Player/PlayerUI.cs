@@ -39,9 +39,12 @@ public class PlayerUI : NetworkBehaviour
     [Header("Music UI")]
     public TextMeshProUGUI musicTitle;
 
+    [Header("Other")]
+    private ChatUI chatUI;
 
     private void Start()
     {
+        chatUI = GetComponent<ChatUI>();
         audioManager = FindObjectOfType<AudioManager>();
         if (audioManager == null)
         {
@@ -106,8 +109,15 @@ public class PlayerUI : NetworkBehaviour
 
     public void Pause()
     {
+        if (!paused && chatUI.chatIsOpened)
+        {
+            chatUI.SendPlayerMessage();
+            return;
+        }
+
         TogglePaused();
         pauseWindow.SetActive(paused);
+
 
         foreach (var window in windows)
         {

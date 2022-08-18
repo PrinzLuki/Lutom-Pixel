@@ -20,10 +20,14 @@ public class ChatUI : NetworkBehaviour
     public bool chatIsOpened;
 
     private PlayerMovement playerMovement;
+    private PlayerStats playerStats;
+    private PlayerUI playerUI;
 
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        playerStats = GetComponent<PlayerStats>();
+        playerUI = GetComponent<PlayerUI>();
 
         if (!hasAuthority)
         {
@@ -37,7 +41,7 @@ public class ChatUI : NetworkBehaviour
         if (InputManager.instance == null) { Debug.LogWarning("Input Instance missing!"); return; }
 
 
-        if (InputManager.instance.Chat() && isLocalPlayer && !chatIsOpened)
+        if (InputManager.instance.Chat() && isLocalPlayer && !chatIsOpened && !playerUI.paused)
         {
             OpenChat();
         }
@@ -63,8 +67,7 @@ public class ChatUI : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdSend(string message)
     {
-        if (!string.IsNullOrWhiteSpace(message))
-            RpcReceive(message.Trim());
+        RpcReceive(message.Trim());
 
     }
 
@@ -91,15 +94,47 @@ public class ChatUI : NetworkBehaviour
     {
         if (!string.IsNullOrWhiteSpace(chatMessage.text))
         {
+            if (CheckForCheats(chatMessage.text.ToLower()))
+            {
+                timeWhenDisappear = Time.time + 0;
+            }
+            else
+            {
+
+                timeWhenDisappear = Time.time + timeToAppear;
+            }
             CmdSend(chatMessage.text.Trim());
             chatMessage.text = string.Empty;
             chatMessage.ActivateInputField();
-            timeWhenDisappear = Time.time + timeToAppear;
+           
             chatWindow.SetActive(false);
             playerMovement.CanMove = true;
 
         }
+        else
+        {
+            CmdSend(chatMessage.text);
+            chatMessage.text = string.Empty;
+            chatMessage.ActivateInputField();
+            timeWhenDisappear = Time.time + 0;
+            chatWindow.SetActive(false);
+            playerMovement.CanMove = true;
+        }
 
     }
 
+    public bool CheckForCheats(string text)
+    {
+        switch (text)
+        {
+            case "/makeme immortal":
+                playerStats.CmdToggleImmortality();
+                return true;
+            default:
+                return false;
+        }
+    }
+
 }
+
+
