@@ -24,7 +24,6 @@ public class MainMenu : NetworkBehaviour
     public void HostLobby()
     {
         NetworkManager.singleton.StartHost();
-
     }
 
     public void ChangeNameHost()
@@ -36,14 +35,13 @@ public class MainMenu : NetworkBehaviour
 
     public void Join()
     {
-
         string address = addressInput.text;
 
         NetworkManager.singleton.networkAddress = address;
         joinButton.interactable = false;
         ((NetworkRoomManager)NetworkManager.singleton).StartClient();
-
     }
+
     public void ChangeNameJoin()
     {
         if (playerNameInputJoin.text == string.Empty) joinButton.interactable = false;
@@ -61,19 +59,29 @@ public class MainMenu : NetworkBehaviour
     {
         if (isServer)
         {
-            NetworkServer.Shutdown();
-            NetworkClient.Disconnect();
-
-
+            CmdBackToMenuDisplay();
+            StartCoroutine(LeaveDelay());
         }
         else
         {
             NetworkClient.Disconnect();
         }
-
     }
 
+    [Command(requiresAuthority = false)]
+    public void CmdBackToMenuDisplay()
+    {
+        Debug.Log("CmdCallBack");
+        RpcBackToMenuDisplay();
+    }
 
+    [ClientRpc]
+    public void RpcBackToMenuDisplay()
+    {
+        Debug.Log("ClientCallBack");
+        lobbyParentDisplay.gameObject.SetActive(false);
+        playMenuDisplay.SetActive(true);
+    }
 
     public void StartGame(string levelName)
     {
@@ -81,6 +89,17 @@ public class MainMenu : NetworkBehaviour
         if (NetworkServer.connections.Count < 2) return;
 
         roomManager.ServerChangeScene(levelName);
+    }
+
+    IEnumerator LeaveDelay()
+    {
+        yield return new WaitForSeconds(0.2f);
+        Debug.Log("Client: " + NetworkClient.active);
+        Debug.Log("Server: " + NetworkServer.active);
+        NetworkServer.Shutdown();
+        NetworkClient.Disconnect();
+        Debug.Log("Client: " + NetworkClient.active);
+        Debug.Log("Server: " + NetworkServer.active);
     }
 
 }

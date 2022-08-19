@@ -37,16 +37,10 @@ public class RoomPlayer : NetworkRoomPlayer
         {
             if (lobbyMenu.playerNamesDisplay[index].text == displayPlayerName)
             {
-                if (isClientOnly)
-                {
-                    menu.playMenuDisplay.SetActive(true);
-                    menu.lobbyParentDisplay.SetActive(false);
-                }
                 lobbyMenu.playerNamesDisplay[index].text = "Waiting For Players...";
             }
         }
     }
-
 
     public override void IndexChanged(int oldIndex, int newIndex)
     {
