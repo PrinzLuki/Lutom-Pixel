@@ -33,6 +33,8 @@ public class MainMenu : NetworkBehaviour
     public Sprite notReadyImg;
 
 
+
+
     public void HostLobby()
     {
         NetworkManager.singleton.StartHost();
@@ -40,6 +42,7 @@ public class MainMenu : NetworkBehaviour
 
     private void Start()
     {
+      
         if (!string.IsNullOrEmpty(SaveData.PlayerProfile.playerName))
         {
             playerName = SaveData.PlayerProfile.playerName;
@@ -99,12 +102,12 @@ public class MainMenu : NetworkBehaviour
         playMenuDisplay.SetActive(true);
     }
 
-    public void StartGame(string levelName)
+    public void StartGame()
     {
         Debug.Log("Anzahl der Spieler: " + NetworkServer.connections.Count);
         if (NetworkServer.connections.Count < 2) return;
 
-        roomManager.ServerChangeScene(levelName);
+        roomManager.ServerChangeScene(roomManager.GameplayScene);
     }
 
     public void ReadyPlayer()
