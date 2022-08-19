@@ -42,7 +42,7 @@ public class MainMenu : NetworkBehaviour
 
     private void Start()
     {
-      
+
         if (!string.IsNullOrEmpty(SaveData.PlayerProfile.playerName))
         {
             playerName = SaveData.PlayerProfile.playerName;
@@ -100,15 +100,22 @@ public class MainMenu : NetworkBehaviour
         Debug.Log("ClientCallBack");
         lobbyParentDisplay.gameObject.SetActive(false);
         playMenuDisplay.SetActive(true);
+
+        foreach (var check in playerChecksDisplay)
+        {
+            check.gameObject.SetActive(false);
+        }
+
     }
 
     public void StartGame()
     {
-        Debug.Log("Anzahl der Spieler: " + NetworkServer.connections.Count);
-        if (NetworkServer.connections.Count < 2) return;
-
+        //Debug.Log("Anzahl der Spieler: " + NetworkServer.connections.Count);
+        //if (NetworkServer.connections.Count < roomManager.minPlayers) return;
         roomManager.ServerChangeScene(roomManager.GameplayScene);
+
     }
+
 
     public void ReadyPlayer()
     {

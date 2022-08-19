@@ -16,6 +16,9 @@ public class GameHostSettings : MonoBehaviour
     public TextMeshProUGUI levelsName;
     public Image levelImg;
     public int levelIndex;
+    [Header("Gamemode")]
+    public TextMeshProUGUI gamemodeName;
+
 
     private void Start()
     {
@@ -23,6 +26,40 @@ public class GameHostSettings : MonoBehaviour
         levelIndex = Random.Range(0, levels.Length);
         ChangeLevel(levelIndex);
     }
+
+
+    #region Gamemode
+
+    public void PrevGamemode()
+    {
+        roomManager.gamemode -= 1;
+        if (roomManager.gamemode < 0)
+        {
+            roomManager.gamemode = Gamemodetype.MAX - 1;
+        }
+        ChangeGamemode(roomManager.gamemode);
+    }
+
+    public void NextGamemode()
+    {
+        roomManager.gamemode += 1;
+        if (roomManager.gamemode >= Gamemodetype.MAX)
+        {
+            roomManager.gamemode = 0;
+        }
+        ChangeGamemode(roomManager.gamemode);
+
+    }
+
+    public void ChangeGamemode(Gamemodetype type)
+    {
+        gamemodeName.text = type.ToString();
+        roomManager.gamemode = type;
+    }
+
+
+
+    #endregion
 
     #region Levels
 
@@ -51,8 +88,10 @@ public class GameHostSettings : MonoBehaviour
     {
         levelsName.text = levels[index].levelName;
         levelImg.sprite = levels[index].levelImage;
-        roomManager.GameplayScene = levels[index].sceneName;
+        roomManager.SetLevelScene(levels[index].sceneName);
     }
+
+
 
     #endregion
 

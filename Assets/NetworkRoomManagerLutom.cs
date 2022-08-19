@@ -7,6 +7,8 @@ using Mirror;
 public class NetworkRoomManagerLutom : NetworkRoomManager
 {
 
+    public Gamemodetype gamemode;
+
     public MainMenu mainMenu;
 
     public override void OnRoomServerPlayersReady()
@@ -22,9 +24,18 @@ public class NetworkRoomManagerLutom : NetworkRoomManager
         mainMenu.ToggleStartGameButton(allPlayersReady);
     }
 
-    public void SetLevelScene(Scene scene)
+
+    public void SetLevelScene(string name)
     {
-        GameplayScene = scene.name;
+        GameplayScene = name;
     }
+
+
+}
+public enum Gamemodetype
+{
+    PVE,
+    PVP,
+    MAX
 
 }
