@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using Mirror;
 
-public class AudioManager : NetworkBehaviour
+public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
 
@@ -42,10 +42,25 @@ public class AudioManager : NetworkBehaviour
 
 
         OnLoad();
-        GetVolumeOnStart(SaveData.PlayerProfile.masterVolume, masterVolName);
-        GetVolumeOnStart(SaveData.PlayerProfile.musicVolume, musicVolName);
-        GetVolumeOnStart(SaveData.PlayerProfile.effectsVolume, effectsVolName);
+        if (SaveData.PlayerProfile.volumeEdited)
+        {
+            GetVolumeOnStart(SaveData.PlayerProfile.masterVolume, masterVolName);
+            GetVolumeOnStart(SaveData.PlayerProfile.musicVolume, musicVolName);
+            GetVolumeOnStart(SaveData.PlayerProfile.effectsVolume, effectsVolName);
 
+        }
+        else
+        {
+            SaveData.PlayerProfile.musicVolume = -40;
+            SaveData.PlayerProfile.effectsVolume = -40;
+
+            OnSave();
+            OnLoad();
+
+            GetVolumeOnStart(SaveData.PlayerProfile.masterVolume, masterVolName);
+            GetVolumeOnStart(SaveData.PlayerProfile.musicVolume, musicVolName);
+            GetVolumeOnStart(SaveData.PlayerProfile.effectsVolume, effectsVolName);
+        }
         currentClip = UnityEngine.Random.Range(0, songs.Length);
 
         audioSource.clip = songs[currentClip];

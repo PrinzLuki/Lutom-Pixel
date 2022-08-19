@@ -27,6 +27,8 @@ public class RoomPlayer : NetworkRoomPlayer
     {
         menu = FindObjectOfType<MainMenu>();
         lobbyMenu = FindObjectOfType<LobbyMenu>();
+
+        ChangeReadyButton();
     }
 
     public void PlayerSetReady()
@@ -34,7 +36,39 @@ public class RoomPlayer : NetworkRoomPlayer
         if (!hasAuthority) return;
 
         readyToBegin = !readyToBegin;
+        ChangeReadyButton();
+        CmdToggleCheckDisplay(readyToBegin);
+        CmdChangeReadyState(readyToBegin);
         Debug.Log(readyToBegin);
+    }
+
+    [Command]
+    public void CmdToggleCheckDisplay(bool value)
+    {
+        RpcToggleCheckDisplay(value);
+    }
+
+    [ClientRpc]
+    public void RpcToggleCheckDisplay(bool value)
+    {
+        if (menu.playerNamesDisplay[index].text == displayPlayerName)
+        {
+            menu.playerChecksDisplay[index].SetActive(value);
+        }
+    }
+
+    public void ChangeReadyButton()
+    {
+        if (!readyToBegin)
+        {
+            menu.readyPlayerButton.image.sprite = menu.readyImg;
+            menu.readyPlayerButton.GetComponentInChildren<TextMeshProUGUI>().text = "Ready";
+        }
+        else
+        {
+            menu.readyPlayerButton.image.sprite = menu.notReadyImg;
+            menu.readyPlayerButton.GetComponentInChildren<TextMeshProUGUI>().text = "Not Ready";
+        }
     }
 
     public override void OnClientEnterRoom()
@@ -45,43 +79,39 @@ public class RoomPlayer : NetworkRoomPlayer
         }
         //Debug.Log(index);
 
-        if (isServer)
+        menu.startGameButton.gameObject.SetActive(true);
+        menu.readyPlayerButton.gameObject.SetActive(true);
+        if (!isServer)
         {
-            lobbyMenu.startGameButton.gameObject.SetActive(true);
-            lobbyMenu.readyPlayerButton.gameObject.SetActive(false);
+            menu.startGameButton.gameObject.SetActive(false);
         }
-        else
-        {
-            lobbyMenu.readyPlayerButton.gameObject.SetActive(true);
-            lobbyMenu.startGameButton.gameObject.SetActive(false);
-        }
+
     }
 
     public override void OnStopClient()
     {
-        if (lobbyMenu != null)
+
+        if (menu.playerNamesDisplay[index].text == displayPlayerName)
         {
-            if (lobbyMenu.playerNamesDisplay[index].text == displayPlayerName)
-            {
-                lobbyMenu.playerNamesDisplay[index].text = "Waiting For Players...";
-            }
+            menu.playerNamesDisplay[index].text = "Waiting For Players...";
         }
+
     }
 
     public override void IndexChanged(int oldIndex, int newIndex)
     {
-        if (lobbyMenu.playerNamesDisplay[oldIndex].text == displayPlayerName)
+        if (menu.playerNamesDisplay[oldIndex].text == displayPlayerName)
         {
-            lobbyMenu.playerNamesDisplay[oldIndex].text = "Waiting For Players...";
+            menu.playerNamesDisplay[oldIndex].text = "Waiting For Players...";
         }
-        lobbyMenu.playerNamesDisplay[newIndex].text = displayPlayerName;
+        menu.playerNamesDisplay[newIndex].text = displayPlayerName;
     }
 
     public void OnPlayerNameChange(string oldName, string newName)
     {
         playerName = newName;
         gameObject.name = newName;
-        lobbyMenu.playerNamesDisplay[index].text = newName;
+        menu.playerNamesDisplay[index].text = newName;
     }
 
     [Command]
