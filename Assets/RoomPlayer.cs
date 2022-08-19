@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using TMPro;
+using System;
 
 public class RoomPlayer : NetworkRoomPlayer
 {
@@ -11,10 +12,29 @@ public class RoomPlayer : NetworkRoomPlayer
 
     [SyncVar(hook = nameof(OnPlayerNameChange))] public string displayPlayerName;
 
+    private void OnEnable()
+    {
+        menu.OnReadyPlayer += PlayerSetReady;
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        menu.OnReadyPlayer -= PlayerSetReady;
+    }
+
     private void Awake()
     {
         menu = FindObjectOfType<MainMenu>();
         lobbyMenu = FindObjectOfType<LobbyMenu>();
+    }
+
+    public void PlayerSetReady()
+    {
+        if (!hasAuthority) return;
+
+        readyToBegin = !readyToBegin;
+        Debug.Log(readyToBegin);
     }
 
     public override void OnClientEnterRoom()
@@ -27,7 +47,13 @@ public class RoomPlayer : NetworkRoomPlayer
 
         if (isServer)
         {
-            lobbyMenu.startGameButton.GetComponentInChildren<TMP_Text>().text = "Start Game";
+            lobbyMenu.startGameButton.gameObject.SetActive(true);
+            lobbyMenu.readyPlayerButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            lobbyMenu.readyPlayerButton.gameObject.SetActive(true);
+            lobbyMenu.startGameButton.gameObject.SetActive(false);
         }
     }
 

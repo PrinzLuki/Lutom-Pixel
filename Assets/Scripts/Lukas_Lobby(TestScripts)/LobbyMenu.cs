@@ -9,9 +9,11 @@ using TMPro;
 public class LobbyMenu : MonoBehaviour
 {
     [SerializeField] GameObject lubbyUI = null;
-    public Button startGameButton;
     public TMP_Text[] playerNamesDisplay = new TMP_Text[4];
 
+    [Header("Buttons")]
+    public Button startGameButton;
+    public Button readyPlayerButton;
     //private void Start()
     //{
     //    NetworkManagerLutom.ClientOnConnected += HandleClientConnected;

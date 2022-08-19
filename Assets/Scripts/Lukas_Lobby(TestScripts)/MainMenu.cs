@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class MainMenu : NetworkBehaviour
 {
@@ -16,10 +17,13 @@ public class MainMenu : NetworkBehaviour
     [SerializeField] Button joinButton;
     [SerializeField] NetworkRoomManager roomManager;
 
+    public event Action OnReadyPlayer;
 
     [Header("References")]
     public GameObject playMenuDisplay;
     public GameObject lobbyParentDisplay;
+
+  
 
     public void HostLobby()
     {
@@ -89,6 +93,11 @@ public class MainMenu : NetworkBehaviour
         if (NetworkServer.connections.Count < 2) return;
 
         roomManager.ServerChangeScene(levelName);
+    }
+
+    public void ReadyPlayer()
+    {
+        OnReadyPlayer?.Invoke();
     }
 
     IEnumerator LeaveDelay()
