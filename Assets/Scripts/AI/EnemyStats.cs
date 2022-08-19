@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EnemyStats : NetworkBehaviour, IDamageable
 {
-    public SpawnManager spawnManager;
+    //public SpawnManager spawnManager;
 
     [SerializeField] float health = 10;
     [SerializeField] float attackDmg = 1;
@@ -25,7 +25,7 @@ public class EnemyStats : NetworkBehaviour, IDamageable
         health -= dmg;
         if (health <= 0)
         {
-            spawnManager.allAliveEnemies.Remove(this.gameObject);
+            //spawnManager.allAliveEnemies.Remove(this.gameObject);
             //SaveData.PlayerProfile.kills += 1;
             NetworkServer.Destroy(gameObject);
         }
