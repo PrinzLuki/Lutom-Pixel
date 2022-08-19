@@ -20,20 +20,20 @@ public class SpawnManager : NetworkBehaviour
     }
 
 
-    [Server]
-    public override void OnStartServer()
-    {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            var child = transform.GetChild(i);
-            spawnPos.Add(child);
-        }
-        for (int i = 0; i < spawnPos.Count; i++)
-        {
-            var spawn = Instantiate(spawnPointPrefab);
-            spawn.GetComponent<EnemyStats>().spawnManager = this;
-            NetworkServer.Spawn(spawn);
-            spawn.transform.position = spawnPos[i].position;
-        }
-    }
+    //[Server]
+    //public override void OnStartServer()
+    //{
+    //    for (int i = 0; i < transform.childCount; i++)
+    //    {
+    //        var child = transform.GetChild(i);
+    //        spawnPos.Add(child);
+    //    }
+    //    for (int i = 0; i < spawnPos.Count; i++)
+    //    {
+    //        var spawn = Instantiate(spawnPointPrefab);
+    //        spawn.GetComponent<EnemyStats>().spawnManager = this;
+    //        NetworkServer.Spawn(spawn);
+    //        spawn.transform.position = spawnPos[i].position;
+    //    }
+    //}
 }

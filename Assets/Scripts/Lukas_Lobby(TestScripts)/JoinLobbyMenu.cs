@@ -20,7 +20,6 @@ public class JoinLobbyMenu : MonoBehaviour
         NetworkManager.singleton.networkAddress = address;
         joinButton.interactable = false;
         ((NetworkRoomManager)NetworkManager.singleton).StartClient();
-        //((NetworkRoomManager)NetworkManager.singleton).OnRoomClientConnect();
     }
     public void ChangeName()
     {
@@ -33,6 +32,5 @@ public class JoinLobbyMenu : MonoBehaviour
     {
         if (addressInput.text == string.Empty) joinButton.interactable = false;
         else joinButton.interactable = true;
-
     }
 }

@@ -17,11 +17,8 @@ public class RoomPlayer : NetworkRoomPlayer
         lobbyMenu = FindObjectOfType<LobbyMenu>();
     }
 
-
     public override void OnClientEnterRoom()
     {
-        Debug.Log("OnClientEnterRoom");
-        
         if (hasAuthority)
         {
             CmdSetName(menu.playerName);
@@ -34,11 +31,6 @@ public class RoomPlayer : NetworkRoomPlayer
         }
     }
 
-    private void OnDestroy()
-    {
-        
-    }
-
     public override void OnClientExitRoom()
     {
         if(lobbyMenu != null)
@@ -49,7 +41,6 @@ public class RoomPlayer : NetworkRoomPlayer
             }
         }
     }
-
 
     public override void IndexChanged(int oldIndex, int newIndex)
     {
@@ -66,7 +57,6 @@ public class RoomPlayer : NetworkRoomPlayer
         gameObject.name = newName;
         lobbyMenu.playerNamesDisplay[index].text = newName;
     }
-
 
     [Command]
     public void CmdSetName(string name)

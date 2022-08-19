@@ -14,6 +14,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] TMP_InputField addressInput;
     [SerializeField] TMP_InputField playerNameInputJoin;
     [SerializeField] Button joinButton;
+    [SerializeField] NetworkRoomManager roomManager;
   
     public void HostLobby()
     {
@@ -55,4 +56,13 @@ public class MainMenu : MonoBehaviour
     {
         NetworkClient.Disconnect();
     }
+
+    public void StartGame()
+    {
+        Debug.Log("Anzahl der Spieler: " + NetworkServer.connections.Count);
+        if (NetworkServer.connections.Count < 2) return;
+
+        roomManager.ServerChangeScene("Snow_Map");
+    }
+
 }
