@@ -143,10 +143,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  spawnManager: {fileID: 0}
   health: 10
-  attackDmg: 25
+  attackDmg: 5
   speed: 1
-  chaseSpeed: 2
+  chaseSpeed: 1.5
   jumpPower: 10
 --- !u!114 &854664342618426672
 MonoBehaviour:
@@ -203,6 +204,7 @@ MonoBehaviour:
   distance: 0.8
   maxIdleTime: 5
   isBoom: 0
+  explosionRadial: 5
 --- !u!50 &854664342618426679
 Rigidbody2D:
   serializedVersion: 4

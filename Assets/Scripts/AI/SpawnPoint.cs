@@ -9,44 +9,44 @@ public class SpawnPoint : NetworkBehaviour
     [SerializeField, Range(2.5f, 10)] float spawnDelay = 5;
     [SerializeField] int maxEnemyCount = 10;
     float spawnTime = 5;
-    GameObject spawnManager;
 
     private void Start()
     {
-        if (isServer)
-            spawnTime = spawnDelay + (Random.Range(-2f, 2f));
+        if (!isServer) return;
 
-        spawnManager = GameObject.FindGameObjectWithTag("SpawnManager");
+        spawnTime = spawnDelay + (Random.Range(-2f, 2f));
     }
 
     private void Update()
     {
-        if (isServer)
-            CmdStartEnemySpawn();
-    }
+        if (!isServer) return;
 
-    //Server
-    void CmdStartEnemySpawn()
-    {
-        spawnTime -= Time.deltaTime;
-        if (CanSpawn())
+        if (SpawnDelayTimer())
         {
-            var enemy = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], this.gameObject.transform.position, Quaternion.identity);
-            NetworkServer.Spawn(enemy);
-            GetComponentInParent<SpawnManager>().allAliveEnemies.Add(enemy);
+            SpawnRandomEnemy(GetRandomEnemy());
         }
     }
 
-    //Check for spawndelay and enemy Count
-    bool CanSpawn()
+    bool SpawnDelayTimer()
     {
-        var spawner = spawnManager.GetComponent<SpawnManager>();
-
-        if (spawnTime <= 0 && maxEnemyCount > spawner.allAliveEnemies.Count)
+        spawnTime -= Time.deltaTime;
+        if (spawnTime <= 0) 
         {
             spawnTime = spawnDelay + (Random.Range(-2f, 2f));
             return true;
-        }
-        return false;
+        } 
+ 
+        else return false;
+    }
+
+    GameObject GetRandomEnemy()
+    {
+        return enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+    }
+
+    void SpawnRandomEnemy(GameObject rndEnemy)
+    {
+        var tempEnemy = Instantiate(rndEnemy, this.transform.position, Quaternion.identity);
+        NetworkServer.Spawn(tempEnemy);
     }
 }

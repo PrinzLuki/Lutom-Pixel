@@ -9,6 +9,7 @@ public class ChickenAI : BaseAI
     public float maxIdleTime = 5;
     float dirChangeTimer = 2;
     public bool isBoom;
+    public float explosionRadial = 3;
 
     public override void Start()
     {
@@ -81,7 +82,10 @@ public class ChickenAI : BaseAI
     {
         owner.animator.SetTrigger("boom");
         yield return new WaitForSeconds(1);
-        player.GetComponent<IDamageable>().GetDamage(stats.AttackDmg);
+        if (Vector2.Distance(this.transform.position, player.position) < explosionRadial)
+        {
+            player.GetComponent<IDamageable>().GetDamage(stats.AttackDmg);
+        }
         NetworkServer.Destroy(this.gameObject);
     }
     void FlipSprite(bool isFlipped, out bool flip)
@@ -101,7 +105,7 @@ public class ChickenAI : BaseAI
     }
 
     //Client
-    [ClientRpc] 
+    [ClientRpc]
     void RpcFlipSprite(bool isFlipped, GameObject targetObj)
     {
         targetObj.GetComponent<SpriteRenderer>().flipX = isFlipped;

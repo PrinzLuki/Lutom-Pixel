@@ -12,28 +12,21 @@ public class SpawnManager : NetworkBehaviour
 
     private void Start()
     {
-        for(int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             var child = transform.GetChild(i);
             spawnPos.Add(child);
         }
+        StartSpawnSpawnPoints();
     }
 
-
-    //[Server]
-    //public override void OnStartServer()
-    //{
-    //    for (int i = 0; i < transform.childCount; i++)
-    //    {
-    //        var child = transform.GetChild(i);
-    //        spawnPos.Add(child);
-    //    }
-    //    for (int i = 0; i < spawnPos.Count; i++)
-    //    {
-    //        var spawn = Instantiate(spawnPointPrefab);
-    //        spawn.GetComponent<EnemyStats>().spawnManager = this;
-    //        NetworkServer.Spawn(spawn);
-    //        spawn.transform.position = spawnPos[i].position;
-    //    }
-    //}
+    void StartSpawnSpawnPoints()
+    {
+        if (!isServer) return;
+        for (int i = 0; i < spawnPos.Count; i++)
+        {
+            var spawnPoint = Instantiate(spawnPointPrefab, spawnPos[i].position, Quaternion.identity);
+            NetworkServer.Spawn(spawnPoint);
+        }
+    }
 }
