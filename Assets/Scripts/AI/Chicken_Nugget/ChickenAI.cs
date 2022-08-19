@@ -82,9 +82,13 @@ public class ChickenAI : BaseAI
     {
         owner.animator.SetTrigger("boom");
         yield return new WaitForSeconds(1);
-        if (Vector2.Distance(this.transform.position, player.position) < explosionRadial)
+        if (player != null)
         {
-            player.GetComponent<IDamageable>().GetDamage(stats.AttackDmg);
+            if (Vector2.Distance(this.transform.position, player.position) < explosionRadial)
+            {
+                if (player != null)
+                    player.GetComponent<IDamageable>().GetDamage(stats.AttackDmg);
+            }
         }
         NetworkServer.Destroy(this.gameObject);
     }
