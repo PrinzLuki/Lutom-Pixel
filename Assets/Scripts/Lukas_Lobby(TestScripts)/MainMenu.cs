@@ -8,33 +8,53 @@ using System;
 
 public class MainMenu : NetworkBehaviour
 {
-    public Button hostButton;
-    [SerializeField] TMP_InputField nameInputFieldHost;
     public string playerName;
-    [SerializeField] GameObject panel;
+    [SerializeField] TMP_InputField nameInputField;
     [SerializeField] TMP_InputField addressInput;
-    [SerializeField] TMP_InputField playerNameInputJoin;
-    [SerializeField] Button joinButton;
     [SerializeField] NetworkRoomManager roomManager;
 
     public event Action OnReadyPlayer;
 
     [Header("References")]
+    [SerializeField] GameObject panel;
     public GameObject playMenuDisplay;
     public GameObject lobbyParentDisplay;
+    //[SerializeField] GameObject lubbyUI = null;
+    public TMP_Text[] playerNamesDisplay = new TMP_Text[4];
+    public GameObject[] playerChecksDisplay = new GameObject[4];
 
-  
+    [Header("Buttons")]
+    public Button hostButton;
+    public Button joinButton;
+    public Button startGameButton;
+    public Button readyPlayerButton;
+
+    public Sprite readyImg;
+    public Sprite notReadyImg;
+
 
     public void HostLobby()
     {
         NetworkManager.singleton.StartHost();
     }
 
-    public void ChangeNameHost()
+    private void Start()
     {
-        if (nameInputFieldHost.text == string.Empty) hostButton.interactable = false;
-        else hostButton.interactable = true;
-        playerName = nameInputFieldHost.text;
+        if (!string.IsNullOrEmpty(SaveData.PlayerProfile.playerName))
+        {
+            playerName = SaveData.PlayerProfile.playerName;
+            nameInputField.text = playerName;
+        }
+    }
+
+    public void ChangeName()
+    {
+        playerName = nameInputField.text;
+
+        SaveData.PlayerProfile.playerName = playerName;
+        SerializationManager.Save("playerData", SaveData.PlayerProfile);
+
+        FindObjectOfType<SaveLoadMenu>().ChangeDisplayName(playerName);
     }
 
     public void Join()
@@ -42,15 +62,7 @@ public class MainMenu : NetworkBehaviour
         string address = addressInput.text;
 
         NetworkManager.singleton.networkAddress = address;
-        joinButton.interactable = false;
         ((NetworkRoomManager)NetworkManager.singleton).StartClient();
-    }
-
-    public void ChangeNameJoin()
-    {
-        if (playerNameInputJoin.text == string.Empty) joinButton.interactable = false;
-        else joinButton.interactable = true;
-        playerName = playerNameInputJoin.text;
     }
 
     public void ChangeIp()
@@ -99,6 +111,15 @@ public class MainMenu : NetworkBehaviour
     {
         OnReadyPlayer?.Invoke();
     }
+
+    public void ToggleStartGameButton(bool value)
+    {
+        if (!isServer) return;
+        if (startGameButton == null) return;
+        startGameButton.interactable = value;
+    }
+
+
 
     IEnumerator LeaveDelay()
     {

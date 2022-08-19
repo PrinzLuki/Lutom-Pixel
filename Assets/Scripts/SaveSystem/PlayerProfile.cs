@@ -8,6 +8,11 @@ public class PlayerProfile
     public int kills;
     public int deaths;
 
+    public int matchesPlayed;
+    public int matchesWon;
+    public int matchesLost;
+
+    public bool volumeEdited;
     public int masterVolume;
     public int musicVolume;
     public int effectsVolume;

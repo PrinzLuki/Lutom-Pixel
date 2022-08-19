@@ -80,6 +80,8 @@ public class AudioSlider : MonoBehaviour
                 break;
         }
 
+        SaveData.PlayerProfile.volumeEdited = true;
+
         OnSave();
 
     }

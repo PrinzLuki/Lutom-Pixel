@@ -11,10 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tomi/Tomi_Scene.unity
     guid: 49097528026950c4488988911fa98465
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Maps/Forest_Map.unity
     guid: afe2d7ea51810574487e3c6d54c5b6fb
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Maps/Snow_Map.unity
     guid: 00c32a46456d0db45a35b2e813566ef1
   - enabled: 1
