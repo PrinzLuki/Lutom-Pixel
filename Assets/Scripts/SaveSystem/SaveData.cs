@@ -51,5 +51,28 @@ public class SaveData
     }
     #endregion
 
+    #region New Game Data
+    private static NewGameData _newGameData;
+
+    public static NewGameData NewGameData
+    {
+        get
+        {
+            if (_newGameData == null)
+            {
+                _newGameData = new NewGameData();
+            }
+            return _newGameData;
+        }
+        set
+        {
+            if (value != null)
+            {
+                _newGameData = value;
+            }
+        }
+    }
+    #endregion
+
 
 }

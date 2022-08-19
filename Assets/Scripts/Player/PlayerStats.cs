@@ -70,7 +70,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         {
             health = 0;
             CmdKillPlayer(this.gameObject);
-            CmdPlayDieVFX();
+            CmdPlayKillVFX();
             OnKillPlayer();
             StartCoroutine(WaitTillRespawn());
         }
@@ -270,7 +270,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     public void RpcPlayGetDamageVFX() => PlayEffect(getDamageEffect);
 
     [Command]
-    public void CmdPlayDieVFX()
+    public void CmdPlayKillVFX()
     {
         RpcPlayDieVFX();
     }
@@ -284,6 +284,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     {
         spawnPoint = transform.position;
         OnLoad();
+        OnNewGame();
 
     }
 
@@ -327,6 +328,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     public void OnKillPlayer()
     {
         SaveData.PlayerProfile.deaths += 1;
+        SaveData.NewGameData.deaths += 1;
         OnSave();
     }
 
@@ -337,6 +339,19 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     public void OnSave()
     {
         SerializationManager.Save("playerData", SaveData.PlayerProfile);
+        SerializationManager.Save("newGameData", SaveData.NewGameData);
+    }
+
+    public void OnNewGame()
+    {
+        Debug.Log("Current Deaths: " + SaveData.NewGameData.deaths);
+
+        SaveData.NewGameData.deaths = 0;
+        SaveData.NewGameData.kills = 0;
+
+        Debug.Log("Stats Reset in NewGameData - Current Deaths: " + SaveData.NewGameData.deaths);
+
+        SerializationManager.Save("newGameData", SaveData.NewGameData);
     }
 
     /// <summary>
@@ -345,7 +360,8 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     public void OnLoad()
     {
         SaveData.PlayerProfile = (PlayerProfile)SerializationManager.Load(Application.persistentDataPath + "/saves/playerData.lutompixel");
-        Debug.Log("Current Deaths: " + SaveData.PlayerProfile.deaths);
+        SaveData.NewGameData = (NewGameData)SerializationManager.Load(Application.persistentDataPath + "/saves/newGameData.lutompixel");
+        Debug.Log("All Time Deaths: " + SaveData.PlayerProfile.deaths);
     }
 
     #endregion
