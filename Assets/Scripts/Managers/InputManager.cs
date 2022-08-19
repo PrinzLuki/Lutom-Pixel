@@ -13,6 +13,10 @@ public class InputManager : BaseSingelton<InputManager>
     [SerializeField] InputActionReference pauseActionControll;
     [SerializeField] InputActionReference chatActionControll;
 
+    private void Start()
+    {
+        OnEnable();
+    }
     private void OnEnable()
     {
         movementControll.action.Enable();

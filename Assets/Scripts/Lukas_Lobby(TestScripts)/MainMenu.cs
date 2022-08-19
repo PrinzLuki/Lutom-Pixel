@@ -5,7 +5,7 @@ using Mirror;
 using TMPro;
 using UnityEngine.UI;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : NetworkBehaviour
 {
     public Button hostButton;
     [SerializeField] TMP_InputField nameInputFieldHost;
@@ -15,11 +15,16 @@ public class MainMenu : MonoBehaviour
     [SerializeField] TMP_InputField playerNameInputJoin;
     [SerializeField] Button joinButton;
     [SerializeField] NetworkRoomManager roomManager;
-  
+
+
+    [Header("References")]
+    public GameObject playMenuDisplay;
+    public GameObject lobbyParentDisplay;
+
     public void HostLobby()
     {
-        //playerName = nameInputField.text;
         NetworkManager.singleton.StartHost();
+
     }
 
     public void ChangeNameHost()
@@ -31,12 +36,13 @@ public class MainMenu : MonoBehaviour
 
     public void Join()
     {
+
         string address = addressInput.text;
 
         NetworkManager.singleton.networkAddress = address;
         joinButton.interactable = false;
         ((NetworkRoomManager)NetworkManager.singleton).StartClient();
-        //((NetworkRoomManager)NetworkManager.singleton).OnRoomClientConnect();
+
     }
     public void ChangeNameJoin()
     {
@@ -49,20 +55,32 @@ public class MainMenu : MonoBehaviour
     {
         if (addressInput.text == string.Empty) joinButton.interactable = false;
         else joinButton.interactable = true;
-
     }
 
     public void LeaveLobby()
     {
-        NetworkClient.Disconnect();
+        if (isServer)
+        {
+            NetworkServer.Shutdown();
+            NetworkClient.Disconnect();
+
+
+        }
+        else
+        {
+            NetworkClient.Disconnect();
+        }
+
     }
 
-    public void StartGame()
+
+
+    public void StartGame(string levelName)
     {
         Debug.Log("Anzahl der Spieler: " + NetworkServer.connections.Count);
         if (NetworkServer.connections.Count < 2) return;
 
-        roomManager.ServerChangeScene("Snow_Map");
+        roomManager.ServerChangeScene(levelName);
     }
 
 }

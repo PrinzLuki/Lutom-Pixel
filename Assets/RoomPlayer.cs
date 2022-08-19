@@ -31,20 +31,26 @@ public class RoomPlayer : NetworkRoomPlayer
         }
     }
 
-    public override void OnClientExitRoom()
+    public override void OnStopClient()
     {
-        if(lobbyMenu != null)
+        if (lobbyMenu != null)
         {
             if (lobbyMenu.playerNamesDisplay[index].text == displayPlayerName)
             {
+                if (isClientOnly)
+                {
+                    menu.playMenuDisplay.SetActive(true);
+                    menu.lobbyParentDisplay.SetActive(false);
+                }
                 lobbyMenu.playerNamesDisplay[index].text = "Waiting For Players...";
             }
         }
     }
 
+
     public override void IndexChanged(int oldIndex, int newIndex)
     {
-        if(lobbyMenu.playerNamesDisplay[oldIndex].text == displayPlayerName)
+        if (lobbyMenu.playerNamesDisplay[oldIndex].text == displayPlayerName)
         {
             lobbyMenu.playerNamesDisplay[oldIndex].text = "Waiting For Players...";
         }
