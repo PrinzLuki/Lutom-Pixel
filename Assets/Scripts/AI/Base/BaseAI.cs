@@ -43,7 +43,7 @@ public abstract class BaseAI : NetworkBehaviour
     public virtual void Update()
     {
         stateMachine.Update();
-        EnemyDetection();
+        //EnemyDetection();
     }
 
     public virtual void EnemyDetection()
@@ -55,7 +55,6 @@ public abstract class BaseAI : NetworkBehaviour
                 if (Physics2D.Raycast(this.transform.position, targetDetectionDirectionList[i].detectionDirection, 8, playerLayer))
                 {
                     //Attack
-                    //stateMachine.ChangeState(RunState.Instance);
                     stateMachine.ChangeState(SelfDestructState.Instance);
                     targetDirection = targetDetectionDirectionList[i].detectionDirection;
                     FlipSprite(targetDetectionDirectionList[i].flipType);
@@ -76,12 +75,6 @@ public abstract class BaseAI : NetworkBehaviour
             case ESpriteFlip.FlipRight:
                 sprite.flipX = false;
                 break;
-            case ESpriteFlip.FlipTop:
-                //Rotate
-                break;
-            case ESpriteFlip.FlipBottom:
-                //Rotate
-                break;
             default:
                 break;
         }
@@ -100,11 +93,11 @@ public abstract class BaseAI : NetworkBehaviour
 
     private void OnDrawGizmos()
     {
-        //Gizmos.color = Color.yellow;
-        //for (int i = 0; i < targetDetectionDirectionList.Count; i++)
-        //{
-        //    Gizmos.DrawRay(this.transform.position, targetDetectionDirectionList[i].detectionDirection);
-        //}
+        Gizmos.color = Color.yellow;
+        for (int i = 0; i < targetDetectionDirectionList.Count; i++)
+        {
+            Gizmos.DrawRay(this.transform.position, targetDetectionDirectionList[i].detectionDirection);
+        }
         Gizmos.color = Color.blue;
         Gizmos.DrawRay(transform.position + offsetObstAvoid, walkDirection * distance);
     }

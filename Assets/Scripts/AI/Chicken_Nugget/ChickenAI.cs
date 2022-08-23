@@ -22,6 +22,7 @@ public class ChickenAI : BaseAI
     public override void Update()
     {
         base.Update();
+        EnemyDetection();
     }
 
     public override void Idle()
