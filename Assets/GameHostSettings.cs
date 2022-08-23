@@ -11,6 +11,7 @@ public class GameHostSettings : MonoBehaviour
 
     [Header("Amount of Players")]
     public TextMeshProUGUI amountOfPlayers;
+    public int amountOfPlayersMin;
     [Header("Levels")]
     public LevelScriptable[] levels;
     public TextMeshProUGUI levelsName;
@@ -53,8 +54,18 @@ public class GameHostSettings : MonoBehaviour
 
     public void ChangeGamemode(Gamemodetype type)
     {
+        CheckPlayerAmount(type);
         gamemodeName.text = type.ToString();
         roomManager.gamemode = type;
+    }
+
+    public void CheckPlayerAmount(Gamemodetype type)
+    {
+        CheckGameMode(type);
+        if (roomManager.minPlayers <= amountOfPlayersMin)
+            roomManager.minPlayers = amountOfPlayersMin;
+        amountOfPlayers.text = roomManager.minPlayers.ToString();
+
     }
 
 
@@ -101,7 +112,8 @@ public class GameHostSettings : MonoBehaviour
     public void DecreaseAmountPlayers()
     {
         roomManager.minPlayers -= 1;
-        if (roomManager.minPlayers <= 0)
+        CheckGameMode(roomManager.gamemode);
+        if (roomManager.minPlayers < amountOfPlayersMin)
         {
             roomManager.minPlayers = roomManager.maxConnections;
         }
@@ -111,12 +123,29 @@ public class GameHostSettings : MonoBehaviour
     public void IncreaseAmountPlayers()
     {
         roomManager.minPlayers += 1;
+        CheckGameMode(roomManager.gamemode);
         if (roomManager.minPlayers > roomManager.maxConnections)
         {
-            roomManager.minPlayers = 1;
+            roomManager.minPlayers = amountOfPlayersMin;
         }
         amountOfPlayers.text = roomManager.minPlayers.ToString();
+    }
 
+    public void CheckGameMode(Gamemodetype type)
+    {
+        switch (type)
+        {
+            case Gamemodetype.PVE:
+                amountOfPlayersMin = 1;
+                break;
+            case Gamemodetype.PVP:
+                amountOfPlayersMin = 2;
+                break;
+            case Gamemodetype.MAX:
+                break;
+            default:
+                break;
+        }
     }
 
     #endregion

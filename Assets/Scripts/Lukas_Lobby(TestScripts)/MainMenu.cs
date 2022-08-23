@@ -32,6 +32,8 @@ public class MainMenu : NetworkBehaviour
     public Sprite readyImg;
     public Sprite notReadyImg;
 
+    //public int sameNameIndex = 1;
+
 
 
 
@@ -63,9 +65,10 @@ public class MainMenu : NetworkBehaviour
     public void Join()
     {
         string address = addressInput.text;
-
         NetworkManager.singleton.networkAddress = address;
+
         ((NetworkRoomManager)NetworkManager.singleton).StartClient();
+
     }
 
     public void ChangeIp()
@@ -79,13 +82,15 @@ public class MainMenu : NetworkBehaviour
         if (isServer)
         {
             CmdBackToMenuDisplay();
-            StartCoroutine(LeaveDelay());
+            StartCoroutine(LeaveDelayHost());
         }
         else
         {
             NetworkClient.Disconnect();
         }
     }
+
+
 
     [Command(requiresAuthority = false)]
     public void CmdBackToMenuDisplay()
@@ -105,13 +110,10 @@ public class MainMenu : NetworkBehaviour
         {
             check.gameObject.SetActive(false);
         }
-
     }
 
     public void StartGame()
     {
-        //Debug.Log("Anzahl der Spieler: " + NetworkServer.connections.Count);
-        //if (NetworkServer.connections.Count < roomManager.minPlayers) return;
         roomManager.ServerChangeScene(roomManager.GameplayScene);
 
     }
@@ -131,7 +133,7 @@ public class MainMenu : NetworkBehaviour
 
 
 
-    IEnumerator LeaveDelay()
+    IEnumerator LeaveDelayHost()
     {
         yield return new WaitForSeconds(0.2f);
         Debug.Log("Client: " + NetworkClient.active);

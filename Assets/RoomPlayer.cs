@@ -42,7 +42,7 @@ public class RoomPlayer : NetworkRoomPlayer
         Debug.Log(readyToBegin);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     public void CmdToggleCheckDisplay(bool value)
     {
         RpcToggleCheckDisplay(value);
@@ -59,25 +59,30 @@ public class RoomPlayer : NetworkRoomPlayer
 
     public void ChangeReadyButton()
     {
+
         if (!readyToBegin)
         {
             menu.readyPlayerButton.image.sprite = menu.readyImg;
             menu.readyPlayerButton.GetComponentInChildren<TextMeshProUGUI>().text = "Ready";
+            menu.playerChecksDisplay[index].SetActive(false);
         }
         else
         {
             menu.readyPlayerButton.image.sprite = menu.notReadyImg;
             menu.readyPlayerButton.GetComponentInChildren<TextMeshProUGUI>().text = "Not Ready";
+            menu.playerChecksDisplay[index].SetActive(true);
+
         }
     }
 
+
     public override void OnClientEnterRoom()
     {
+
         if (hasAuthority)
         {
             CmdSetName(menu.playerName);
         }
-        //Debug.Log(index);
 
         menu.startGameButton.gameObject.SetActive(true);
         menu.readyPlayerButton.gameObject.SetActive(true);
@@ -86,7 +91,14 @@ public class RoomPlayer : NetworkRoomPlayer
             menu.startGameButton.gameObject.SetActive(false);
         }
 
+        foreach (var check in menu.playerChecksDisplay)
+        {
+            check.SetActive(false);
+        }
+
+
     }
+
 
     public override void OnStopClient()
     {
@@ -94,6 +106,8 @@ public class RoomPlayer : NetworkRoomPlayer
         if (menu.playerNamesDisplay[index].text == displayPlayerName)
         {
             menu.playerNamesDisplay[index].text = "Waiting For Players...";
+            menu.playerChecksDisplay[index].SetActive(false);
+            //menu.sameNameIndex--;
         }
 
     }
@@ -118,5 +132,16 @@ public class RoomPlayer : NetworkRoomPlayer
     public void CmdSetName(string name)
     {
         displayPlayerName = name;
+
+        //for (int i = 0; i < menu.playerNamesDisplay.Length; i++)
+        //{
+        //    if (menu.playerNamesDisplay[i].text == name)
+        //    {
+        //        name = menu.playerNamesDisplay[index].text + "(" + menu.sameNameIndex + ")";
+        //        displayPlayerName = name;
+        //        menu.sameNameIndex++;
+        //    }
+        //}
+        //displayPlayerName = name;
     }
 }
