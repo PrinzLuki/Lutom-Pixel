@@ -39,7 +39,6 @@ public class RoomPlayer : NetworkRoomPlayer
         ChangeReadyButton();
         CmdToggleCheckDisplay(readyToBegin);
         CmdChangeReadyState(readyToBegin);
-        Debug.Log(readyToBegin);
     }
 
     [Command(requiresAuthority = false)]
@@ -102,6 +101,11 @@ public class RoomPlayer : NetworkRoomPlayer
 
     public override void OnStopClient()
     {
+        if(menu == null)
+        {
+            Debug.Log("MainMenu not in Scene");
+            return;
+        }
 
         if (menu.playerNamesDisplay[index].text == displayPlayerName)
         {
