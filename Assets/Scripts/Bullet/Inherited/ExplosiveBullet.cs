@@ -22,8 +22,8 @@ public class ExplosiveBullet : Bullet, IExplosion
             {
                 obj.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage);
             }
+            
         }
-
         GetComponent<Animator>().enabled = true;
 
         Destroy(gameObject, GetComponent<Animator>().runtimeAnimatorController.animationClips[0].length);

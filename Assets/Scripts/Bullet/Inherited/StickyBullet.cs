@@ -54,6 +54,7 @@ public class StickyBullet : Bullet, IExplosion
         }
     }
 
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

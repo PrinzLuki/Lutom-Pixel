@@ -16,6 +16,7 @@ public class PlayerGun : NetworkBehaviour
     [Header("Weapon")]
     public WeaponScriptableObject weaponScriptable;
     public Weapon gun;
+
     [SyncVar]
     public GameObject currentWeaponGameObject;
     public LayerMask weaponMask;

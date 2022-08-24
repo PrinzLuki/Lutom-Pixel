@@ -30,6 +30,8 @@ public class PlayerUI : NetworkBehaviour
     [SerializeField] private Color speedColor = new Color(59, 210, 255);
     [SerializeField] private Color jumpPowerColor = new Color(255, 197, 59);
 
+    [Header("Kill Counter UI")]
+    public TMP_Text killCounterTxt;
 
     [Header("Pause UI")]
     public GameObject pauseWindow;
@@ -41,6 +43,15 @@ public class PlayerUI : NetworkBehaviour
 
     [Header("Other")]
     private ChatUI chatUI;
+
+    private void OnEnable()
+    {
+        EnemyStats.OnKill += CountKills;
+    }
+    private void OnDisable()
+    {
+        EnemyStats.OnKill -= CountKills;
+    }
 
     private void Start()
     {
@@ -106,6 +117,21 @@ public class PlayerUI : NetworkBehaviour
     {
         paused = !paused;
     }
+
+    #region Kill Counter
+
+    void CountKills()
+    {
+        stats.KillCount++;
+        ShowKillsInUI(stats.KillCount);
+    }
+
+    void ShowKillsInUI(int kills)
+    {
+        killCounterTxt.text = kills.ToString();
+    }
+
+    #endregion
 
     public void Pause()
     {

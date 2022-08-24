@@ -21,6 +21,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private float jumpPower = 6.0f;
     [SerializeField] private float interactionRadius = 1f;
     [SerializeField] private LayerMask interactionMask;
+    int killCount;
 
     [Header("Gizmos")]
     [SerializeField] private bool showGizmos;
@@ -45,6 +46,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     public float MinSpeed { get => minSpeed; }
     public float MaxJumpPower { get => maxJumpPower; }
     public float MinJumpPower { get => minJumpPower; }
+    public int KillCount { get => killCount; set => killCount = value; }
 
     [Header("Current Item Type Collected")]
     public ItemType currentItemType;
