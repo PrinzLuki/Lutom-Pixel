@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class BaseSingelton<T> : NetworkBehaviour where T : BaseSingelton<T>
+public class BaseSingelton<T> : MonoBehaviour where T : BaseSingelton<T>
 {
     public static T instance;
 
