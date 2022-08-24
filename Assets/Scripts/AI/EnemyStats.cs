@@ -16,6 +16,8 @@ public class EnemyStats : NetworkBehaviour, IDamageable
 
     public static Action OnKill;
 
+    bool isDead;
+
     public float Speed { get => speed; }
     public float AttackDmg { get => attackDmg; }
     public float ChaseSpeed { get => chaseSpeed; }
@@ -27,9 +29,12 @@ public class EnemyStats : NetworkBehaviour, IDamageable
         health -= dmg;
         if (health <= 0)
         {
-            //spawnManager.allAliveEnemies.Remove(this.gameObject);
-            //SaveData.PlayerProfile.kills += 1;
-            OnKill?.Invoke();
+            if (!isDead)
+            {
+                isDead = true;
+                OnKill?.Invoke();
+            }
+
             NetworkServer.Destroy(gameObject);
         }
     }
