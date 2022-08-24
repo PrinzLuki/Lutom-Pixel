@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ using UnityEngine;
 public class PlayerProfile
 {
     public string playerName;
+    public string playerid;
     public int kills;
     public int deaths;
 
