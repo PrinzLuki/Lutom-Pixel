@@ -9,6 +9,7 @@ using System;
 public class MainMenu : NetworkBehaviour
 {
     public string playerName;
+    public string playerId;
     [SerializeField] TMP_InputField nameInputField;
     [SerializeField] TMP_InputField addressInput;
     [SerializeField] NetworkRoomManager roomManager;
@@ -50,6 +51,9 @@ public class MainMenu : NetworkBehaviour
             playerName = SaveData.PlayerProfile.playerName;
             nameInputField.text = playerName;
         }
+
+
+        playerId = FindObjectOfType<SaveLoadMenu>().playerid;
     }
 
     public void ChangeName()
@@ -60,6 +64,25 @@ public class MainMenu : NetworkBehaviour
         SerializationManager.Save("playerData", SaveData.PlayerProfile);
 
         FindObjectOfType<SaveLoadMenu>().ChangeDisplayName(playerName);
+    }
+
+    public void GetGuid()
+    {
+        if (string.IsNullOrEmpty(SaveData.PlayerProfile.playerid))
+        {
+            Guid guid = Guid.NewGuid();
+            playerId = guid.ToString();
+            SaveData.PlayerProfile.playerid = playerId;
+            Debug.Log("Creating new guid: " + playerId);
+        }
+        else
+        {
+            playerId = SaveData.PlayerProfile.playerid;
+            Debug.Log("Getting guid from savedata: " + playerId);
+        }
+        SerializationManager.Save("playerData", SaveData.PlayerProfile);
+        FindObjectOfType<SaveLoadMenu>().ChangeDisplayId(playerId);
+
     }
 
     public void Join()

@@ -9,6 +9,7 @@ public class RoomPlayer : NetworkRoomPlayer
 {
     [SerializeField] MainMenu menu;
     [SerializeField] LobbyMenu lobbyMenu;
+    [SyncVar] public string playerid;
 
     [SyncVar(hook = nameof(OnPlayerNameChange))] public string displayPlayerName;
 
@@ -27,7 +28,8 @@ public class RoomPlayer : NetworkRoomPlayer
     {
         menu = FindObjectOfType<MainMenu>();
         lobbyMenu = FindObjectOfType<LobbyMenu>();
-
+        playerid = SaveData.PlayerProfile.playerid;
+        menu.playerId = playerid;
         ChangeReadyButton();
     }
 
@@ -50,7 +52,7 @@ public class RoomPlayer : NetworkRoomPlayer
     [ClientRpc]
     public void RpcToggleCheckDisplay(bool value)
     {
-        if (menu.playerNamesDisplay[index].text == displayPlayerName)
+        if (menu.playerId == playerid)
         {
             menu.playerChecksDisplay[index].SetActive(value);
         }
@@ -101,28 +103,30 @@ public class RoomPlayer : NetworkRoomPlayer
 
     public override void OnStopClient()
     {
-        if(menu == null)
+        if (menu == null)
         {
             Debug.Log("MainMenu not in Scene");
             return;
         }
 
-        if (menu.playerNamesDisplay[index].text == displayPlayerName)
+        if (menu.playerId == playerid)
         {
             menu.playerNamesDisplay[index].text = "Waiting For Players...";
             menu.playerChecksDisplay[index].SetActive(false);
-            //menu.sameNameIndex--;
         }
 
     }
 
     public override void IndexChanged(int oldIndex, int newIndex)
     {
+        Debug.LogError("Old " + oldIndex);
+        Debug.LogError("New " + newIndex);
         if (menu.playerNamesDisplay[oldIndex].text == displayPlayerName)
         {
             menu.playerNamesDisplay[oldIndex].text = "Waiting For Players...";
         }
         menu.playerNamesDisplay[newIndex].text = displayPlayerName;
+
     }
 
     public void OnPlayerNameChange(string oldName, string newName)
@@ -136,16 +140,5 @@ public class RoomPlayer : NetworkRoomPlayer
     public void CmdSetName(string name)
     {
         displayPlayerName = name;
-
-        //for (int i = 0; i < menu.playerNamesDisplay.Length; i++)
-        //{
-        //    if (menu.playerNamesDisplay[i].text == name)
-        //    {
-        //        name = menu.playerNamesDisplay[index].text + "(" + menu.sameNameIndex + ")";
-        //        displayPlayerName = name;
-        //        menu.sameNameIndex++;
-        //    }
-        //}
-        //displayPlayerName = name;
     }
 }
