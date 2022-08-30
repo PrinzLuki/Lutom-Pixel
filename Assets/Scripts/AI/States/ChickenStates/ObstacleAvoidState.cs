@@ -26,12 +26,10 @@ public class ObstacleAvoidState : State<BaseAI>
 
     public override void Enter(BaseAI owner)
     {
-        Debug.Log("Jump");
     }
 
     public override void Exit(BaseAI owner)
     {
-        Debug.Log("Exit Jump");
     }
 
     public override void Update(BaseAI owner)
