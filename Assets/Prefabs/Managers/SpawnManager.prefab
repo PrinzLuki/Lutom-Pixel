@@ -177,6 +177,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  difficulties:
+  - executionTime: 10
+    maxEnemies: 1
+  - executionTime: 20
+    maxEnemies: 5
+  - executionTime: 30
+    maxEnemies: 10
+  - executionTime: 40
+    maxEnemies: 15
+  - executionTime: 50
+    maxEnemies: 20
+  - executionTime: 60
+    maxEnemies: 30
+  - executionTime: 100
+    maxEnemies: 50
+  - executionTime: 120
+    maxEnemies: 55
+  - executionTime: 180
+    maxEnemies: 80
   spawnPointPrefab: {fileID: 4557648505051089243, guid: d7f8c0a2b3341d541b62c86a2224bea6, type: 3}
   spawnPos:
   - {fileID: 4661300138564454067}
@@ -185,7 +204,8 @@ MonoBehaviour:
   - {fileID: 3342224056750129255}
   - {fileID: 675450692764405735}
   - {fileID: 8285765507983976155}
-  allAliveEnemies: []
+  spawnPoints: []
+  enemySpawnContainer: {fileID: 0}
 --- !u!114 &9114432660507838776
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,6 +10,10 @@ public class SpawnPoint : NetworkBehaviour
     [SerializeField] int maxEnemyCount = 10;
     float spawnTime = 5;
 
+    [HideInInspector] public Transform enemyContainer;
+
+    public int MaxEnemyCount { get => maxEnemyCount; set => maxEnemyCount = value; }
+
     private void Start()
     {
         if (!isServer) return;
@@ -30,7 +34,7 @@ public class SpawnPoint : NetworkBehaviour
     bool SpawnDelayTimer()
     {
         spawnTime -= Time.deltaTime;
-        if (spawnTime <= 0) 
+        if (spawnTime <= 0 && enemyContainer.childCount < maxEnemyCount) 
         {
             spawnTime = spawnDelay + (Random.Range(-2f, 2f));
             return true;
@@ -46,7 +50,8 @@ public class SpawnPoint : NetworkBehaviour
 
     void SpawnRandomEnemy(GameObject rndEnemy)
     {
-        var tempEnemy = Instantiate(rndEnemy, this.transform.position, Quaternion.identity);
+        var tempEnemy = Instantiate(rndEnemy, this.transform.position, Quaternion.identity, enemyContainer);
         NetworkServer.Spawn(tempEnemy);
     }
 }
+
