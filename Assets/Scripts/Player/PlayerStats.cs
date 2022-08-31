@@ -31,15 +31,17 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [Header("Respawn/Death")]
     [SerializeField] private Vector3 spawnPoint;
     [SerializeField] private float respawnDelay;
+    public bool isDead;
+    public bool isGameOver;
 
     [Header("Effects")]
     [Header("Get Damage Effect")]
     public ParticleSystem getDamageEffect;
     public ParticleSystem dieEffect;
-    public bool isDead;
 
     public UnityEvent<float, float> onHealthChanged;
     public static event Func<bool> OnGameOver;
+    public static event Action<int, int> OnShowGameOverStats;
 
     public float Health { get => health; set => health = value; }
     public float Speed { get => speed; set => speed = value; }
@@ -83,6 +85,19 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         }
         onHealthChanged?.Invoke(Health, MaxHealth);
     }
+
+    void GameOverCheck()
+    {
+        bool isGameOver = OnGameOver();
+        Debug.Log(isGameOver);
+        //StartGameOverDisplay
+        if (isGameOver && isServer)
+        {
+            CmdGameOver();
+            OnShowGameOverStats?.Invoke(killCount, 200);
+        }
+    }
+
 
     [Command]
     void CmdSyncPlayerIsDead(PlayerStats stats, bool isDead)
@@ -308,13 +323,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     private void Update()
     {
         IsInteracting();
-        bool isGameOver = OnGameOver();
-        Debug.Log(isGameOver);
-        //StartGameOverDisplay
-        if (isGameOver && isServer)
-        {
-            CmdGameOver();
-        }
+        GameOverCheck();
     }
 
     [Command(requiresAuthority = false)]
