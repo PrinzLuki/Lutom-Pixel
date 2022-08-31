@@ -38,6 +38,9 @@ public class PlayerUI : NetworkBehaviour
     public GameObject[] windows;
     public bool paused;
 
+    [Header("Game Over UI")]
+    public GameObject gameOverDisplay;
+
     [Header("Music UI")]
     public TextMeshProUGUI musicTitle;
 

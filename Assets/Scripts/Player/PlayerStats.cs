@@ -30,6 +30,8 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [Header("Respawn/Death")]
     [SerializeField] private Vector3 spawnPoint;
     [SerializeField] private float respawnDelay;
+    [SerializeField] bool isDead;
+    [SerializeField] bool canRespawn = true;
 
     [Header("Effects")]
     [Header("Get Damage Effect")]
@@ -70,11 +72,14 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         if (health <= 0)
         {
+            isDead = true;
             health = 0;
+            OnCmdPlayerIsDead();
             CmdKillPlayer(this.gameObject);
             CmdPlayKillVFX();
             OnKillPlayer();
-            StartCoroutine(WaitTillRespawn());
+            if (canRespawn)
+                StartCoroutine(WaitTillRespawn());
         }
         onHealthChanged?.Invoke(Health, MaxHealth);
     }
@@ -138,6 +143,31 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
     }
 
+    [Command(requiresAuthority = false)]
+    void OnCmdPlayerIsDead()
+    {
+        Debug.Log("OnCmdPlayerIsDead");
+        Debug.Log(NetworkServer.connections.Count);
+
+        for (int i = 0; i < NetworkServer.connections.Count; i++)
+        {
+            if (NetworkServer.connections.TryGetValue(i, out NetworkConnectionToClient conn))
+            {
+                Debug.Log(conn.identity.name);
+                if (conn.identity.GetComponent<PlayerStats>().isDead != true) return;
+            }
+        }
+        Debug.Log("allDead");
+        OnRpcAllPlayersDead();
+    }
+
+    [ClientRpc]
+    void OnRpcAllPlayersDead()
+    {
+        canRespawn = false;
+        var playerUI = GetComponent<PlayerUI>();
+        playerUI.gameOverDisplay.SetActive(true);
+    }
 
     #endregion
 
@@ -188,6 +218,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     IEnumerator WaitTillRespawn()
     {
         yield return new WaitForSeconds(respawnDelay);
+        isDead = false;
         CmdRespawnPlayer(this.gameObject);
     }
 
