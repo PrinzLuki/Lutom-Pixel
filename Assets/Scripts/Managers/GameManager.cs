@@ -9,9 +9,6 @@ public class GameManager : MonoBehaviour
 {
     public static List<PlayerStats> players = new List<PlayerStats>();
 
-    public static event Action<PlayerStats> OnPlayerDead;
-    public static event Action<PlayerStats> OnPlayerNotDead;
-
     static GameManager instance;
     public static GameManager Instance
     {
@@ -35,6 +32,13 @@ public class GameManager : MonoBehaviour
             }
         }
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        var inputMan = FindObjectOfType<InputManager>();
+        inputMan.gameObject.SetActive(false);
+        inputMan.gameObject.SetActive(true);
     }
 
     private void OnEnable()

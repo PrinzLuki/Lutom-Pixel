@@ -11,6 +11,14 @@ public class NetworkRoomManagerLutom : NetworkRoomManager
 
     public MainMenu mainMenu;
 
+    //[Server]
+    //public override void OnServerAddPlayer(NetworkConnectionToClient conn)
+    //{
+    //    base.OnServerAddPlayer(conn);
+    //    GameManager.players.Add(conn.identity.GetComponent<PlayerStats>());
+    //    Debug.Log("OnServerAddPlayer: " + conn.identity.name);
+    //}
+
     public override void OnRoomServerPlayersReady()
     {
         if (mainMenu == null) return;
@@ -29,7 +37,6 @@ public class NetworkRoomManagerLutom : NetworkRoomManager
     {
         GameplayScene = name;
     }
-
 
 }
 public enum Gamemodetype

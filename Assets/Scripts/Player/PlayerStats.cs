@@ -301,6 +301,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         spawnPoint = transform.position;
         OnLoad();
         OnNewGame();
+        GameManager.players.Add(this);
     }
 
     [Client]

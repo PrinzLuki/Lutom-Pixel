@@ -22023,6 +22023,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 4348690008794141812}
+        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
+        m_MethodName: Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6747843338535523980
 GameObject:
   m_ObjectHideFlags: 0
@@ -22698,10 +22710,9 @@ MonoBehaviour:
   showGizmos: 0
   spawnPoint: {x: 0, y: 0, z: 0}
   respawnDelay: 20
-  isDead: 0
-  canRespawn: 0
   getDamageEffect: {fileID: 6491880822408709941}
   dieEffect: {fileID: 4993182989026329915}
+  isDead: 0
   onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
