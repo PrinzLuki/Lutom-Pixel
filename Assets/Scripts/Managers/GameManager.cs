@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
 {
     public static List<PlayerStats> players = new List<PlayerStats>();
 
+    public static event Action<PlayerStats> OnPlayerDead;
+    public static event Action<PlayerStats> OnPlayerNotDead;
+
     static GameManager instance;
     public static GameManager Instance
     {
@@ -47,7 +50,7 @@ public class GameManager : MonoBehaviour
     {
         for(int i = 0; i < players.Count; i++)
         {
-            if (!players[i].IsDead) return false;
+            if (!players[i].isDead) return false;
 
             continue;
         }

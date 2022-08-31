@@ -31,13 +31,12 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [Header("Respawn/Death")]
     [SerializeField] private Vector3 spawnPoint;
     [SerializeField] private float respawnDelay;
-    [SerializeField, SyncVar(hook = nameof(CmdSyncDeadStatus))] bool isDead;
-    [SerializeField, SyncVar(hook = nameof(CmdSyncCanRespawnStatus))] bool canRespawn = true;
 
     [Header("Effects")]
     [Header("Get Damage Effect")]
     public ParticleSystem getDamageEffect;
     public ParticleSystem dieEffect;
+    public bool isDead;
 
     public UnityEvent<float, float> onHealthChanged;
     public static event Func<bool> OnGameOver;
@@ -51,7 +50,6 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     public float MaxJumpPower { get => maxJumpPower; }
     public float MinJumpPower { get => minJumpPower; }
     public int KillCount { get => killCount; set => killCount = value; }
-    public bool IsDead { get => isDead; set => isDead = value; }
 
     [Header("Current Item Type Collected")]
     public ItemType currentItemType;
@@ -75,20 +73,21 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         if (health <= 0)
         {
-            isDead = true;
             health = 0;
-            if (isClient)
-            {
-                bool allPlayersDead = OnGameOver.Invoke();
-                Debug.Log("allPlayersDead = " + allPlayersDead);
-                OnCmdPlayerIsDead(allPlayersDead);
-            }
             CmdKillPlayer(this.gameObject);
             CmdPlayKillVFX();
             OnKillPlayer();
             StartCoroutine(WaitTillRespawn());
+            isDead = true;
+            CmdSyncPlayerIsDead(this, isDead);
         }
         onHealthChanged?.Invoke(Health, MaxHealth);
+    }
+
+    [Command]
+    void CmdSyncPlayerIsDead(PlayerStats stats, bool isDead)
+    {
+        stats.isDead = isDead;
     }
 
     /// <summary>
@@ -139,7 +138,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
         player.GetComponent<Collider2D>().enabled = false;
         player.GetComponent<PlayerMovement>().enabled = false;
-        player.GetComponent<PlayerStats>().enabled = false;
+        //player.GetComponent<PlayerStats>().enabled = false;
         playerGun.CmdDropGunOnServer(this.gameObject, playerGun.throwDirection);
         playerGun.enabled = false;
 
@@ -150,38 +149,6 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
     }
 
-    [Command(requiresAuthority = false)]
-    void OnCmdPlayerIsDead(bool allDead)
-    {
-        if (!allDead) return;
-
-        Debug.Log("allDead = " + allDead);
-        canRespawn = false;
-        var playerUI = GetComponent<PlayerUI>();
-        playerUI.gameOverDisplay.SetActive(allDead);
-        OnRpcAllPlayersDead(allDead);
-    }
-
-    [ClientRpc]
-    void OnRpcAllPlayersDead(bool alldead)
-    {
-        Debug.Log("Can Respawn is false");
-        canRespawn = false;
-        var playerUI = GetComponent<PlayerUI>();
-        playerUI.gameOverDisplay.SetActive(alldead);
-    }
-
-    [Command(requiresAuthority = false)]
-    void CmdSyncDeadStatus(bool oldvalue, bool newValue)
-    {
-        isDead = newValue;
-    }
-
-    [Command(requiresAuthority = false)]
-    void CmdSyncCanRespawnStatus(bool oldvalue, bool newValue)
-    {
-        canRespawn = newValue;
-    }
     #endregion
 
     #region Respawn Player
@@ -223,6 +190,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         playerStats.ResetStats();
         playerStats.GetHealth(MaxHealth);
         isDead = false;
+        CmdSyncPlayerIsDead(this, isDead);
     }
 
     /// <summary>
@@ -232,10 +200,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     IEnumerator WaitTillRespawn()
     {
         yield return new WaitForSeconds(respawnDelay);
-        if (canRespawn)
-        {
-            CmdRespawnPlayer(this.gameObject);
-        }
+        CmdRespawnPlayer(this.gameObject);
     }
 
     #endregion
@@ -336,15 +301,31 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         spawnPoint = transform.position;
         OnLoad();
         OnNewGame();
-        //Adding player
-        //GameManager.players.Add(this);
-        canRespawn = true;
     }
 
     [Client]
     private void Update()
     {
         IsInteracting();
+        bool isGameOver = OnGameOver();
+        Debug.Log(isGameOver);
+        //StartGameOverDisplay
+        if (isGameOver && isServer)
+        {
+            CmdGameOver();
+        }
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdGameOver()
+    {
+        RpcGameOver();
+    }
+
+    [ClientRpc]
+    void RpcGameOver()
+    {
+        GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
     }
 
     /// <summary>
