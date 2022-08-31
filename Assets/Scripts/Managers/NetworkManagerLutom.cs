@@ -13,17 +13,19 @@ public class NetworkManagerLutom : NetworkManager
     //public List<RoomPlayer> playerList { get; set; } = new();
 
     //#region Server
-    //[Server]
-    //public override void OnServerAddPlayer(NetworkConnectionToClient conn)
-    //{
-    //    base.OnServerAddPlayer(conn);
-    //    RoomPlayer player = conn.identity.GetComponent<RoomPlayer>();
-    //    playerList.Add(player);
-    //    player.gameObject.SetActive(false);
-    //    //player.SetPartyOwner(playerList.Count == 1);
-    //    Debug.Log(playerList.Count);
+    [Server]
+    public override void OnServerAddPlayer(NetworkConnectionToClient conn)
+    {
+        base.OnServerAddPlayer(conn);
+        //RoomPlayer player = conn.identity.GetComponent<RoomPlayer>();
+        //playerList.Add(player);
+        //player.gameObject.SetActive(false);
+        //player.SetPartyOwner(playerList.Count == 1);
+        //Debug.Log(playerList.Count);
+        GameManager.players.Add(conn.identity.GetComponent<PlayerStats>());
+        Debug.Log("OnServerAddPlayer: " + conn.identity.name);
 
-    //}
+    }
 
     //public override void OnServerDisconnect(NetworkConnectionToClient conn)
     //{

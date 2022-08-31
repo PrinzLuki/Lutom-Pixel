@@ -22697,8 +22697,9 @@ MonoBehaviour:
     m_Bits: 256
   showGizmos: 0
   spawnPoint: {x: 0, y: 0, z: 0}
-  respawnDelay: 5
+  respawnDelay: 20
   isDead: 0
+  canRespawn: 0
   getDamageEffect: {fileID: 6491880822408709941}
   dieEffect: {fileID: 4993182989026329915}
   onHealthChanged:

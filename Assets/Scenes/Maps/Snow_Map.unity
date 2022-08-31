@@ -707,13 +707,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 76669703}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 1789453678}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &83891901
 GameObject:
@@ -8040,6 +8040,10 @@ PrefabInstance:
       propertyPath: spawnPos.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7392861686046315896, guid: 3f84843814d523c4e80a1b9f31100253, type: 3}
+      propertyPath: difficulties.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7392861686046315897, guid: 3f84843814d523c4e80a1b9f31100253, type: 3}
       propertyPath: m_Name
       value: SpawnManager
@@ -10580,6 +10584,7 @@ Transform:
   - {fileID: 5454211074371910081}
   - {fileID: 1630988038}
   - {fileID: 747827594}
+  - {fileID: 76669705}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

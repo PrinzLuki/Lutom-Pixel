@@ -7,6 +7,8 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
+    public static List<PlayerStats> players = new List<PlayerStats>();
+
     static GameManager instance;
     public static GameManager Instance
     {
@@ -31,4 +33,25 @@ public class GameManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
     }
+
+    private void OnEnable()
+    {
+        PlayerStats.OnGameOver += IsGameOver;
+    }
+    private void OnDisable()
+    {
+        PlayerStats.OnGameOver -= IsGameOver;
+    }
+
+    public bool IsGameOver()
+    {
+        for(int i = 0; i < players.Count; i++)
+        {
+            if (!players[i].IsDead) return false;
+
+            continue;
+        }
+        return true;
+    }
+
 }
