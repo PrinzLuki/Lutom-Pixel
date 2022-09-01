@@ -37,6 +37,7 @@ public class ChaseState : State<BaseAI>
     public override void Update(BaseAI owner)
     {
         owner.Walking();
-        owner.Attack(false);
+
+        owner.Attack(true);
     }
 }

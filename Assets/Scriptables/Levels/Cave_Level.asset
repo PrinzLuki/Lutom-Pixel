@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c096ee138bed0804ca34cfaa4909476c, type: 3}
   m_Name: Cave_Level
   m_EditorClassIdentifier: 
-  sceneName: Tomi_Scene
+  sceneName: Cave_Map
   levelName: Cave
   levelImage: {fileID: 21300000, guid: 098ac583109744341a67827b863449a9, type: 3}

@@ -13,7 +13,8 @@ public class BatAI : BaseAI
     Vector3 targetPosition;
     public float detectionRadius;
     public float attackRadius;
-
+    bool canAttack = true;
+    public float attackDelayTime = 1.5f;
 
     public override void Start()
     {
@@ -36,11 +37,22 @@ public class BatAI : BaseAI
 
     public override void Attack(bool isBoom)
     {
+        if (!canAttack) return;
+
+        StartCoroutine(AttackDelay());
+
         var coll = Physics2D.OverlapCircle(transform.position, attackRadius, playerLayer);
         if (coll == null) return;
         if (coll.GetComponent<IDamageable>() != null)
             coll.GetComponent<IDamageable>().GetDamage(stats.AttackDmg, this.gameObject);
+    }
 
+    IEnumerator AttackDelay()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(attackDelayTime);
+        canAttack = true;
+        
     }
 
     public override void EnemyDetection()

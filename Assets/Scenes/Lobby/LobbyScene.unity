@@ -6878,8 +6878,8 @@ MonoBehaviour:
   runInBackground: 1
   autoStartServerBuild: 1
   serverTickRate: 30
-  offlineScene: Assets/Scenes/Lukas/LobbyLukasNew.unity
-  onlineScene: Assets/Scenes/Lukas/LobbyLukasNew.unity
+  offlineScene: Assets/Scenes/Lobby/LobbyScene.unity
+  onlineScene: Assets/Scenes/Lobby/LobbyScene.unity
   transport: {fileID: 820454188}
   networkAddress: localhost
   maxConnections: 4
@@ -6908,8 +6908,8 @@ MonoBehaviour:
   showRoomGUI: 0
   minPlayers: 2
   roomPlayerPrefab: {fileID: 3808995867758054806, guid: 514768c0de77723418cf6862b0f80d30, type: 3}
-  RoomScene: Assets/Scenes/Lukas/LobbyLukasNew.unity
-  GameplayScene: Assets/Scenes/Tomi/Tomi_Scene.unity
+  RoomScene: Assets/Scenes/Lobby/LobbyScene.unity
+  GameplayScene: 
   _allPlayersReady: 0
   roomSlots: []
   clientIndex: 0
@@ -14633,6 +14633,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputMan: {fileID: 237937694}
   isPvE: 1
+  killsToWin: 0
 --- !u!4 &1894198007
 Transform:
   m_ObjectHideFlags: 0
