@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
+using System;
 
 public class GameHostSettings : MonoBehaviour
 {
@@ -19,15 +20,35 @@ public class GameHostSettings : MonoBehaviour
     public int levelIndex;
     [Header("Gamemode")]
     public TextMeshProUGUI gamemodeName;
+    public static int neededKillsToWin = 10;
 
+    public static event Action<Gamemodetype> OnGameModeChanged;
+
+    private void OnEnable()
+    {
+        MainMenu.OnNeedKillsSet += SetNeededKills;
+    }
+
+    private void OnDisable()
+    {
+        MainMenu.OnNeedKillsSet -= SetNeededKills;
+    }
 
     private void Start()
     {
         amountOfPlayers.text = roomManager.minPlayers.ToString();
-        levelIndex = Random.Range(0, levels.Length);
+        levelIndex = UnityEngine.Random.Range(0, levels.Length);
         ChangeLevel(levelIndex);
     }
 
+    #region PvP
+
+    public int SetNeededKills()
+    {
+        return neededKillsToWin;
+    }
+
+    #endregion
 
     #region Gamemode
 
@@ -57,6 +78,7 @@ public class GameHostSettings : MonoBehaviour
         CheckPlayerAmount(type);
         gamemodeName.text = type.ToString();
         roomManager.gamemode = type;
+        OnGameModeChanged?.Invoke(type);
     }
 
     public void CheckPlayerAmount(Gamemodetype type)

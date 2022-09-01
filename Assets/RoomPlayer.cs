@@ -105,7 +105,7 @@ public class RoomPlayer : NetworkRoomPlayer
     {
         if (menu == null)
         {
-            Debug.Log("MainMenu not in Scene");
+            //Debug.Log("MainMenu not in Scene");
             return;
         }
 
@@ -119,8 +119,6 @@ public class RoomPlayer : NetworkRoomPlayer
 
     public override void IndexChanged(int oldIndex, int newIndex)
     {
-        Debug.LogError("Old " + oldIndex);
-        Debug.LogError("New " + newIndex);
         if (menu.playerNamesDisplay[oldIndex].text == displayPlayerName)
         {
             menu.playerNamesDisplay[oldIndex].text = "Waiting For Players...";

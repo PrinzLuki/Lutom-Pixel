@@ -2581,8 +2581,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49757c45e24f91248b035aa90c8e39c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  headerTmp: {fileID: 6934933837809401162}
   killsTmp: {fileID: 7455393451555336180}
   deathsTmp: {fileID: 1968692004722990602}
+  winnerTxt: You WIN!
+  loserTxt: You LOSE!
+  gameOverTxt: Game Over
   killsTxt: 'Kills:'
   deathTxt: 'Deaths: '
 --- !u!1 &2355063649079875856
@@ -22711,6 +22715,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   _playerSFX: {fileID: 533574939580647766}
+  levelInit: {fileID: 0}
   isImmortal: 0
   maxHealth: 100
   health: 100

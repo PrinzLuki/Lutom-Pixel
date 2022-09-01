@@ -9,16 +9,27 @@ public class SpawnPoint : NetworkBehaviour
     [SerializeField, Range(2.5f, 10)] float spawnDelay = 5;
     [SerializeField] int maxEnemyCount = 10;
     float spawnTime = 5;
-
+    [SerializeField] GameObject levelInit;
     [HideInInspector] public Transform enemyContainer;
 
     public int MaxEnemyCount { get => maxEnemyCount; set => maxEnemyCount = value; }
 
     private void Start()
     {
+        levelInit = GameObject.FindGameObjectWithTag("LevelInit");
+        StopSpawnInPvP();
+
         if (!isServer) return;
 
         spawnTime = spawnDelay + (Random.Range(-2f, 2f));
+    }
+
+    [Server]
+    void StopSpawnInPvP()
+    {
+        if (levelInit.GetComponent<LevelInitializer>().IsPvE) return;
+        
+        this.gameObject.SetActive(false);
     }
 
     private void Update()

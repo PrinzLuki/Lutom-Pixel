@@ -35,12 +35,13 @@ public class MainMenu : NetworkBehaviour
 
     //public int sameNameIndex = 1;
 
-
+    public static event Func<int> OnNeedKillsSet; 
 
 
     public void HostLobby()
     {
         NetworkManager.singleton.StartHost();
+        GameManager.instance.killsToWin = OnNeedKillsSet.Invoke();
     }
 
     private void Start()
@@ -145,7 +146,25 @@ public class MainMenu : NetworkBehaviour
     public void ReadyPlayer()
     {
         OnReadyPlayer?.Invoke();
+
+        if (!isServer) return;
+
+        CmdSendNeededKills(GameManager.instance.killsToWin);
     }
+
+    [Command(requiresAuthority = false)]
+    public void CmdSendNeededKills(int kills)
+    {
+        RpcSendNeededKills(kills);
+    }
+
+    [ClientRpc]
+    public void RpcSendNeededKills(int kills)
+    {
+        GameManager.instance.killsToWin = kills;
+        Debug.Log($"Main Menu neededKills: {kills}");
+    }
+    
 
     public void ToggleStartGameButton(bool value)
     {

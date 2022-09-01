@@ -5,49 +5,24 @@ using Mirror;
 using UnityEngine.Events;
 using System;
 
-public class GameManager : MonoBehaviour
+public class GameManager : BaseSingelton<GameManager>
 {
     public static List<PlayerStats> players = new List<PlayerStats>();
-
-    static GameManager instance;
-    public static GameManager Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new GameManager();
-            }
-            return instance;
-        }
-    }
-
-    private void Awake()
-    {
-        if(instance != null)
-        {
-            if(instance != this)
-            {
-                Destroy(instance);
-            }
-        }
-        DontDestroyOnLoad(gameObject);
-    }
-
-    private void Start()
-    {
-        var inputMan = FindObjectOfType<InputManager>();
-        inputMan.gameObject.SetActive(false);
-        inputMan.gameObject.SetActive(true);
-    }
+    [SerializeField] GameObject inputMan;
+    public bool isPvE;
+    public int killsToWin;
 
     private void OnEnable()
     {
         PlayerStats.OnGameOver += IsGameOver;
+        GameHostSettings.OnGameModeChanged += SetGameMode;
+        PlayerStats.OnPlayerWin += DidPlayerWin;
     }
     private void OnDisable()
     {
         PlayerStats.OnGameOver -= IsGameOver;
+        GameHostSettings.OnGameModeChanged -= SetGameMode;
+        PlayerStats.OnPlayerWin -= DidPlayerWin;
     }
 
     public bool IsGameOver()
@@ -59,6 +34,40 @@ public class GameManager : MonoBehaviour
             continue;
         }
         return true;
+    }
+
+    public bool DidPlayerWin(int kills)
+    {
+        bool didWin = kills >= killsToWin ? true : false;
+        Debug.Log(killsToWin);
+        return didWin;
+    }
+
+    public void SetGameMode(Gamemodetype type)
+    {
+        switch (type)
+        {
+            case Gamemodetype.PVE:
+                isPvE = true;
+                Debug.Log("IsPvE");
+                break;
+            case Gamemodetype.PVP:
+                isPvE = false;
+                Debug.Log("isPvP");
+                break;
+            case Gamemodetype.MAX:
+                Debug.LogError("No available GameMode Setted");
+                break;
+            default:
+                Debug.LogWarning("GameMode change is called but didnt Set");
+                break;
+        }
+    }
+
+    public void RestartInputManager()
+    {
+        inputMan.SetActive(false);
+        inputMan.SetActive(true);
     }
 
 }

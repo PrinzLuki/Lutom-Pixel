@@ -60,6 +60,7 @@ public class PlayerUI : NetworkBehaviour
     {
         chatUI = GetComponent<ChatUI>();
         audioManager = FindObjectOfType<AudioManager>();
+        gameOverDisplay.SetActive(false);
         if (audioManager == null)
         {
             Debug.Log("AudioManager has not been found");

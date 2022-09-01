@@ -1526,6 +1526,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218217357}
   m_CullTransparentMesh: 1
+--- !u!1 &237937694 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5774435737296654318, guid: 458bf707605382244927a588557cf712, type: 3}
+  m_PrefabInstance: {fileID: 1073193201}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &268970684
 GameObject:
   m_ObjectHideFlags: 0
@@ -8387,7 +8392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5774435737296654318, guid: 458bf707605382244927a588557cf712, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5774435737296654320, guid: 458bf707605382244927a588557cf712, type: 3}
       propertyPath: m_RootOrder
@@ -11950,18 +11955,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
-        m_MethodName: Select
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
 --- !u!114 &1587823030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14625,7 +14618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1894198006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14638,6 +14631,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b8b26380f31fd4e82b3628a91ae30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputMan: {fileID: 237937694}
+  isPvE: 1
 --- !u!4 &1894198007
 Transform:
   m_ObjectHideFlags: 0

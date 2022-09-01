@@ -9,6 +9,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     [Header("References")]
     [SerializeField] private GameObject _playerSFX;
+    [SerializeField] LevelInitializer levelInit;
 
     [Header("Stats")]
     [SerializeField] private bool isImmortal;
@@ -22,7 +23,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private float jumpPower = 6.0f;
     [SerializeField] private float interactionRadius = 1f;
     [SerializeField] private LayerMask interactionMask;
-    int killCount;
+    [SerializeField] int killCount;
 
     [Header("Gizmos")]
     [SerializeField] private bool showGizmos;
@@ -41,7 +42,9 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     public UnityEvent<float, float> onHealthChanged;
     public static event Func<bool> OnGameOver;
-    public static event Action<int, int> OnShowGameOverStats;
+    public static event Action<int, int> OnPvEShowGameOverStats;
+    public static event Action<bool, int, int> OnPvPShowGameOverStats;
+    public static event Func<int, bool> OnPlayerWin;
 
     public float Health { get => health; set => health = value; }
     public float Speed { get => speed; set => speed = value; }
@@ -82,22 +85,55 @@ public class PlayerStats : NetworkBehaviour, IDamageable
             StartCoroutine(WaitTillRespawn());
             isDead = true;
             CmdSyncPlayerIsDead(this, isDead);
+            PvPKillCheck();
         }
         onHealthChanged?.Invoke(Health, MaxHealth);
     }
 
-    void GameOverCheck()
+    void PvPKillCheck()
     {
-        bool isGameOver = OnGameOver();
-        Debug.Log(isGameOver);
-        //StartGameOverDisplay
-        if (isGameOver && isServer)
-        {
-            CmdGameOver();
-            OnShowGameOverStats?.Invoke(killCount, 200);
-        }
+        if (levelInit.IsPvE) return;
+
+        CmdPvPKill();
     }
 
+    [Command]
+    public void CmdPvPKill()
+    {
+        RpcPvPKill();
+    }
+
+    [ClientRpc]
+    public void RpcPvPKill()
+    {
+        if (hasAuthority) return;
+        KillCount++;
+        Debug.Log("Kill");
+    }
+
+    void GameOverCheck()
+    {
+        if (!levelInit.IsPvE)
+        {
+            bool didPlayerWin = OnPlayerWin.Invoke(KillCount);
+            Debug.Log("any Player win = " + didPlayerWin);
+            if (didPlayerWin)
+            {
+                CmdGameOver();
+            }
+        }
+        else
+        {
+            bool isGameOver = OnGameOver.Invoke();
+
+            if (isGameOver && isServer)
+            {
+                CmdGameOver();
+            }
+            if (isGameOver)
+                OnPvEShowGameOverStats?.Invoke(killCount, SaveData.NewGameData.deaths);
+        }
+    }
 
     [Command]
     void CmdSyncPlayerIsDead(PlayerStats stats, bool isDead)
@@ -313,7 +349,9 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     private void Start()
     {
+        levelInit = GameObject.FindGameObjectWithTag("LevelInit").GetComponent<LevelInitializer>();
         spawnPoint = transform.position;
+
         OnLoad();
         OnNewGame();
         GameManager.players.Add(this);
@@ -330,6 +368,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     void CmdGameOver()
     {
         RpcGameOver();
+        GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
     }
 
     [ClientRpc]
@@ -388,12 +427,10 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     public void OnNewGame()
     {
-        Debug.Log("Current Deaths: " + SaveData.NewGameData.deaths);
 
         SaveData.NewGameData.deaths = 0;
         SaveData.NewGameData.kills = 0;
 
-        Debug.Log("Stats Reset in NewGameData - Current Deaths: " + SaveData.NewGameData.deaths);
 
         SerializationManager.Save("newGameData", SaveData.NewGameData);
     }
@@ -405,7 +442,6 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     {
         SaveData.PlayerProfile = (PlayerProfile)SerializationManager.Load(Application.persistentDataPath + "/saves/playerData.lutompixel");
         SaveData.NewGameData = (NewGameData)SerializationManager.Load(Application.persistentDataPath + "/saves/newGameData.lutompixel");
-        Debug.Log("All Time Deaths: " + SaveData.PlayerProfile.deaths);
     }
 
     #endregion
