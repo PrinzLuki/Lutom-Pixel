@@ -20762,6 +20762,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1086581630}
     m_Modifications:
+    - target: {fileID: 4166289271115358235, guid: abbf16533858d2941b1355b9dc978906, type: 3}
+      propertyPath: killsToWin
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5249694640776926547, guid: abbf16533858d2941b1355b9dc978906, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -34116,7 +34120,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  weaponSpawnPoints: []
+  weaponSpawnPoints:
+  - {fileID: 2757776766475439576}
+  - {fileID: 2757776767222484992}
+  - {fileID: 997292726}
+  - {fileID: 1348150986}
+  - {fileID: 2081321530}
   weaponScriptables:
   - {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
   - {fileID: 11400000, guid: 196c6c6dfb0909e48b81e9ba795f83e2, type: 2}
