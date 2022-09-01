@@ -88,7 +88,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
             PvPKillCheck(this);
             StartCoroutine(WaitTillRespawn());
 
-            if(playerObj.GetComponent<PlayerStats>() != null)
+            if (playerObj.GetComponent<PlayerStats>() != null)
             {
                 CmdKillCountSet(playerObj);
             }
@@ -131,7 +131,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     {
         if (!levelInit.IsPvE)
         {
-            bool didPlayerWin = OnPlayerWin.Invoke(DeathCount);
+            bool didPlayerWin = OnPlayerWin.Invoke(KillCount);
             //Debug.Log("any Player win = " + didPlayerWin);
             if (didPlayerWin)
             {
@@ -148,7 +148,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
             }
             if (isGameOver)
             {
-                OnPvEShowGameOverStats?.Invoke(killCount, SaveData.NewGameData.deaths);
+                OnPvEShowGameOverStats?.Invoke(KillCount, SaveData.NewGameData.deaths);
                 this.enabled = false;
             }
         }
@@ -399,15 +399,23 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         {
             if (GameManager.players[i] == null) return;
 
-            if (GameManager.players[i].DeathCount >= levelInit.killsToWin)
+            if (!GameManager.players[i].netIdentity.hasAuthority) continue;
+
+            if (GameManager.players[i].KillCount < GameManager.instance.killsToWin)
             {
-                OnPvPShowGameOverStats?.Invoke(true, 10, 8);
+                Debug.LogWarning($"Player Loses with {GameManager.players[i].KillCount} kills and {GameManager.players[i].DeathCount} deaths.");
+
+                OnPvPShowGameOverStats?.Invoke(false, GameManager.players[i].KillCount, GameManager.players[i].DeathCount);
                 GameManager.players[i].GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
+                break;
             }
-            else if (GameManager.players[i].DeathCount < levelInit.killsToWin)
+            else if (GameManager.players[i].KillCount >= GameManager.instance.killsToWin)
             {
-                OnPvPShowGameOverStats?.Invoke(false, 8, 10);
+                Debug.LogWarning($"Player Win with {GameManager.players[i].KillCount} kills and {GameManager.players[i].DeathCount} deaths.");
+
+                OnPvPShowGameOverStats?.Invoke(true, GameManager.players[i].KillCount, GameManager.players[i].DeathCount);
                 GameManager.players[i].GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
+                break;
             }
         }
     }

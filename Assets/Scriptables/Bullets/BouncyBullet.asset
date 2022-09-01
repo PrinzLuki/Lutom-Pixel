@@ -14,9 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 8336525490738794815, guid: 6c3e768f0081d474b83e174621fe964b, type: 3}
   bulletItem: {fileID: 8336525490738794815, guid: 02cf5e6ffbac72944bc5ea3d6bf6e045, type: 3}
-  damage: 1
+  damage: 10
   timeUntilDestroyed: 4
-  bouncy: 1
-  bouncyMAT: {fileID: 6200000, guid: ca4d78f15b3baa541b164cd6b7468d7e, type: 2}
-  living: 1
-  sticky: 0

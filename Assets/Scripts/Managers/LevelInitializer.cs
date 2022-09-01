@@ -9,14 +9,12 @@ public class LevelInitializer : NetworkBehaviour
 
     public bool IsPvE { get => isPvE; set => isPvE = value; }
 
-    public int killsToWin;
 
     private void Start()
     {
         GameManager.instance.RestartInputManager();
 
         if (!isServer) return;
-        killsToWin = GameManager.instance.killsToWin;
         IsPvE = GameManager.instance.isPvE;
         CmdSetIsPve(IsPvE);
     }

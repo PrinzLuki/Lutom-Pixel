@@ -20,7 +20,7 @@ public class GameHostSettings : MonoBehaviour
     public int levelIndex;
     [Header("Gamemode")]
     public TextMeshProUGUI gamemodeName;
-    public static int neededKillsToWin = 10;
+    public static int neededKillsToWin = 1;
 
     public static event Action<Gamemodetype> OnGameModeChanged;
 
