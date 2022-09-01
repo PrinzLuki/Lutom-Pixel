@@ -135,7 +135,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
             //Debug.Log("any Player win = " + didPlayerWin);
             if (didPlayerWin)
             {
-                CmdGameOver();
+                CmdGameOverPvP();
             }
         }
         else
@@ -144,13 +144,15 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
             if (isGameOver && isServer)
             {
-                CmdGameOver();
+                CmdGameOverPvE();
+                //this.enabled = false;
+
             }
-            if (isGameOver)
-            {
-                OnPvEShowGameOverStats?.Invoke(KillCount, SaveData.NewGameData.deaths);
-                this.enabled = false;
-            }
+            //if (isGameOver)
+            //{
+            //    OnPvEShowGameOverStats?.Invoke(KillCount, SaveData.NewGameData.deaths);
+            //    this.enabled = false;
+            //}
         }
     }
 
@@ -385,13 +387,13 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     }
 
     [Command(requiresAuthority = false)]
-    void CmdGameOver()
+    void CmdGameOverPvP()
     {
-        RpcGameOver();
+        RpcGameOverPvP();
     }
 
     [ClientRpc]
-    void RpcGameOver()
+    void RpcGameOverPvP()
     {
         Debug.Log("RPC Game Over");
 
@@ -417,6 +419,26 @@ public class PlayerStats : NetworkBehaviour, IDamageable
                 GameManager.players[i].GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
                 break;
             }
+        }
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdGameOverPvE()
+    {
+        RpcGameOverPvE();
+    }
+
+    [ClientRpc]
+    public void RpcGameOverPvE()
+    {
+        for (int i = 0; i < GameManager.players.Count; i++)
+        {
+            if (GameManager.players[i] == null) return;
+
+            if (!GameManager.players[i].netIdentity.hasAuthority) continue;
+
+            GameManager.players[i].GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
+            OnPvEShowGameOverStats?.Invoke(GameManager.players[i].KillCount, GameManager.players[i].DeathCount);
         }
     }
 
