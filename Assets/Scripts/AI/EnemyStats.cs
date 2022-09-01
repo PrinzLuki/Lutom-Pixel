@@ -35,7 +35,6 @@ public class EnemyStats : NetworkBehaviour, IDamageable
         CmdPlayGetDamageVFX();
         if (health <= 0)
         {
-            CmdPlayKillVFX();
             if (!isDead)
             {
                 isDead = true;
@@ -45,6 +44,7 @@ public class EnemyStats : NetworkBehaviour, IDamageable
                 }
             }
 
+            CmdPlayKillVFX();
             NetworkServer.Destroy(gameObject);
         }
     }

@@ -4969,7 +4969,11 @@ MonoBehaviour:
   distance: 0.8
   maxIdleTime: 5
   isBoom: 0
-  explosionRadial: 5
+  fieldOfImpact: 1.5
+  force: 10
+  explodeLayer:
+    serializedVersion: 2
+    m_Bits: 3976
 --- !u!50 &854664342618426679
 Rigidbody2D:
   serializedVersion: 4

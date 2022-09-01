@@ -9,7 +9,11 @@ public class ChickenAI : BaseAI
     public float maxIdleTime = 5;
     float dirChangeTimer = 2;
     public bool isBoom;
-    public float explosionRadial = 3;
+    //public float explosionRadial = 3;
+
+    public float fieldOfImpact;
+    public float force;
+    public LayerMask explodeLayer;
 
     public override void Start()
     {
@@ -73,26 +77,48 @@ public class ChickenAI : BaseAI
     {
         if (isBoom)
         {
-            Collider2D coll = Physics2D.OverlapCircle(transform.position, 2, playerLayer);
-            if (coll != null && coll.GetComponent<IDamageable>() != null)
-                StartCoroutine(Kaboom(this, coll.transform));
+            //Collider2D coll = Physics2D.OverlapCircle(transform.position, 2, playerLayer);
+            //if (coll != null && coll.GetComponent<IDamageable>() != null)
+                StartCoroutine(Kaboom(this));
         }
     }
 
-    IEnumerator Kaboom(BaseAI owner, Transform player)
+    IEnumerator Kaboom(BaseAI owner)
     {
         owner.animator.SetTrigger("boom");
         yield return new WaitForSeconds(1);
-        if (player != null)
-        {
-            if (Vector2.Distance(this.transform.position, player.position) < explosionRadial)
-            {
-                if (player != null)
-                    player.GetComponent<IDamageable>().GetDamage(stats.AttackDmg, this.gameObject);
-            }
-        }
+        //if (player != null)
+        //{
+        //    if (Vector2.Distance(this.transform.position, player.position) < explosionRadial)
+        //    {
+        //        if (player != null)
+        //            player.GetComponent<IDamageable>().GetDamage(stats.AttackDmg, this.gameObject);
+        //    }
+        //}
+        Explode();
         NetworkServer.Destroy(this.gameObject);
     }
+
+
+    public void Explode()
+    {
+        Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, fieldOfImpact, explodeLayer);
+
+        foreach (Collider2D obj in objects)
+        {
+            Vector2 direction = obj.transform.position - transform.position;
+
+            obj.GetComponent<Rigidbody2D>().AddForce(direction * force, ForceMode2D.Impulse);
+            if (obj.GetComponent<IDamageable>() != null)
+            {
+                obj.GetComponent<IDamageable>().GetDamage(stats.AttackDmg,this.gameObject);
+            }
+
+        }
+
+        //Destroy(gameObject, GetComponent<Animator>().runtimeAnimatorController.animationClips[0].length);
+    }
+
     void FlipSprite(bool isFlipped, out bool flip)
     {
         if (isFlipped) sprite.flipX = true;
