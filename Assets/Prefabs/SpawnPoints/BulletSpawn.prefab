@@ -229,6 +229,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0f976e7b3f08735469bc7f549efcbba5, type: 2}
   - {fileID: 11400000, guid: f68b8d9788cc5894a82f2ce0996c9de8, type: 2}
   - {fileID: 11400000, guid: 7f65e60b36dc2c34cac899e0e8a4563b, type: 2}
+  - {fileID: 11400000, guid: a74e99c0aab786e49b5643e60b8014d4, type: 2}
   bulletSpawnCount: 1
   spawnDelay: 10
   timer: 0

@@ -463,6 +463,14 @@ PrefabInstance:
       propertyPath: sceneId
       value: 3243279913
       objectReference: {fileID: 0}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: a74e99c0aab786e49b5643e60b8014d4, type: 2}
     - target: {fileID: 6566296774633843090, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
       propertyPath: m_Name
       value: BulletSpawn (2)
@@ -973,6 +981,8 @@ GameObject:
   - component: {fileID: 203491320}
   - component: {fileID: 203491319}
   - component: {fileID: 203491318}
+  - component: {fileID: 203491322}
+  - component: {fileID: 203491321}
   m_Layer: 0
   m_Name: SnowParticle
   m_TagString: Untagged
@@ -4832,9 +4842,9 @@ ParticleSystem:
       properties: 0
       emitProbability: 1
   LightsModule:
-    enabled: 0
-    ratio: 0
-    light: {fileID: 0}
+    enabled: 1
+    ratio: 1
+    light: {fileID: 203491322}
     randomDistribution: 1
     color: 1
     range: 1
@@ -4895,7 +4905,7 @@ ParticleSystem:
     intensityCurve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 27.24
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4945,7 +4955,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    maxLights: 20
+    maxLights: 753
   TrailModule:
     enabled: 0
     mode: 0
@@ -5776,6 +5786,88 @@ Transform:
   m_Father: {fileID: 753785056}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 5.373}
+--- !u!114 &203491321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203491317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+--- !u!108 &203491322
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203491317}
+  m_Enabled: 1
+  serializedVersion: 10
+  m_Type: 2
+  m_Shape: 0
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Intensity: 100
+  m_Range: 53.38
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 2.24
+  m_ColorTemperature: 14006
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1 &261491325
 GameObject:
   m_ObjectHideFlags: 0
@@ -6380,6 +6472,14 @@ PrefabInstance:
       propertyPath: sceneId
       value: 521483289
       objectReference: {fileID: 0}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: a74e99c0aab786e49b5643e60b8014d4, type: 2}
     - target: {fileID: 6566296774633843090, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
       propertyPath: m_Name
       value: BulletSpawn (3)
@@ -7898,6 +7998,14 @@ PrefabInstance:
       propertyPath: sceneId
       value: 3400137137
       objectReference: {fileID: 0}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: a74e99c0aab786e49b5643e60b8014d4, type: 2}
     - target: {fileID: 6566296774633843090, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
       propertyPath: m_Name
       value: BulletSpawn (1)
@@ -9377,6 +9485,14 @@ PrefabInstance:
       propertyPath: sceneId
       value: 2007736512
       objectReference: {fileID: 0}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: a74e99c0aab786e49b5643e60b8014d4, type: 2}
     - target: {fileID: 6566296774633843090, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
       propertyPath: m_Name
       value: BulletSpawn (4)
@@ -9613,6 +9729,14 @@ PrefabInstance:
       propertyPath: sceneId
       value: 4047358767
       objectReference: {fileID: 0}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6566296774633843089, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
+      propertyPath: bulletScriptables.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: a74e99c0aab786e49b5643e60b8014d4, type: 2}
     - target: {fileID: 6566296774633843090, guid: 1fdb58b7ddf8e1d478477b3b01b0720f, type: 3}
       propertyPath: m_Name
       value: BulletSpawn (5)
