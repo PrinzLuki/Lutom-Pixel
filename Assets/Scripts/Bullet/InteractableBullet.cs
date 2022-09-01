@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class InteractableBullet : NetworkBehaviour
+public class InteractableBullet : NetworkBehaviour, IInteractable
 {
     public BulletScriptableObject bulletScriptable;
 
@@ -16,14 +16,7 @@ public class InteractableBullet : NetworkBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.transform.CompareTag("Player"))
-        {
-            PlayerGun playerGun = other.gameObject.GetComponent<PlayerGun>();
-            if (playerGun.currentWeaponGameObject == null) return;
 
-            CmdSetBullet(playerGun.currentWeaponGameObject);
-            CmdDeleteGameObject(gameObject);
-        }
         if (other.gameObject.layer == 11) //Weapon
         {
 
@@ -62,4 +55,13 @@ public class InteractableBullet : NetworkBehaviour
         Destroy(trg);
     }
 
+    public void Interact(GameObject player)
+    {
+        PlayerGun playerGun = player.GetComponent<PlayerGun>();
+        if (playerGun.currentWeaponGameObject == null) return;
+
+        CmdSetBullet(playerGun.currentWeaponGameObject);
+        CmdDeleteGameObject(gameObject);
+
+    }
 }

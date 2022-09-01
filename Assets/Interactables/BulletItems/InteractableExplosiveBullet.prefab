@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7916284691634827629}
   - component: {fileID: -2936819213323929246}
   - component: {fileID: -2531718341917554330}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: InteractableExplosiveBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

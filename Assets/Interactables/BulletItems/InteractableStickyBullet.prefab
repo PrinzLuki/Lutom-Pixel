@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -2936819213323929246}
   - component: {fileID: -5468334901009354892}
   - component: {fileID: -1272405953648692623}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: InteractableStickyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
