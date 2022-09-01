@@ -35,6 +35,11 @@ public class StickyBullet : Bullet, IExplosion
 
     public override void OnCollisionEnter2D(Collision2D other)
     {
+        if (GameManager.instance.isPvE && other.gameObject.GetComponent<PlayerStats>() != null)
+        {
+            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), other.gameObject.GetComponent<Collider2D>());
+            return;
+        }
         //GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         Destroy(GetComponent<Rigidbody2D>());
         Destroy(GetComponent<Collider2D>());

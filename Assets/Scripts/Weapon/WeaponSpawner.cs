@@ -29,7 +29,16 @@ public class WeaponSpawner : NetworkBehaviour
         if (waitForPlayers)
             CheckPlayers();
         else
+        {
+            weaponSpawnPoints = new List<Transform>();
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                weaponSpawnPoints.Add(transform.GetChild(i));
+            }
+
             SpawnWeapons();
+        }
     }
 
 

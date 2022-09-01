@@ -84,9 +84,9 @@ public class PlayerMovement : NetworkBehaviour
     /// </summary>
     private void MovePlayer()
     {
-        _playerRigidbody.velocity = new Vector2(horizontalInput * _playerStats.Speed, _playerRigidbody.velocity.y);
+        //_playerRigidbody.velocity = new Vector2(horizontalInput * _playerStats.Speed, _playerRigidbody.velocity.y);
         //_playerRigidbody.AddForce(new Vector2(horizontalInput * _playerStats.Speed, _playerRigidbody.velocity.y) * Time.deltaTime, ForceMode2D.Force);
-        //transform.Translate(new Vector2(horizontalInput * _playerStats.Speed, 0) * Time.deltaTime);
+        transform.Translate(new Vector2(horizontalInput * _playerStats.Speed, 0) * Time.deltaTime);
 
         #region Flip By Mouse
         //if (mousePos.x > transform.position.x)

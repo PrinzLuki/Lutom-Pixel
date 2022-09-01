@@ -18,6 +18,11 @@ public class EnemyStats : NetworkBehaviour, IDamageable
 
     bool isDead;
 
+    [Header("Effects")]
+    [Header("Get Damage Effect")]
+    public ParticleSystem getDamageEffect;
+    public ParticleSystem dieEffect;
+
     public float Speed { get => speed; }
     public float AttackDmg { get => attackDmg; }
     public float ChaseSpeed { get => chaseSpeed; }
@@ -27,8 +32,10 @@ public class EnemyStats : NetworkBehaviour, IDamageable
     public void GetDamage(float dmg, GameObject playerObj)
     {
         health -= dmg;
+        CmdPlayGetDamageVFX();
         if (health <= 0)
         {
+            CmdPlayKillVFX();
             if (!isDead)
             {
                 isDead = true;
@@ -38,4 +45,37 @@ public class EnemyStats : NetworkBehaviour, IDamageable
             NetworkServer.Destroy(gameObject);
         }
     }
+
+    #region VFX
+
+    public void PlayEffect(ParticleSystem ps)
+    {
+        ps.Play();
+        GetComponent<SpriteRenderer>().color = Color.red;
+        StartCoroutine(DamageVFX());
+    }
+
+    IEnumerator DamageVFX()
+    {
+        yield return new WaitForSeconds(0.5f);
+        GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdPlayGetDamageVFX()
+    {
+        RpcPlayGetDamageVFX();
+    }
+    [ClientRpc]
+    public void RpcPlayGetDamageVFX() => PlayEffect(getDamageEffect);
+
+    [Command(requiresAuthority = false)]
+    public void CmdPlayKillVFX()
+    {
+        RpcPlayDieVFX();
+    }
+    [ClientRpc]
+    public void RpcPlayDieVFX() => PlayEffect(dieEffect);
+
+    #endregion
 }

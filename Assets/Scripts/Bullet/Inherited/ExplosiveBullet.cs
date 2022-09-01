@@ -32,6 +32,11 @@ public class ExplosiveBullet : Bullet, IExplosion
 
     public override void OnCollisionEnter2D(Collision2D other)
     {
+        if (GameManager.instance.isPvE && other.gameObject.GetComponent<PlayerStats>() != null)
+        {
+            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), other.gameObject.GetComponent<Collider2D>());
+            return;
+        }
         Explode();
     }
 
