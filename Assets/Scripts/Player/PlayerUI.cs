@@ -124,8 +124,9 @@ public class PlayerUI : NetworkBehaviour
 
     #region Kill Counter
 
-    void CountKills()
+    void CountKills(GameObject playerObj)
     {
+        var stats = playerObj.GetComponent<PlayerStats>();
         stats.KillCount++;
         ShowKillsInUI(stats.KillCount);
         SaveData.PlayerProfile.kills += stats.KillCount;

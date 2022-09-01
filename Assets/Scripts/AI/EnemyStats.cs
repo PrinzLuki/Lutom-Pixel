@@ -14,7 +14,7 @@ public class EnemyStats : NetworkBehaviour, IDamageable
     [SerializeField] float chaseSpeed = 2;
     [SerializeField] float jumpPower = 2;
 
-    public static Action OnKill;
+    public static Action<GameObject> OnKill;
 
     bool isDead;
 
@@ -39,7 +39,10 @@ public class EnemyStats : NetworkBehaviour, IDamageable
             if (!isDead)
             {
                 isDead = true;
-                OnKill?.Invoke();
+                if (playerObj.GetComponent<PlayerStats>() != null)
+                {
+                    OnKill?.Invoke(playerObj);
+                }
             }
 
             NetworkServer.Destroy(gameObject);

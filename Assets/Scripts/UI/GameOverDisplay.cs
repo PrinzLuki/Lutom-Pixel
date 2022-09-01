@@ -40,7 +40,7 @@ public class GameOverDisplay : MonoBehaviour
 
 
     /// <summary>
-    /// IsCalled OnGameOver, displays local player stats
+    /// IsCalled OnGameOver, displays local player stats PvE
     /// </summary>
     /// <param name="kills"></param>
     /// <param name="deaths"></param>
@@ -52,7 +52,7 @@ public class GameOverDisplay : MonoBehaviour
     }
 
     /// <summary>
-    /// IsCalled IfPlayerWins game
+    /// IsCalled IfPlayerWins game PvP
     /// </summary>
     /// <param name="didWin"></param>
     /// <param name="kills"></param>
