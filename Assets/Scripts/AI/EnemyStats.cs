@@ -24,7 +24,7 @@ public class EnemyStats : NetworkBehaviour, IDamageable
     public float JumpPower { get => jumpPower; }
     public float Health { get => health; }
 
-    public void GetDamage(float dmg)
+    public void GetDamage(float dmg, GameObject playerObj)
     {
         health -= dmg;
         if (health <= 0)

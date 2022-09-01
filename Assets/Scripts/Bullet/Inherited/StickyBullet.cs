@@ -23,7 +23,7 @@ public class StickyBullet : Bullet, IExplosion
             obj.GetComponent<Rigidbody2D>().AddForce(direction * force, ForceMode2D.Impulse);
             if (obj.GetComponent<IDamageable>() != null)
             {
-                obj.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage);
+                obj.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage, parent.gameObject);
             }
         }
 

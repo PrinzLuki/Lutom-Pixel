@@ -24,6 +24,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private float interactionRadius = 1f;
     [SerializeField] private LayerMask interactionMask;
     [SerializeField] int killCount;
+    [SerializeField] int deathCount;
 
     [Header("Gizmos")]
     [SerializeField] private bool showGizmos;
@@ -55,10 +56,10 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     public float MaxJumpPower { get => maxJumpPower; }
     public float MinJumpPower { get => minJumpPower; }
     public int KillCount { get => killCount; set => killCount = value; }
+    public int DeathCount { get => deathCount; set => deathCount = value; }
 
     [Header("Current Item Type Collected")]
     public ItemType currentItemType;
-
 
     #region Damage/Heal
 
@@ -66,7 +67,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     /// Players gets dmg amount of damage back
     /// </summary>
     /// <param name="dmg"></param>
-    public void GetDamage(float dmg)
+    public void GetDamage(float dmg, GameObject playerObj)
     {
         if (!hasAuthority) return;
         if (isImmortal) return;
@@ -82,41 +83,56 @@ public class PlayerStats : NetworkBehaviour, IDamageable
             CmdKillPlayer(this.gameObject);
             CmdPlayKillVFX();
             OnKillPlayer();
-            StartCoroutine(WaitTillRespawn());
             isDead = true;
             CmdSyncPlayerIsDead(this, isDead);
-            PvPKillCheck();
+            PvPKillCheck(this);
+            StartCoroutine(WaitTillRespawn());
+
+            if(playerObj.GetComponent<PlayerStats>() != null)
+            {
+                CmdKillCountSet(playerObj);
+            }
         }
         onHealthChanged?.Invoke(Health, MaxHealth);
     }
 
-    void PvPKillCheck()
+    [Command(requiresAuthority = false)]
+    public void CmdKillCountSet(GameObject playerObj)
     {
-        if (levelInit.IsPvE) return;
-
-        CmdPvPKill();
-    }
-
-    [Command]
-    public void CmdPvPKill()
-    {
-        RpcPvPKill();
+        RpcKillCountSet(playerObj);
     }
 
     [ClientRpc]
-    public void RpcPvPKill()
+    public void RpcKillCountSet(GameObject playerObj)
     {
-        if (hasAuthority) return;
-        KillCount++;
-        Debug.Log("Kill");
+        playerObj.GetComponent<PlayerStats>().KillCount++;
+    }
+
+    void PvPKillCheck(PlayerStats player)
+    {
+        if (levelInit.IsPvE) return;
+
+        CmdPvPKill(player);
+    }
+
+    [Command]
+    public void CmdPvPKill(PlayerStats player)
+    {
+        RpcPvPKill(player);
+    }
+
+    [ClientRpc]
+    public void RpcPvPKill(PlayerStats player)
+    {
+        player.DeathCount++;
     }
 
     void GameOverCheck()
     {
         if (!levelInit.IsPvE)
         {
-            bool didPlayerWin = OnPlayerWin.Invoke(KillCount);
-            Debug.Log("any Player win = " + didPlayerWin);
+            bool didPlayerWin = OnPlayerWin.Invoke(DeathCount);
+            //Debug.Log("any Player win = " + didPlayerWin);
             if (didPlayerWin)
             {
                 CmdGameOver();
@@ -124,14 +140,17 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         }
         else
         {
-            bool isGameOver = OnGameOver.Invoke();
+            isGameOver = OnGameOver.Invoke();
 
             if (isGameOver && isServer)
             {
                 CmdGameOver();
             }
             if (isGameOver)
+            {
                 OnPvEShowGameOverStats?.Invoke(killCount, SaveData.NewGameData.deaths);
+                this.enabled = false;
+            }
         }
     }
 
@@ -251,7 +270,8 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     IEnumerator WaitTillRespawn()
     {
         yield return new WaitForSeconds(respawnDelay);
-        CmdRespawnPlayer(this.gameObject);
+        if (!isGameOver)
+            CmdRespawnPlayer(this.gameObject);
     }
 
     #endregion
@@ -280,7 +300,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [Command(requiresAuthority = false)]
     public void CmdServerSyncHealth(float oldHealth, float newHealth)
     {
-        health = newHealth;
+        health = (int)newHealth;
     }
 
     /// <summary>
@@ -291,7 +311,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [Command]
     public void CmdServerSyncMaxHealth(float oldHealth, float newHealth)
     {
-        maxHealth = newHealth;
+        maxHealth = (int)newHealth;
     }
 
     #endregion
@@ -368,13 +388,28 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     void CmdGameOver()
     {
         RpcGameOver();
-        GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
     }
 
     [ClientRpc]
     void RpcGameOver()
     {
-        GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
+        Debug.Log("RPC Game Over");
+
+        for (int i = 0; i < GameManager.players.Count; i++)
+        {
+            if (GameManager.players[i] == null) return;
+
+            if (GameManager.players[i].DeathCount >= levelInit.killsToWin)
+            {
+                OnPvPShowGameOverStats?.Invoke(true, 10, 8);
+                GameManager.players[i].GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
+            }
+            else if (GameManager.players[i].DeathCount < levelInit.killsToWin)
+            {
+                OnPvPShowGameOverStats?.Invoke(false, 8, 10);
+                GameManager.players[i].GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
+            }
+        }
     }
 
     /// <summary>

@@ -39,7 +39,6 @@ public class GameManager : BaseSingelton<GameManager>
     public bool DidPlayerWin(int kills)
     {
         bool didWin = kills >= killsToWin ? true : false;
-        Debug.Log(killsToWin);
         return didWin;
     }
 

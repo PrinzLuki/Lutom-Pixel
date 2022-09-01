@@ -39,7 +39,7 @@ public class BatAI : BaseAI
         var coll = Physics2D.OverlapCircle(transform.position, attackRadius, playerLayer);
         if (coll == null) return;
         if (coll.GetComponent<IDamageable>() != null)
-            coll.GetComponent<IDamageable>().GetDamage(stats.AttackDmg);
+            coll.GetComponent<IDamageable>().GetDamage(stats.AttackDmg, this.gameObject);
 
     }
 

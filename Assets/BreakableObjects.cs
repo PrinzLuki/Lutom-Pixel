@@ -22,7 +22,7 @@ public class BreakableObjects : NetworkBehaviour, IDamageable
         healthSlider.maxValue = health;
     }
 
-    public void GetDamage(float dmg)
+    public void GetDamage(float dmg, GameObject playerObj)
     {
         CmdAppear();
         health -= dmg;

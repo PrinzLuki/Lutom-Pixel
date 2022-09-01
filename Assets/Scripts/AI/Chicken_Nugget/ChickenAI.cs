@@ -88,7 +88,7 @@ public class ChickenAI : BaseAI
             if (Vector2.Distance(this.transform.position, player.position) < explosionRadial)
             {
                 if (player != null)
-                    player.GetComponent<IDamageable>().GetDamage(stats.AttackDmg);
+                    player.GetComponent<IDamageable>().GetDamage(stats.AttackDmg, this.gameObject);
             }
         }
         NetworkServer.Destroy(this.gameObject);

@@ -2584,8 +2584,8 @@ MonoBehaviour:
   headerTmp: {fileID: 6934933837809401162}
   killsTmp: {fileID: 7455393451555336180}
   deathsTmp: {fileID: 1968692004722990602}
-  winnerTxt: You WIN!
-  loserTxt: You LOSE!
+  winnerTxt: you win!
+  loserTxt: you lose!
   gameOverTxt: Game Over
   killsTxt: 'Kills:'
   deathTxt: 'Deaths: '
@@ -22729,6 +22729,7 @@ MonoBehaviour:
   interactionMask:
     serializedVersion: 2
     m_Bits: 256
+  killCount: 0
   showGizmos: 0
   spawnPoint: {x: 0, y: 0, z: 0}
   respawnDelay: 20

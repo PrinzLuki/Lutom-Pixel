@@ -9,7 +9,7 @@ public class BouncyBullet : Bullet
     {
         if (other.gameObject.GetComponent<IDamageable>() == null) return;
 
-        other.gameObject.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage);
+        other.gameObject.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage, parent.gameObject);
     }
 
 }

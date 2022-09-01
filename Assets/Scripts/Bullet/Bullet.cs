@@ -20,7 +20,7 @@ public class Bullet : NetworkBehaviour
     {
         if (other.gameObject.GetComponent<IDamageable>() != null && !bulletHit)
         {
-            other.gameObject.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage);
+            other.gameObject.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage, parent.gameObject);
             Destroy(gameObject);
         }
         else

@@ -53,7 +53,7 @@ public class DeathZone : NetworkBehaviour
 
     void GetDamage(Collider2D other, float damage)
     {
-        other.GetComponent<IDamageable>().GetDamage(damage);
+        other.GetComponent<IDamageable>().GetDamage(damage, this.gameObject);
     }
 
 
