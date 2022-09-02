@@ -35,7 +35,7 @@ public class MainMenu : NetworkBehaviour
 
     //public int sameNameIndex = 1;
 
-    public static event Func<int> OnNeedKillsSet; 
+    public static event Func<int> OnNeedKillsSet;
 
 
     public void HostLobby()
@@ -138,8 +138,42 @@ public class MainMenu : NetworkBehaviour
 
     public void StartGame()
     {
-        roomManager.ServerChangeScene(roomManager.GameplayScene);
+        CmdSetPVE(GameManager.instance.isPvE, ((NetworkRoomManagerLutom)roomManager).gamemode);
+        CmdSetMinPlayer(roomManager.minPlayers);
+        StartCoroutine(WaitBeforeStart());
 
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdSetPVE(bool PVEValue, Gamemodetype type)
+    {
+        RpcSetPVE(PVEValue, type);
+    }
+    [ClientRpc]
+    public void RpcSetPVE(bool PVEValue, Gamemodetype type)
+    {
+        GameManager.instance.isPvE = PVEValue;
+        ((NetworkRoomManagerLutom)roomManager).gamemode = type;
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdSetMinPlayer(int minPlayers)
+    {
+        RpcSetMinPlayer(minPlayers);
+    }
+
+    [ClientRpc]
+    public void RpcSetMinPlayer(int minPlayers)
+    {
+        roomManager.minPlayers = minPlayers;
+        GameManager.instance.amountOfPlayers = minPlayers;
+    }
+
+
+    IEnumerator WaitBeforeStart()
+    {
+        yield return new WaitForSeconds(0.5f);
+        roomManager.ServerChangeScene(roomManager.GameplayScene);
     }
 
 
@@ -164,7 +198,7 @@ public class MainMenu : NetworkBehaviour
         GameManager.instance.killsToWin = kills;
         //Debug.Log($"Main Menu neededKills: {kills}");
     }
-    
+
 
     public void ToggleStartGameButton(bool value)
     {

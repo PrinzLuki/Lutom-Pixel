@@ -39,6 +39,8 @@ public class PlayerMovement : NetworkBehaviour
     [Client]
     private void Start()
     {
+        GameManager.instance.RestartInputManager();
+
         _playerRigidbody = GetComponent<Rigidbody2D>();
         if (_playerRigidbody == null)
         {
