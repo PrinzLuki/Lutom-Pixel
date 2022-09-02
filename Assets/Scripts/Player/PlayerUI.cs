@@ -11,7 +11,7 @@ public class PlayerUI : NetworkBehaviour
 
     [Header("References")]
     public PlayerStats stats;
-    public AudioManager audioManager;
+    //public AudioManager audioManager;
 
     public Image deadImage;
     [Header("Health UI Large")]
@@ -59,16 +59,16 @@ public class PlayerUI : NetworkBehaviour
     private void Start()
     {
         chatUI = GetComponent<ChatUI>();
-        audioManager = FindObjectOfType<AudioManager>();
+        //audioManager = FindObjectOfType<AudioManager>();
         gameOverDisplay.SetActive(false);
-        if (audioManager == null)
-        {
-            Debug.Log("AudioManager has not been found");
-        }
-        else
-        {
-            musicTitle.text = audioManager.GetSongName();
-        }
+        //if (audioManager == null)
+        //{
+        //    Debug.Log("AudioManager has not been found");
+        //}
+        //else
+        //{
+        //}
+            musicTitle.text = AudioManager.instance.GetSongName();
 
         GetHealthStats();
     }
@@ -83,10 +83,10 @@ public class PlayerUI : NetworkBehaviour
             Pause();
         }
 
-        if (audioManager.otherSongPlaying)
+        if (AudioManager.instance.otherSongPlaying)
         {
-            musicTitle.text = audioManager.GetSongName();
-            audioManager.otherSongPlaying = false;
+            musicTitle.text = AudioManager.instance.GetSongName();
+            AudioManager.instance.otherSongPlaying = false;
         }
     }
 
@@ -203,12 +203,12 @@ public class PlayerUI : NetworkBehaviour
 
     public void GetNextSong()
     {
-        musicTitle.text = audioManager.ChangeToNextSong();
+        musicTitle.text = AudioManager.instance.ChangeToNextSong();
     }
 
     public void GetPrevSong()
     {
-        musicTitle.text = audioManager.ChangeToPrevSong();
+        musicTitle.text = AudioManager.instance.ChangeToPrevSong();
     }
 
 }
