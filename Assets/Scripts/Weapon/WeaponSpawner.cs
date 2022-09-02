@@ -14,6 +14,7 @@ public class WeaponSpawner : NetworkBehaviour
 
     public float spawnDelay;
     public bool waitForPlayers = true;
+    public bool canRespawn;
 
     //[Server]
     private void Start()
@@ -43,9 +44,11 @@ public class WeaponSpawner : NetworkBehaviour
 
     private void Update()
     {
-        if (spawnedWeapons.Count >= maxSpawnableWeapons) return;
+        if (!isServer) return;
 
-        RespawnAWeapon();
+        if (spawnedWeapons.Count >= maxSpawnableWeapons) return;
+        if (canRespawn)
+            RespawnAWeapon();
     }
 
 
@@ -71,7 +74,7 @@ public class WeaponSpawner : NetworkBehaviour
 
     private void SpawnWeapons()
     {
-
+        Debug.Log("Spawning Weapons");
         for (int i = 0; i < weaponSpawnPoints.Count; i++)
         {
             for (int j = 0; j < weaponSpawnCount; j++)
@@ -84,12 +87,12 @@ public class WeaponSpawner : NetworkBehaviour
                 //CmdAddWeaponToList(weaponClone, this);
             }
         }
+        canRespawn = true;
     }
 
 
     public void RespawnAWeapon()
     {
-        if (!isServer) return;
 
         int randomI = Random.Range(0, weaponSpawnPoints.Count);
 
