@@ -5,7 +5,8 @@ using Mirror;
 
 public class LevelInitializer : NetworkBehaviour
 {
-    [SyncVar(hook = nameof(SyncIsPve))] private bool isPvE;
+    //[SyncVar(hook = nameof(SyncIsPve))]
+    private bool isPvE;
 
     public bool IsPvE { get => isPvE; set => isPvE = value; }
 
@@ -33,9 +34,9 @@ public class LevelInitializer : NetworkBehaviour
         Debug.Log($"Is PvE = {isPve}");
     }
 
-    [Command(requiresAuthority = false)]
-    public void SyncIsPve(bool oldValue, bool newValue)
-    {
-        IsPvE = newValue;
-    }
+    //[Command(requiresAuthority = false)]
+    //public void SyncIsPve(bool oldValue, bool newValue)
+    //{
+    //    IsPvE = newValue;
+    //}
 }

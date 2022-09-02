@@ -43,7 +43,6 @@ public abstract class BaseAI : NetworkBehaviour
     public virtual void Update()
     {
         stateMachine.Update();
-        //EnemyDetection();
     }
 
     public virtual void EnemyDetection()

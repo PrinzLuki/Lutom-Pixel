@@ -27,6 +27,7 @@ public class ChickenAI : BaseAI
     {
         base.Update();
         EnemyDetection();
+        Attack(isBoom);
     }
 
     public override void Idle()
@@ -75,7 +76,7 @@ public class ChickenAI : BaseAI
 
     public override void Attack(bool isBoom)
     {
-        if (isBoom)
+        if (this.isBoom)
         {
             StartCoroutine(Kaboom(this));
         }

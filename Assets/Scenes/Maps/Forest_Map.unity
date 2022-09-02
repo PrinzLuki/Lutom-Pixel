@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 405df461a0577c9459845d4543c7aca5, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: e4fdd471246aecb428b77ae35017daed, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -20763,6 +20763,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 1086581630}
     m_Modifications:
     - target: {fileID: 4166289271115358235, guid: abbf16533858d2941b1355b9dc978906, type: 3}
+      propertyPath: isPvE
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4166289271115358235, guid: abbf16533858d2941b1355b9dc978906, type: 3}
+      propertyPath: inputMan
+      value: 
+      objectReference: {fileID: 347862025}
+    - target: {fileID: 4166289271115358235, guid: abbf16533858d2941b1355b9dc978906, type: 3}
       propertyPath: killsToWin
       value: 1
       objectReference: {fileID: 0}
@@ -21039,6 +21047,11 @@ MonoBehaviour:
   camObj: {fileID: 0}
   cam: {fileID: 1388727782}
   parallaxEffect: 0.2
+--- !u!1 &347862025 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5774435737296654318, guid: 458bf707605382244927a588557cf712, type: 3}
+  m_PrefabInstance: {fileID: 28214027}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &391415882
 GameObject:
   m_ObjectHideFlags: 0
@@ -34129,6 +34142,7 @@ MonoBehaviour:
   weaponScriptables:
   - {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
   - {fileID: 11400000, guid: 196c6c6dfb0909e48b81e9ba795f83e2, type: 2}
+  - {fileID: 11400000, guid: d8fcfc147d3baf448b11e50c811aac0b, type: 2}
   spawnedWeapons: []
   maxSpawnableWeapons: 2
   weaponSpawnCount: 1

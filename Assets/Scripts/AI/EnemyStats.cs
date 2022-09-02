@@ -32,7 +32,7 @@ public class EnemyStats : NetworkBehaviour, IDamageable
     public void GetDamage(float dmg, GameObject playerObj)
     {
         health -= dmg;
-        CmdPlayGetDamageVFX();
+        //CmdPlayGetDamageVFX();
         if (health <= 0)
         {
             if (!isDead)
@@ -42,11 +42,11 @@ public class EnemyStats : NetworkBehaviour, IDamageable
                 {
 
                     OnKill?.Invoke(playerObj);
-                    CmdPlayKillVFX();
-                    NetworkServer.Destroy(gameObject);
 
                 }
             }
+            CmdPlayKillVFX();
+            NetworkServer.Destroy(gameObject);
 
         }
     }

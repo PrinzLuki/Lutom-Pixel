@@ -36,6 +36,9 @@ public class SelfDestructState : State<BaseAI>
     {
         RaycastHit2D hit = Physics2D.CircleCast(owner.transform.position, 2, Vector2.zero, 2, owner.playerLayer);
         if (hit.transform != null && Vector3.Distance(owner.transform.position, hit.transform.position) <= 2)
-            owner.Attack(true);
+        {
+            ((ChickenAI)owner).isBoom = true;
+            owner.Attack(((ChickenAI)owner).isBoom);
+        }
     }
 }
