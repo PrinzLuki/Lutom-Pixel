@@ -115,8 +115,11 @@ MonoBehaviour:
   - {fileID: 2264412920167598532, guid: bd1873ca28b6d294fad4139a01bd3423, type: 3}
   - {fileID: 2264412920167598532, guid: d4fbda4b7bfc8c74f83784933edd25d7, type: 3}
   weaponScriptables:
-  - {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
   - {fileID: 11400000, guid: 196c6c6dfb0909e48b81e9ba795f83e2, type: 2}
+  - {fileID: 11400000, guid: 94355c6e3973c9e42bf50816cf4d4ee7, type: 2}
+  - {fileID: 11400000, guid: d8fcfc147d3baf448b11e50c811aac0b, type: 2}
+  spawnedWeapons: []
+  maxSpawnableWeapons: 2
   weaponSpawnCount: 1
   waitForAmountOfPlayers: 2
   spawnDelay: 5

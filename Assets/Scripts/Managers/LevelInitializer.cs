@@ -33,7 +33,7 @@ public class LevelInitializer : NetworkBehaviour
         Debug.Log($"Is PvE = {isPve}");
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     public void SyncIsPve(bool oldValue, bool newValue)
     {
         IsPvE = newValue;

@@ -77,25 +77,15 @@ public class ChickenAI : BaseAI
     {
         if (isBoom)
         {
-            //Collider2D coll = Physics2D.OverlapCircle(transform.position, 2, playerLayer);
-            //if (coll != null && coll.GetComponent<IDamageable>() != null)
-                StartCoroutine(Kaboom(this));
+            StartCoroutine(Kaboom(this));
         }
     }
 
     IEnumerator Kaboom(BaseAI owner)
     {
         owner.animator.SetTrigger("boom");
-        yield return new WaitForSeconds(1);
-        //if (player != null)
-        //{
-        //    if (Vector2.Distance(this.transform.position, player.position) < explosionRadial)
-        //    {
-        //        if (player != null)
-        //            player.GetComponent<IDamageable>().GetDamage(stats.AttackDmg, this.gameObject);
-        //    }
-        //}
         Explode();
+        yield return new WaitForSeconds(1);
         NetworkServer.Destroy(this.gameObject);
     }
 
@@ -111,12 +101,9 @@ public class ChickenAI : BaseAI
             obj.GetComponent<Rigidbody2D>().AddForce(direction * force, ForceMode2D.Impulse);
             if (obj.GetComponent<IDamageable>() != null)
             {
-                obj.GetComponent<IDamageable>().GetDamage(stats.AttackDmg,this.gameObject);
+                obj.GetComponent<IDamageable>().GetDamage(stats.AttackDmg, this.gameObject);
             }
-
         }
-
-        //Destroy(gameObject, GetComponent<Animator>().runtimeAnimatorController.animationClips[0].length);
     }
 
     void FlipSprite(bool isFlipped, out bool flip)

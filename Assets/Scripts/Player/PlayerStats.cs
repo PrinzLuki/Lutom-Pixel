@@ -86,6 +86,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
             isDead = true;
             CmdSyncPlayerIsDead(this, isDead);
             PvPKillCheck(this);
+            PvEKillCheck(this);
             StartCoroutine(WaitTillRespawn());
 
             if (playerObj.GetComponent<PlayerStats>() != null)
@@ -94,6 +95,24 @@ public class PlayerStats : NetworkBehaviour, IDamageable
             }
         }
         onHealthChanged?.Invoke(Health, MaxHealth);
+    }
+
+    void PvEKillCheck(PlayerStats stats)
+    {
+        if (levelInit.IsPvE)
+            CmdPvEDeath(this);
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdPvEDeath(PlayerStats stats)
+    {
+        RpcPvEDeath(stats);
+    }
+
+    [ClientRpc]
+    public void RpcPvEDeath(PlayerStats stats)
+    {
+        stats.DeathCount++;
     }
 
     [Command(requiresAuthority = false)]
@@ -156,7 +175,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         }
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     void CmdSyncPlayerIsDead(PlayerStats stats, bool isDead)
     {
         stats.isDead = isDead;

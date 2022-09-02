@@ -40,12 +40,14 @@ public class EnemyStats : NetworkBehaviour, IDamageable
                 isDead = true;
                 if (playerObj.GetComponent<PlayerStats>() != null)
                 {
+
                     OnKill?.Invoke(playerObj);
+                    CmdPlayKillVFX();
+                    NetworkServer.Destroy(gameObject);
+
                 }
             }
 
-            CmdPlayKillVFX();
-            NetworkServer.Destroy(gameObject);
         }
     }
 
