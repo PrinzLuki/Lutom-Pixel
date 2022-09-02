@@ -6890,21 +6890,24 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 2770220800326088166, guid: d4fbda4b7bfc8c74f83784933edd25d7, type: 3}
   - {fileID: 2770220800326088166, guid: bd1873ca28b6d294fad4139a01bd3423, type: 3}
-  - {fileID: 8336525490738794815, guid: 463c81f6a4836d440b782c7dc4e963d0, type: 3}
+  - {fileID: 4023782060235962980, guid: e9d66f7c16d98384a8fe2258fb8ccbda, type: 3}
   - {fileID: 8336525490738794815, guid: 61d5a916608d6a84ebbb620902948c2b, type: 3}
-  - {fileID: 8336525490738794815, guid: 02cf5e6ffbac72944bc5ea3d6bf6e045, type: 3}
   - {fileID: 8336525490738794815, guid: 6c3e768f0081d474b83e174621fe964b, type: 3}
-  - {fileID: 8336525490738794815, guid: 524e274a7d832a74b8383bb3a8a574b2, type: 3}
   - {fileID: 8336525490738794815, guid: 13553fa24aeeb0b4f88ae86b240d0960, type: 3}
-  - {fileID: 8336525490738794815, guid: b7083190d1a74c64e8637d9228a8c5c4, type: 3}
   - {fileID: 8336525490738794815, guid: 74281926697947d4b97859e210694a05, type: 3}
+  - {fileID: 8336525490738794815, guid: 463c81f6a4836d440b782c7dc4e963d0, type: 3}
+  - {fileID: 8336525490738794815, guid: 02cf5e6ffbac72944bc5ea3d6bf6e045, type: 3}
+  - {fileID: 8336525490738794815, guid: 524e274a7d832a74b8383bb3a8a574b2, type: 3}
+  - {fileID: 8336525490738794815, guid: b7083190d1a74c64e8637d9228a8c5c4, type: 3}
   - {fileID: 4324150623030115701, guid: bead54fdadcc3244ba118f97923ce1e4, type: 3}
   - {fileID: 2070927913671954398, guid: a6d7960f173eba240a16bf5acc1cdac2, type: 3}
   - {fileID: 2897293437349085834, guid: ffd53d84ac745814581755771c2ed42a, type: 3}
   - {fileID: 2897293437349085834, guid: e56498c4c8f5afd4b9678e869b5c4bde, type: 3}
+  - {fileID: 6260087909514664896, guid: 0996bb8f41542624ba323747ec5a9f49, type: 3}
   - {fileID: 854664342618426574, guid: 643de61dedff5a44a8ef0a4283b51991, type: 3}
   - {fileID: 5642188287155995753, guid: e8bd01e2b1d0c4440b921cf9070460a2, type: 3}
   - {fileID: 4557648505051089243, guid: d7f8c0a2b3341d541b62c86a2224bea6, type: 3}
+  - {fileID: 972774043312705423, guid: 514768c0de77723418cf6862b0f80d30, type: 3}
   showRoomGUI: 0
   minPlayers: 2
   roomPlayerPrefab: {fileID: 3808995867758054806, guid: 514768c0de77723418cf6862b0f80d30, type: 3}
@@ -14633,6 +14636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputMan: {fileID: 237937694}
   isPvE: 1
+  amountOfPlayers: 0
   killsToWin: 0
 --- !u!4 &1894198007
 Transform:
