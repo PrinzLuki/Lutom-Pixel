@@ -34,6 +34,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     [SerializeField] private float respawnDelay;
     public bool isDead;
     public bool isGameOver;
+    public bool isMatchPlaying = true;
 
     [Header("Effects")]
     [Header("Get Damage Effect")]
@@ -425,8 +426,11 @@ public class PlayerStats : NetworkBehaviour, IDamageable
                 OnPvPShowGameOverStats?.Invoke(false, GameManager.players[i].KillCount, GameManager.players[i].DeathCount);
                 GameManager.players[i].GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
                 GameManager.players[i].GetComponent<PlayerStats>().isGameOver = true;
-                //GameManager.players[i].GetComponent<PlayerStats>().OnMatchLose();
-                //GameManager.players[i].GetComponent<PlayerStats>().OnMatchEnd();
+                if (isMatchPlaying)
+                {
+                    OnMatchLose();
+                    OnMatchEnd();
+                }
                 break;
             }
             else if (GameManager.players[i].KillCount >= GameManager.instance.killsToWin)
@@ -436,8 +440,11 @@ public class PlayerStats : NetworkBehaviour, IDamageable
                 OnPvPShowGameOverStats?.Invoke(true, GameManager.players[i].KillCount, GameManager.players[i].DeathCount);
                 GameManager.players[i].GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
                 GameManager.players[i].GetComponent<PlayerStats>().isGameOver = true;
-                //GameManager.players[i].GetComponent<PlayerStats>().OnMatchWin();
-                //GameManager.players[i].GetComponent<PlayerStats>().OnMatchEnd();
+                if (isMatchPlaying)
+                {
+                    OnMatchWin();
+                    OnMatchEnd();
+                }
 
                 break;
             }
@@ -462,9 +469,10 @@ public class PlayerStats : NetworkBehaviour, IDamageable
             GameManager.players[i].GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
             GameManager.players[i].GetComponent<PlayerStats>().isGameOver = true;
             GameManager.players[i].GetComponent<PlayerStats>().isDead = true;
-            //GameManager.players[i].GetComponent<PlayerStats>().OnMatchEnd();
             OnPvEShowGameOverStats?.Invoke(GameManager.players[i].KillCount, GameManager.players[i].DeathCount);
         }
+        if (isMatchPlaying)
+            OnMatchEnd();
     }
 
     /// <summary>
@@ -510,8 +518,10 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     public void OnMatchEnd()
     {
+
         SaveData.NewGameData.deaths = DeathCount;
         SaveData.NewGameData.kills = KillCount;
+
 
         SaveData.PlayerProfile.kills += KillCount;
         SaveData.PlayerProfile.deaths += DeathCount;
@@ -519,6 +529,10 @@ public class PlayerStats : NetworkBehaviour, IDamageable
         SaveData.PlayerProfile.matchesPlayed += 1;
 
         OnSave();
+
+        isMatchPlaying = false;
+
+
     }
 
 
