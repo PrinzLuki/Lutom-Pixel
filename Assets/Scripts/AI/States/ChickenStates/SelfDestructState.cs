@@ -26,6 +26,7 @@ public class SelfDestructState : State<BaseAI>
 
     public override void Enter(BaseAI owner)
     {
+        Debug.Log("Enter Debug");
     }
 
     public override void Exit(BaseAI owner)
@@ -34,11 +35,15 @@ public class SelfDestructState : State<BaseAI>
 
     public override void Update(BaseAI owner)
     {
-        RaycastHit2D hit = Physics2D.CircleCast(owner.transform.position, 2, Vector2.zero, 2, owner.playerLayer);
-        if (hit.transform != null && Vector3.Distance(owner.transform.position, hit.transform.position) <= 2)
-        {
-            ((ChickenAI)owner).isBoom = true;
-            owner.Attack(((ChickenAI)owner).isBoom);
-        }
+        ((ChickenAI)owner).IsBoomCheck();
+        ((ChickenAI)owner).Attack(((ChickenAI)owner).isBoom);
+        ((ChickenAI)owner).stateMachine.ChangeState(IdleState.Instance);
+        //RaycastHit2D hit = Physics2D.CircleCast(owner.transform.position, ((ChickenAI)owner).explosionRadial, Vector2.zero, 2, owner.playerLayer);
+        //if (hit.transform != null && Vector3.Distance(owner.transform.position, hit.transform.position) <= ((ChickenAI)owner).explosionRadial)
+        //{
+        //    Debug.Log("Distance explode: " + (Vector3.Distance(owner.transform.position, hit.transform.position) <= ((ChickenAI)owner).explosionRadial));
+        //    ((ChickenAI)owner).isBoom = true;
+        //    owner.Attack(((ChickenAI)owner).isBoom);
+        //}
     }
 }

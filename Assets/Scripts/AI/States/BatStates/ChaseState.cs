@@ -38,6 +38,6 @@ public class ChaseState : State<BaseAI>
     {
         owner.Walking();
 
-        owner.Attack(true);
+        owner.Attack(false);
     }
 }

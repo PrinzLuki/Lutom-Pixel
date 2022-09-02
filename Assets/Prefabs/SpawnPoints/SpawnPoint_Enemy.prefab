@@ -48,10 +48,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   enemyPrefabs:
-  - {fileID: 5642188287155995753, guid: e8bd01e2b1d0c4440b921cf9070460a2, type: 3}
   - {fileID: 854664342618426574, guid: 643de61dedff5a44a8ef0a4283b51991, type: 3}
   spawnDelay: 6.33
   maxEnemyCount: 0
+  levelInit: {fileID: 0}
+  enemyContainer: {fileID: 0}
 --- !u!114 &230412769455557018
 MonoBehaviour:
   m_ObjectHideFlags: 0

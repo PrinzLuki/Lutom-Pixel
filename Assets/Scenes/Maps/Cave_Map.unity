@@ -3739,8 +3739,12 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7392861686046315896, guid: 3f84843814d523c4e80a1b9f31100253, type: 3}
+      propertyPath: difficulties.Array.data[1].maxEnemies
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7392861686046315896, guid: 3f84843814d523c4e80a1b9f31100253, type: 3}
       propertyPath: difficulties.Array.data[2].maxEnemies
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7392861686046315896, guid: 3f84843814d523c4e80a1b9f31100253, type: 3}
       propertyPath: difficulties.Array.data[2].executionTime
@@ -6203,10 +6207,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1549548599}
   - component: {fileID: 1549548601}
+  - component: {fileID: 1549548605}
   - component: {fileID: 1549548602}
   - component: {fileID: 1549548604}
   - component: {fileID: 1549548603}
-  - component: {fileID: 1549548605}
   - component: {fileID: 1549548606}
   m_Layer: 6
   m_Name: Tilemap

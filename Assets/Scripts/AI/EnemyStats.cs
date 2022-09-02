@@ -32,7 +32,8 @@ public class EnemyStats : NetworkBehaviour, IDamageable
     public void GetDamage(float dmg, GameObject playerObj)
     {
         health -= dmg;
-        //CmdPlayGetDamageVFX();
+        Debug.Log("GetDamage");
+        CmdPlayGetDamageVFX();
         if (health <= 0)
         {
             if (!isDead)

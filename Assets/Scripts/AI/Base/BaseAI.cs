@@ -25,7 +25,7 @@ public abstract class BaseAI : NetworkBehaviour
 
     public Vector3 offsetObstAvoid;
     public float distance;
-
+    Vector2 target;
 
     public virtual void Start()
     {
@@ -49,17 +49,28 @@ public abstract class BaseAI : NetworkBehaviour
     {
         for (int i = 0; i < targetDetectionDirectionList.Count; i++)
         {
-            if(targetDetectionDirectionList[i] != null)
+            if (targetDetectionDirectionList[i] != null)
             {
-                if (Physics2D.Raycast(this.transform.position, targetDetectionDirectionList[i].detectionDirection, 8, playerLayer))
+                if(target!= null)
+                {
+                    Debug.Log("Target Add Force");
+                    rb2D.AddForce(target * stats.ChaseSpeed, ForceMode2D.Impulse);
+                    targetDirection = targetDetectionDirectionList[i].detectionDirection;
+                    FlipSprite(targetDetectionDirectionList[i].flipType);
+                    stateMachine.ChangeState(SelfDestructState.Instance);
+
+                }
+                else if (Physics2D.Raycast(this.transform.position, targetDetectionDirectionList[i].detectionDirection, 8, playerLayer))
                 {
                     //Attack
+                    Debug.Log("AddForce RayCast");
                     stateMachine.ChangeState(SelfDestructState.Instance);
                     targetDirection = targetDetectionDirectionList[i].detectionDirection;
                     FlipSprite(targetDetectionDirectionList[i].flipType);
-                    rb2D.AddForce(targetDirection * stats.ChaseSpeed, ForceMode2D.Impulse);
+                    target = targetDetectionDirectionList[i].detectionDirection;
+                }
+                else targetDirection = Vector2.zero;
 
-                }else targetDirection = Vector2.zero;
             }
         }
     }
@@ -81,7 +92,7 @@ public abstract class BaseAI : NetworkBehaviour
 
     public virtual bool ObstacleAvoidance(Vector3 from, Vector3 offset, Vector3 direction, float distance, LayerMask layer)
     {
-        if(Physics2D.Raycast(from + offset, direction * distance, distance, layer))
+        if (Physics2D.Raycast(from + offset, direction * distance, distance, layer))
         {
             //rb2D.velocity = Vector2.up * stats.JumpPower;
             rb2D.AddForce(Vector2.up * stats.JumpPower * 10, ForceMode2D.Impulse);
