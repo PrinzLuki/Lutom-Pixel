@@ -129,8 +129,8 @@ public class PlayerUI : NetworkBehaviour
         var stats = playerObj.GetComponent<PlayerStats>();
         stats.KillCount++;
         ShowKillsInUI(stats.KillCount);
-        SaveData.PlayerProfile.kills += stats.KillCount;
-        SerializationManager.Save("playerData", SaveData.PlayerProfile);
+        //SaveData.PlayerProfile.kills += stats.KillCount;
+        //SerializationManager.Save("playerData", SaveData.PlayerProfile);
     }
 
     void ShowKillsInUI(int kills)

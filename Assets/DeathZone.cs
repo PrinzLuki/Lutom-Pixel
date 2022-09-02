@@ -14,6 +14,7 @@ public class DeathZone : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+
         if (other.GetComponent<IWeapon>() != null && !isInWorld)
         {
             var weaponSpawner = other.GetComponent<Weapon>().weaponSpawnerParent;
