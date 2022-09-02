@@ -5425,6 +5425,10 @@ PrefabInstance:
       propertyPath: inputMan
       value: 
       objectReference: {fileID: 2072744714}
+    - target: {fileID: 4166289271115358235, guid: abbf16533858d2941b1355b9dc978906, type: 3}
+      propertyPath: amountOfPlayers
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5249694640776926547, guid: abbf16533858d2941b1355b9dc978906, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -22336,7 +22340,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
       propertyPath: spawnPrefabs.Array.size
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
       propertyPath: spawnPrefabs.Array.data[9]
@@ -22362,6 +22366,10 @@ PrefabInstance:
       propertyPath: spawnPrefabs.Array.data[14]
       value: 
       objectReference: {fileID: 8336525490738794815, guid: b7083190d1a74c64e8637d9228a8c5c4, type: 3}
+    - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
+      propertyPath: spawnPrefabs.Array.data[15]
+      value: 
+      objectReference: {fileID: 4023782060235962980, guid: e9d66f7c16d98384a8fe2258fb8ccbda, type: 3}
     - target: {fileID: 8718146502490657861, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -24028,8 +24036,12 @@ PrefabInstance:
       value: 2961901129
       objectReference: {fileID: 0}
     - target: {fileID: 2757776767436167518, guid: ddc520cde87d3e743b9c458621f0b023, type: 3}
+      propertyPath: spawnDelay
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757776767436167518, guid: ddc520cde87d3e743b9c458621f0b023, type: 3}
       propertyPath: waitForPlayers
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2757776767436167518, guid: ddc520cde87d3e743b9c458621f0b023, type: 3}
       propertyPath: weaponSpawnPoints.Array.data[0]

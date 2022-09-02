@@ -1,4 +1,5 @@
 using Mirror;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerGun : NetworkBehaviour
@@ -77,12 +78,20 @@ public class PlayerGun : NetworkBehaviour
 
         if (Input.GetMouseButton(0) && gun.currentMunition > 0 && weaponScriptable.automatic)
         {
-            gun.CmdShootBullet(this.gameObject, shootDirection);
+            StartCoroutine(FireRate());
         }
         else if (Input.GetMouseButtonDown(0) && gun.currentMunition > 0)
         {
-            gun.CmdShootBullet(this.gameObject, shootDirection);
+            StartCoroutine(FireRate());
         }
+    }
+
+    IEnumerator FireRate()
+    {
+        canShoot = false;
+        gun.CmdShootBullet(this.gameObject, shootDirection);
+        yield return new WaitForSeconds(gun.weaponScriptableObject.fireRate);
+        canShoot = true;
     }
 
 
@@ -217,6 +226,7 @@ public class PlayerGun : NetworkBehaviour
         Weapon gun = playerGun.currentWeaponGameObject.GetComponent<Weapon>();
         playerGun.gun = gun;
         playerGun.canShoot = true;
+        playerGun.weaponScriptable = gun.weaponScriptableObject;
 
 
         playerGun.currentWeaponGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
@@ -279,6 +289,8 @@ public class PlayerGun : NetworkBehaviour
         playerGun.currentWeaponGameObject.GetComponent<Weapon>().parent = null;
         playerGun.gun = null;
         playerGun.currentWeaponGameObject = null;
+        playerGun.weaponScriptable = null;
+
     }
 
     #endregion

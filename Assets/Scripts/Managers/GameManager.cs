@@ -10,24 +10,27 @@ public class GameManager : BaseSingelton<GameManager>
     public static List<PlayerStats> players = new List<PlayerStats>();
     [SerializeField] GameObject inputMan;
     public bool isPvE;
+    public int amountOfPlayers;
     public int killsToWin;
 
     private void OnEnable()
     {
         PlayerStats.OnGameOver += IsGameOver;
         GameHostSettings.OnGameModeChanged += SetGameMode;
+        GameHostSettings.OnPlayerAmountChanged += SetAmountOfPlayers;
         PlayerStats.OnPlayerWin += DidPlayerWin;
     }
     private void OnDisable()
     {
         PlayerStats.OnGameOver -= IsGameOver;
         GameHostSettings.OnGameModeChanged -= SetGameMode;
+        GameHostSettings.OnPlayerAmountChanged -= SetAmountOfPlayers;
         PlayerStats.OnPlayerWin -= DidPlayerWin;
     }
 
     public bool IsGameOver()
     {
-        for(int i = 0; i < players.Count; i++)
+        for (int i = 0; i < players.Count; i++)
         {
             if (!players[i].isDead) return false;
 
@@ -61,6 +64,11 @@ public class GameManager : BaseSingelton<GameManager>
                 Debug.LogWarning("GameMode change is called but didnt Set");
                 break;
         }
+    }
+
+    public void SetAmountOfPlayers(int amount)
+    {
+        amountOfPlayers = amount;
     }
 
     public void RestartInputManager()

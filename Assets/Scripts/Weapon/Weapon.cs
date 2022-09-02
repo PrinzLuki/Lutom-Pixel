@@ -108,4 +108,17 @@ public class Weapon : NetworkBehaviour, IWeapon
 
 
     #endregion
+
+    [Command(requiresAuthority = false)]
+    public virtual void CmdDeleteGameObject(GameObject trg)
+    {
+        RpcDeleteGameObject(trg);
+    }
+
+    [ClientRpc]
+    public virtual void RpcDeleteGameObject(GameObject trg)
+    {
+        Destroy(trg);
+    }
+
 }

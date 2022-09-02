@@ -10,11 +10,20 @@ public class StickyBullet : Bullet, IExplosion
     public float fieldOfImpact;
     public float force;
     public LayerMask explodeLayer;
+    public LayerMask playerLayer;
     public bool readyToExplode;
 
     public void Explode()
     {
-        Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, fieldOfImpact, explodeLayer);
+        Collider2D[] objects;
+        if (GameManager.instance.isPvE)
+        {
+            objects = Physics2D.OverlapCircleAll(transform.position, fieldOfImpact, explodeLayer);
+        }
+        else
+        {
+            objects = Physics2D.OverlapCircleAll(transform.position, fieldOfImpact, explodeLayer + playerLayer);
+        }
 
         foreach (Collider2D obj in objects)
         {
@@ -40,6 +49,7 @@ public class StickyBullet : Bullet, IExplosion
             Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), other.gameObject.GetComponent<Collider2D>());
             return;
         }
+        bulletHit = true;
         //GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         Destroy(GetComponent<Rigidbody2D>());
         Destroy(GetComponent<Collider2D>());

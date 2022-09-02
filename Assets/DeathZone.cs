@@ -14,20 +14,23 @@ public class DeathZone : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //if (other.GetComponent<IWeapon>() != null)
-        //{
-        //    Destroy(other.gameObject);
-        //    var weaponSpawner = other.GetComponent<Weapon>().weaponSpawnerParent;
-        //    weaponSpawner.spawnedWeapons.Remove(other.gameObject);
-        //    weaponSpawner.RespawnAWeapon();
-        //}
+        if (other.GetComponent<IWeapon>() != null && !isInWorld)
+        {
+            var weaponSpawner = other.GetComponent<Weapon>().weaponSpawnerParent;
+            weaponSpawner.CmdRemoveWeaponFromList(other.gameObject);
+            //weaponSpawner.spawnedWeapons.Remove(other.gameObject);
+            //weaponSpawner.RespawnAWeapon();
+            other.GetComponent<Weapon>().CmdDeleteGameObject(other.gameObject);
+        }
 
         if (other.gameObject.GetComponent<IDamageable>() == null) return;
 
         if (isInWorld)
             GetDamage(other, damage);
         else
+        {
             GetDamage(other, 999);
+        }
 
 
     }

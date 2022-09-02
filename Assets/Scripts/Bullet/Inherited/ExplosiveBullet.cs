@@ -8,10 +8,20 @@ public class ExplosiveBullet : Bullet, IExplosion
     public float fieldOfImpact;
     public float force;
     public LayerMask explodeLayer;
+    public LayerMask playerLayer;
 
     public void Explode()
     {
-        Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, fieldOfImpact, explodeLayer);
+        Collider2D[] objects;
+        if (GameManager.instance.isPvE)
+        {
+            objects = Physics2D.OverlapCircleAll(transform.position, fieldOfImpact, explodeLayer);
+
+        }
+        else
+        {
+            objects = Physics2D.OverlapCircleAll(transform.position, fieldOfImpact, explodeLayer + playerLayer);
+        }
 
         foreach (Collider2D obj in objects)
         {
@@ -22,7 +32,7 @@ public class ExplosiveBullet : Bullet, IExplosion
             {
                 obj.GetComponent<IDamageable>().GetDamage(bulletScriptable.damage, parent.gameObject);
             }
-            
+
         }
         GetComponent<Animator>().enabled = true;
 
@@ -37,6 +47,7 @@ public class ExplosiveBullet : Bullet, IExplosion
             Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), other.gameObject.GetComponent<Collider2D>());
             return;
         }
+        bulletHit = true;
         Explode();
     }
 

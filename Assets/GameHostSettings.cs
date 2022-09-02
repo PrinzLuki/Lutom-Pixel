@@ -23,6 +23,7 @@ public class GameHostSettings : MonoBehaviour
     public static int neededKillsToWin = 1;
 
     public static event Action<Gamemodetype> OnGameModeChanged;
+    public static event Action<int> OnPlayerAmountChanged;
 
     private void OnEnable()
     {
@@ -140,6 +141,8 @@ public class GameHostSettings : MonoBehaviour
             roomManager.minPlayers = roomManager.maxConnections;
         }
         amountOfPlayers.text = roomManager.minPlayers.ToString();
+        OnPlayerAmountChanged?.Invoke(roomManager.minPlayers);
+
     }
 
     public void IncreaseAmountPlayers()
@@ -151,6 +154,8 @@ public class GameHostSettings : MonoBehaviour
             roomManager.minPlayers = amountOfPlayersMin;
         }
         amountOfPlayers.text = roomManager.minPlayers.ToString();
+        OnPlayerAmountChanged?.Invoke(roomManager.minPlayers);
+
     }
 
     public void CheckGameMode(Gamemodetype type)

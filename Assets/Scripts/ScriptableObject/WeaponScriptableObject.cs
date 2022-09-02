@@ -8,6 +8,7 @@ public class WeaponScriptableObject : ScriptableObject
     [Header("Stats")]
     public float speed;
     public float munition;
+    public float fireRate;
     public bool automatic;
 
 
