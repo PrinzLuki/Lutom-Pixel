@@ -427,8 +427,8 @@ public class PlayerStats : NetworkBehaviour, IDamageable
                 OnPvPShowGameOverStats?.Invoke(false, GameManager.players[i].KillCount, GameManager.players[i].DeathCount);
                 GameManager.players[i].GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
                 GameManager.players[i].GetComponent<PlayerStats>().isGameOver = true;
-                GameManager.players[i].GetComponent<PlayerStats>().OnMatchLose();
-                GameManager.players[i].GetComponent<PlayerStats>().OnMatchEnd();
+                //GameManager.players[i].GetComponent<PlayerStats>().OnMatchLose();
+                //GameManager.players[i].GetComponent<PlayerStats>().OnMatchEnd();
                 break;
             }
             else if (GameManager.players[i].KillCount >= GameManager.instance.killsToWin)
@@ -438,8 +438,8 @@ public class PlayerStats : NetworkBehaviour, IDamageable
                 OnPvPShowGameOverStats?.Invoke(true, GameManager.players[i].KillCount, GameManager.players[i].DeathCount);
                 GameManager.players[i].GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
                 GameManager.players[i].GetComponent<PlayerStats>().isGameOver = true;
-                GameManager.players[i].GetComponent<PlayerStats>().OnMatchWin();
-                GameManager.players[i].GetComponent<PlayerStats>().OnMatchEnd();
+                //GameManager.players[i].GetComponent<PlayerStats>().OnMatchWin();
+                //GameManager.players[i].GetComponent<PlayerStats>().OnMatchEnd();
 
                 break;
             }
@@ -464,7 +464,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
             GameManager.players[i].GetComponent<PlayerUI>().gameOverDisplay.SetActive(true);
             GameManager.players[i].GetComponent<PlayerStats>().isGameOver = true;
             GameManager.players[i].GetComponent<PlayerStats>().isDead = true;
-            GameManager.players[i].GetComponent<PlayerStats>().OnMatchEnd();
+            //GameManager.players[i].GetComponent<PlayerStats>().OnMatchEnd();
             OnPvEShowGameOverStats?.Invoke(GameManager.players[i].KillCount, GameManager.players[i].DeathCount);
         }
     }

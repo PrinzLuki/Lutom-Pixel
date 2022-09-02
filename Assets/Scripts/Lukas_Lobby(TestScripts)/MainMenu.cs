@@ -162,7 +162,7 @@ public class MainMenu : NetworkBehaviour
     public void RpcSendNeededKills(int kills)
     {
         GameManager.instance.killsToWin = kills;
-        Debug.Log($"Main Menu neededKills: {kills}");
+        //Debug.Log($"Main Menu neededKills: {kills}");
     }
     
 

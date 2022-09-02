@@ -18,6 +18,8 @@ public class DeathZone : NetworkBehaviour
         if (other.GetComponent<IWeapon>() != null && !isInWorld)
         {
             var weaponSpawner = other.GetComponent<Weapon>().weaponSpawnerParent;
+
+            if (weaponSpawner == null) return;
             weaponSpawner.CmdRemoveWeaponFromList(other.gameObject);
             //weaponSpawner.spawnedWeapons.Remove(other.gameObject);
             //weaponSpawner.RespawnAWeapon();

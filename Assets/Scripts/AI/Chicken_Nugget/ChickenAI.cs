@@ -40,7 +40,7 @@ public class ChickenAI : BaseAI
     public override void EnemyDetection()
     {
         var coll = Physics2D.OverlapCircle(transform.position, detectionRange, playerLayer);
-        Debug.Log(coll); 
+        //Debug.Log(coll); 
         if (coll == null) return;
 
         if(coll.GetComponent<PlayerStats>() != null)

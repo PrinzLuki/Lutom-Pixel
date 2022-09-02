@@ -26,7 +26,7 @@ public class SelfDestructState : State<BaseAI>
 
     public override void Enter(BaseAI owner)
     {
-        Debug.Log("Enter Debug");
+        //Debug.Log("Enter Debug");
     }
 
     public override void Exit(BaseAI owner)

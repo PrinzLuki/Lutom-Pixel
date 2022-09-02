@@ -57,7 +57,7 @@ public class SaveLoadMenu : MonoBehaviour
     {
         playerid = id;
         guid.text = "ID: " + id;
-        Debug.Log("Changing guid text: " + id);
+        //Debug.Log("Changing guid text: " + id);
 
     }
 

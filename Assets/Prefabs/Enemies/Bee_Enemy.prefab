@@ -9646,6 +9646,7 @@ GameObject:
   - component: {fileID: 7310508268088750152}
   - component: {fileID: 1945611659686226853}
   - component: {fileID: 1817522843598553102}
+  - component: {fileID: 7127391778970485688}
   m_Layer: 10
   m_Name: Bee_Enemy
   m_TagString: Untagged
@@ -9668,7 +9669,7 @@ Transform:
   - {fileID: 5471268499181396702}
   - {fileID: 2316362557512356525}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6260087909514664901
 Animator:
@@ -9807,7 +9808,7 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: e8bd01e2b1d0c4440b921cf9070460a2
+  m_AssetId: 0996bb8f41542624ba323747ec5a9f49
   hasSpawned: 0
 --- !u!114 &7310508268088750152
 MonoBehaviour:
@@ -9917,3 +9918,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7127391778970485688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6260087909514664896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab2cbc52526ea384ba280d13cd1a57b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  target: {fileID: 6260087909514664902}
+  clientAuthority: 0
+  syncVelocity: 1
+  clearVelocity: 0
+  velocitySensitivity: 0.1
+  syncAngularVelocity: 1
+  clearAngularVelocity: 0
+  angularVelocitySensitivity: 0.1

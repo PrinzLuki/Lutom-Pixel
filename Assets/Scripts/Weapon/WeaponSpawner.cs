@@ -74,12 +74,13 @@ public class WeaponSpawner : NetworkBehaviour
 
     private void SpawnWeapons()
     {
-        Debug.Log("Spawning Weapons");
+        //Debug.Log("Spawning Weapons");
         for (int i = 0; i < weaponSpawnPoints.Count; i++)
         {
             for (int j = 0; j < weaponSpawnCount; j++)
             {
-                GameObject weaponClone = Instantiate(weaponScriptables[Random.Range(0, weaponScriptables.Count)].weaponPrefab, weaponSpawnPoints[i].position, weaponSpawnPoints[i].rotation);
+                GameObject weaponClone = Instantiate(weaponScriptables[Random.Range(0, weaponScriptables.Count)].weaponPrefab, 
+                    weaponSpawnPoints[i].position, weaponSpawnPoints[i].rotation);
                 NetworkServer.Spawn(weaponClone);
                 //weaponClone.GetComponent<Weapon>().weaponSpawnerParent = this;
                 CmdSetSpawnParent(weaponClone);
@@ -113,6 +114,7 @@ public class WeaponSpawner : NetworkBehaviour
     void RpcSetSpawnParent(GameObject weapon)
     {
         weapon.GetComponent<Weapon>().weaponSpawnerParent = this;
+        //Debug.Log("RPC Weapon spawner parent set = " + this.gameObject.name);
     }
 
     [Command(requiresAuthority = false)]

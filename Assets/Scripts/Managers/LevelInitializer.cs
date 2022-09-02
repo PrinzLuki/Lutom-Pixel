@@ -14,13 +14,13 @@ public class LevelInitializer : NetworkBehaviour
     private void Start()
     {
         GameManager.instance.RestartInputManager();
-        Debug.Log(IsPvE);
+        //Debug.Log(IsPvE);
 
         if (!isServer) return;
         IsPvE = GameManager.instance.isPvE;
         CmdSetIsPve(IsPvE);
 
-        Debug.Log(IsPvE);
+        //Debug.Log(IsPvE);
     }
 
     [Command(requiresAuthority = false)]
@@ -34,7 +34,7 @@ public class LevelInitializer : NetworkBehaviour
     {
         IsPvE = isPve;
         GameManager.instance.isPvE = isPvE;
-        Debug.Log($"Is PvE = {isPve}");
+        //Debug.Log($"Is PvE = {isPve}");
     }
 
     [Command(requiresAuthority = false)]

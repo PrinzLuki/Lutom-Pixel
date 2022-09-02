@@ -32,7 +32,8 @@ public class BatAI : BaseAI
     {
         base.Update();
         EnemyDetection();
-        FlipSprite();
+        if (!isServer)
+            FlipSprite();
     }
 
     public override void Attack(bool isBoom)
@@ -52,7 +53,7 @@ public class BatAI : BaseAI
         canAttack = false;
         yield return new WaitForSeconds(attackDelayTime);
         canAttack = true;
-        
+
     }
 
     public override void EnemyDetection()
@@ -97,11 +98,11 @@ public class BatAI : BaseAI
 
     void FlipSprite()
     {
-        if(agent.velocity.x < 0 && !sprite.flipX)
+        if (agent.velocity.x < 0 && !sprite.flipX)
         {
             sprite.flipX = true;
         }
-        else if(agent.velocity.x > 0 && sprite.flipX)
+        else if (agent.velocity.x > 0 && sprite.flipX)
         {
             sprite.flipX = false;
         }

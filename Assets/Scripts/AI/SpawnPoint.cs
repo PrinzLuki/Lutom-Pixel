@@ -27,6 +27,9 @@ public class SpawnPoint : NetworkBehaviour
     [Server]
     void StopSpawnInPvP()
     {
+        Debug.Log("Level Init isPve = " + levelInit.GetComponent<LevelInitializer>().IsPvE);
+        Debug.Log("GameManager isPve = " + GameManager.instance.isPvE);
+
         if (levelInit.GetComponent<LevelInitializer>().IsPvE) return;
         
         this.gameObject.SetActive(false);

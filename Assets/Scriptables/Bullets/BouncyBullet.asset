@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 8336525490738794815, guid: 6c3e768f0081d474b83e174621fe964b, type: 3}
   bulletItem: {fileID: 8336525490738794815, guid: 02cf5e6ffbac72944bc5ea3d6bf6e045, type: 3}
-  damage: 10
+  damage: 1
   timeUntilDestroyed: 4
