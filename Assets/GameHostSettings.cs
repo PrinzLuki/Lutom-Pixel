@@ -41,6 +41,7 @@ public class GameHostSettings : MonoBehaviour
     private void Start()
     {
         amountOfPlayers.text = roomManager.minPlayers.ToString();
+        minkillAmountText.text = GameManager.instance.killsToWin.ToString();
         GameManager.instance.SetAmountOfPlayers(roomManager.minPlayers);
         levelIndex = UnityEngine.Random.Range(0, levels.Length);
         ChangeLevel(levelIndex);

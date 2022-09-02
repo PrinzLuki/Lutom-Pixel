@@ -140,6 +140,7 @@ public class MainMenu : NetworkBehaviour
     {
         CmdSetPVE(GameManager.instance.isPvE, ((NetworkRoomManagerLutom)roomManager).gamemode);
         CmdSetMinPlayer(roomManager.minPlayers);
+        CmdSetKillsToWin(GameManager.instance.killsToWin);
         StartCoroutine(WaitBeforeStart());
 
     }
@@ -167,6 +168,18 @@ public class MainMenu : NetworkBehaviour
     {
         roomManager.minPlayers = minPlayers;
         GameManager.instance.amountOfPlayers = minPlayers;
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdSetKillsToWin(int amountKills)
+    {
+        RpcSetKillsToWin(amountKills);
+    }
+
+    [ClientRpc]
+    public void RpcSetKillsToWin(int amountKills)
+    {
+        GameManager.instance.killsToWin = amountKills;
     }
 
 

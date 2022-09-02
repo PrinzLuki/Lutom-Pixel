@@ -15225,7 +15225,7 @@ MonoBehaviour:
   inputMan: {fileID: 237937694}
   isPvE: 1
   amountOfPlayers: 0
-  killsToWin: 0
+  killsToWin: 1
 --- !u!4 &1894198007
 Transform:
   m_ObjectHideFlags: 0
