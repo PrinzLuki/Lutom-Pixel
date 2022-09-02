@@ -13,6 +13,15 @@ public class StickyBullet : Bullet, IExplosion
     public LayerMask playerLayer;
     public bool readyToExplode;
 
+ 
+    public override void Start()
+    {
+       base.Start();
+
+        explosionTimer = bulletScriptable.timeUntilDestroyed - 1;
+
+    }
+
     public void Explode()
     {
         Collider2D[] objects;

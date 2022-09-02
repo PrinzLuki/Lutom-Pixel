@@ -21,6 +21,9 @@ public class GameHostSettings : MonoBehaviour
     [Header("Gamemode")]
     public TextMeshProUGUI gamemodeName;
     public static int neededKillsToWin = 1;
+    public GameObject minkillAmountUI;
+    public TextMeshProUGUI minkillAmountText;
+
 
     public static event Action<Gamemodetype> OnGameModeChanged;
     public static event Action<int> OnPlayerAmountChanged;
@@ -41,6 +44,7 @@ public class GameHostSettings : MonoBehaviour
         GameManager.instance.SetAmountOfPlayers(roomManager.minPlayers);
         levelIndex = UnityEngine.Random.Range(0, levels.Length);
         ChangeLevel(levelIndex);
+        ChangeGamemode(roomManager.gamemode);
     }
 
     #region PvP
@@ -81,6 +85,16 @@ public class GameHostSettings : MonoBehaviour
         gamemodeName.text = type.ToString();
         roomManager.gamemode = type;
         OnGameModeChanged?.Invoke(type);
+
+        if (type == Gamemodetype.PVE)
+        {
+            minkillAmountUI.SetActive(false);
+        }
+        if (type == Gamemodetype.PVP)
+        {
+            minkillAmountUI.SetActive(true);
+        }
+
     }
 
     public void CheckPlayerAmount(Gamemodetype type)
@@ -177,4 +191,26 @@ public class GameHostSettings : MonoBehaviour
     }
 
     #endregion
+
+
+    public void DecreaseMinKillAmount()
+    {
+        GameManager.instance.killsToWin -= 1;
+        if (GameManager.instance.killsToWin < 1)
+        {
+            GameManager.instance.killsToWin = 10;
+        }
+        minkillAmountText.text = GameManager.instance.killsToWin.ToString();
+    }
+
+    public void IncreaseMinKillAmount()
+    {
+        GameManager.instance.killsToWin += 1;
+        if (GameManager.instance.killsToWin > 10)
+        {
+            GameManager.instance.killsToWin = 1;
+        }
+        minkillAmountText.text = GameManager.instance.killsToWin.ToString();
+
+    }
 }
