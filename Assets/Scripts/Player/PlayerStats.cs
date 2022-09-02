@@ -9,7 +9,6 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     [Header("References")]
     [SerializeField] private GameObject _playerSFX;
-    [SerializeField] LevelInitializer levelInit;
 
     [Header("Stats")]
     [SerializeField] private bool isImmortal;
@@ -99,7 +98,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     void PvEKillCheck(PlayerStats stats)
     {
-        if (levelInit.IsPvE)
+        if (GameManager.instance.isPvE)
             CmdPvEDeath(this);
     }
 
@@ -129,7 +128,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     void PvPKillCheck(PlayerStats player)
     {
-        if (levelInit.IsPvE) return;
+        if (GameManager.instance.isPvE) return;
 
         CmdPvPKill(player);
     }
@@ -149,7 +148,7 @@ public class PlayerStats : NetworkBehaviour, IDamageable
     void GameOverCheck()
     {
 
-        if (!levelInit.IsPvE)
+        if (!GameManager.instance.isPvE)
         {
             bool didPlayerWin = OnPlayerWin.Invoke(KillCount);
             //Debug.Log("any Player win = " + didPlayerWin);
@@ -388,7 +387,6 @@ public class PlayerStats : NetworkBehaviour, IDamageable
 
     private void Start()
     {
-        levelInit = GameObject.FindGameObjectWithTag("LevelInit").GetComponent<LevelInitializer>();
         spawnPoint = transform.position;
 
         OnLoad();

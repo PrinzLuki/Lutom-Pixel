@@ -9,14 +9,12 @@ public class SpawnPoint : NetworkBehaviour
     [SerializeField, Range(2.5f, 10)] float spawnDelay = 5;
     [SerializeField] int maxEnemyCount = 10;
     float spawnTime = 5;
-    [SerializeField] GameObject levelInit;
     [HideInInspector] public Transform enemyContainer;
 
     public int MaxEnemyCount { get => maxEnemyCount; set => maxEnemyCount = value; }
 
     private void Start()
     {
-        levelInit = GameObject.FindGameObjectWithTag("LevelInit");
         StopSpawnInPvP();
 
         if (!isServer) return;
@@ -27,10 +25,9 @@ public class SpawnPoint : NetworkBehaviour
     [Server]
     void StopSpawnInPvP()
     {
-        Debug.Log("Level Init isPve = " + levelInit.GetComponent<LevelInitializer>().IsPvE);
-        Debug.Log("GameManager isPve = " + GameManager.instance.isPvE);
+        //Debug.Log("GameManager isPve = " + GameManager.instance.isPvE);
 
-        if (levelInit.GetComponent<LevelInitializer>().IsPvE) return;
+        if (GameManager.instance.isPvE) return;
         
         this.gameObject.SetActive(false);
     }
