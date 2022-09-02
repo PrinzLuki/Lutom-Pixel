@@ -4972,7 +4972,7 @@ MonoBehaviour:
   isBoom: 0
   explosionRadial: 2
   fieldOfImpact: 1.5
-  force: 80
+  force: 40
   explodeLayer:
     serializedVersion: 2
     m_Bits: 3976

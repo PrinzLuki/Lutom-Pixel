@@ -22679,7 +22679,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -22809,9 +22809,10 @@ MonoBehaviour:
   deathCount: 0
   showGizmos: 0
   spawnPoint: {x: 0, y: 0, z: 0}
-  respawnDelay: 20
+  respawnDelay: 7
   isDead: 0
   isGameOver: 0
+  isMatchPlaying: 1
   getDamageEffect: {fileID: 6491880822408709941}
   dieEffect: {fileID: 4993182989026329915}
   onHealthChanged:

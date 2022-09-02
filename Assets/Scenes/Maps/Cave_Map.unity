@@ -3882,22 +3882,6 @@ PrefabInstance:
       propertyPath: spawnPos.Array.size
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 7392861686046315896, guid: 3f84843814d523c4e80a1b9f31100253, type: 3}
-      propertyPath: difficulties.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7392861686046315896, guid: 3f84843814d523c4e80a1b9f31100253, type: 3}
-      propertyPath: difficulties.Array.data[1].maxEnemies
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7392861686046315896, guid: 3f84843814d523c4e80a1b9f31100253, type: 3}
-      propertyPath: difficulties.Array.data[2].maxEnemies
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7392861686046315896, guid: 3f84843814d523c4e80a1b9f31100253, type: 3}
-      propertyPath: difficulties.Array.data[2].executionTime
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 7392861686046315897, guid: 3f84843814d523c4e80a1b9f31100253, type: 3}
       propertyPath: m_Name
       value: SpawnManager
