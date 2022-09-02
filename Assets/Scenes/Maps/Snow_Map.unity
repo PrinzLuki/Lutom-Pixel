@@ -179,7 +179,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 5.2671604}
   m_EdgeRadius: 0
 --- !u!1 &34075210
 GameObject:
@@ -642,6 +642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputMan: {fileID: 1439082004}
   isPvE: 1
+  amountOfPlayers: 2
   killsToWin: 1
 --- !u!4 &76669705
 Transform:
@@ -6301,6 +6302,7 @@ Transform:
   - {fileID: 461231852}
   - {fileID: 771412442}
   - {fileID: 145053491}
+  - {fileID: 1198034251}
   m_Father: {fileID: 753785056}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8505,6 +8507,74 @@ Transform:
   m_Father: {fileID: 2032286490}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1198034250
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 425620213}
+    m_Modifications:
+    - target: {fileID: 9002595613229599095, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002595613229599095, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002595613229599095, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 20.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002595613229599095, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002595613229599095, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002595613229599095, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002595613229599095, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002595613229599095, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002595613229599095, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002595613229599095, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002595613229599095, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002595613229599096, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: sceneId
+      value: 845789088
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002595613229599098, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+      propertyPath: m_Name
+      value: DeathZone (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+--- !u!4 &1198034251 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9002595613229599095, guid: 73e0802b4de58614d9550d3880fd6ab8, type: 3}
+  m_PrefabInstance: {fileID: 1198034250}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1199061083
 GameObject:
   m_ObjectHideFlags: 0
@@ -8681,7 +8751,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 5.2671604}
   m_EdgeRadius: 0
 --- !u!1 &1226387923
 GameObject:
@@ -10056,32 +10126,68 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
       propertyPath: spawnPrefabs.Array.size
-      value: 15
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
-      propertyPath: spawnPrefabs.Array.data[9]
+      propertyPath: spawnPrefabs.Array.data[4]
       value: 
-      objectReference: {fileID: 4324150623030115701, guid: bead54fdadcc3244ba118f97923ce1e4, type: 3}
+      objectReference: {fileID: 4023782060235962980, guid: e9d66f7c16d98384a8fe2258fb8ccbda, type: 3}
     - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
-      propertyPath: spawnPrefabs.Array.data[10]
+      propertyPath: spawnPrefabs.Array.data[5]
       value: 
-      objectReference: {fileID: 2070927913671954398, guid: a6d7960f173eba240a16bf5acc1cdac2, type: 3}
+      objectReference: {fileID: 8336525490738794815, guid: 6c3e768f0081d474b83e174621fe964b, type: 3}
     - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
-      propertyPath: spawnPrefabs.Array.data[11]
+      propertyPath: spawnPrefabs.Array.data[6]
       value: 
-      objectReference: {fileID: 2897293437349085834, guid: e56498c4c8f5afd4b9678e869b5c4bde, type: 3}
+      objectReference: {fileID: 8336525490738794815, guid: 61d5a916608d6a84ebbb620902948c2b, type: 3}
     - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
-      propertyPath: spawnPrefabs.Array.data[12]
+      propertyPath: spawnPrefabs.Array.data[7]
       value: 
-      objectReference: {fileID: 2897293437349085834, guid: ffd53d84ac745814581755771c2ed42a, type: 3}
+      objectReference: {fileID: 8336525490738794815, guid: 13553fa24aeeb0b4f88ae86b240d0960, type: 3}
     - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
-      propertyPath: spawnPrefabs.Array.data[13]
+      propertyPath: spawnPrefabs.Array.data[8]
       value: 
       objectReference: {fileID: 8336525490738794815, guid: 74281926697947d4b97859e210694a05, type: 3}
     - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
-      propertyPath: spawnPrefabs.Array.data[14]
+      propertyPath: spawnPrefabs.Array.data[9]
+      value: 
+      objectReference: {fileID: 4557648505051089243, guid: d7f8c0a2b3341d541b62c86a2224bea6, type: 3}
+    - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
+      propertyPath: spawnPrefabs.Array.data[10]
+      value: 
+      objectReference: {fileID: 8336525490738794815, guid: 463c81f6a4836d440b782c7dc4e963d0, type: 3}
+    - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
+      propertyPath: spawnPrefabs.Array.data[11]
+      value: 
+      objectReference: {fileID: 8336525490738794815, guid: 02cf5e6ffbac72944bc5ea3d6bf6e045, type: 3}
+    - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
+      propertyPath: spawnPrefabs.Array.data[12]
       value: 
       objectReference: {fileID: 8336525490738794815, guid: b7083190d1a74c64e8637d9228a8c5c4, type: 3}
+    - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
+      propertyPath: spawnPrefabs.Array.data[13]
+      value: 
+      objectReference: {fileID: 8336525490738794815, guid: 524e274a7d832a74b8383bb3a8a574b2, type: 3}
+    - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
+      propertyPath: spawnPrefabs.Array.data[14]
+      value: 
+      objectReference: {fileID: 4324150623030115701, guid: bead54fdadcc3244ba118f97923ce1e4, type: 3}
+    - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
+      propertyPath: spawnPrefabs.Array.data[15]
+      value: 
+      objectReference: {fileID: 2070927913671954398, guid: a6d7960f173eba240a16bf5acc1cdac2, type: 3}
+    - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
+      propertyPath: spawnPrefabs.Array.data[16]
+      value: 
+      objectReference: {fileID: 2897293437349085834, guid: e56498c4c8f5afd4b9678e869b5c4bde, type: 3}
+    - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
+      propertyPath: spawnPrefabs.Array.data[17]
+      value: 
+      objectReference: {fileID: 2897293437349085834, guid: ffd53d84ac745814581755771c2ed42a, type: 3}
+    - target: {fileID: 6718033232739959709, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
+      propertyPath: spawnPrefabs.Array.data[18]
+      value: 
+      objectReference: {fileID: 6260087909514664896, guid: 0996bb8f41542624ba323747ec5a9f49, type: 3}
     - target: {fileID: 8718146502490657861, guid: 5ba2250a5214c2f4e9fb3854f41a230e, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -24048,9 +24154,9 @@ MonoBehaviour:
   spawnedWeapons: []
   maxSpawnableWeapons: 2
   weaponSpawnCount: 1
-  waitForAmountOfPlayers: 2
-  spawnDelay: 5
-  waitForPlayers: 0
+  spawnDelay: 3
+  waitForPlayers: 1
+  canRespawn: 0
 --- !u!4 &2757776766782205249
 Transform:
   m_ObjectHideFlags: 0
@@ -24238,9 +24344,9 @@ MonoBehaviour:
   spawnedWeapons: []
   maxSpawnableWeapons: 2
   weaponSpawnCount: 1
-  waitForAmountOfPlayers: 2
-  spawnDelay: 5
-  waitForPlayers: 0
+  spawnDelay: 3
+  waitForPlayers: 1
+  canRespawn: 0
 --- !u!4 &2757776767042203281
 Transform:
   m_ObjectHideFlags: 0
@@ -24364,9 +24470,9 @@ MonoBehaviour:
   spawnedWeapons: []
   maxSpawnableWeapons: 2
   weaponSpawnCount: 1
-  waitForAmountOfPlayers: 2
-  spawnDelay: 5
-  waitForPlayers: 0
+  spawnDelay: 3
+  waitForPlayers: 1
+  canRespawn: 0
 --- !u!1 &2757776767196265812
 GameObject:
   m_ObjectHideFlags: 0
@@ -24458,9 +24564,9 @@ MonoBehaviour:
   spawnedWeapons: []
   maxSpawnableWeapons: 2
   weaponSpawnCount: 1
-  waitForAmountOfPlayers: 2
-  spawnDelay: 5
-  waitForPlayers: 0
+  spawnDelay: 3
+  waitForPlayers: 1
+  canRespawn: 0
 --- !u!4 &2757776767451144793
 Transform:
   m_ObjectHideFlags: 0
@@ -24582,9 +24688,9 @@ MonoBehaviour:
   spawnedWeapons: []
   maxSpawnableWeapons: 2
   weaponSpawnCount: 1
-  waitForAmountOfPlayers: 2
-  spawnDelay: 5
-  waitForPlayers: 0
+  spawnDelay: 3
+  waitForPlayers: 1
+  canRespawn: 0
 --- !u!1 &2757776767516538424
 GameObject:
   m_ObjectHideFlags: 0
@@ -24692,9 +24798,9 @@ MonoBehaviour:
   spawnedWeapons: []
   maxSpawnableWeapons: 2
   weaponSpawnCount: 1
-  waitForAmountOfPlayers: 2
-  spawnDelay: 5
-  waitForPlayers: 0
+  spawnDelay: 3
+  waitForPlayers: 1
+  canRespawn: 0
 --- !u!1 &2757776767833644180
 GameObject:
   m_ObjectHideFlags: 0
@@ -24803,9 +24909,9 @@ MonoBehaviour:
   spawnedWeapons: []
   maxSpawnableWeapons: 2
   weaponSpawnCount: 1
-  waitForAmountOfPlayers: 2
-  spawnDelay: 5
-  waitForPlayers: 0
+  spawnDelay: 3
+  waitForPlayers: 1
+  canRespawn: 0
 --- !u!114 &2757776768058402163
 MonoBehaviour:
   m_ObjectHideFlags: 0
