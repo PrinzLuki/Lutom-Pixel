@@ -10,7 +10,7 @@ public class WeaponSpawner : NetworkBehaviour
     public List<GameObject> spawnedWeapons;
     public int maxSpawnableWeapons = 2;
     public int weaponSpawnCount;
-    public int waitForAmountOfPlayers = 2;
+    //public int waitForAmountOfPlayers = 2;
 
     public float spawnDelay;
     public bool waitForPlayers = true;
@@ -41,12 +41,18 @@ public class WeaponSpawner : NetworkBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (spawnedWeapons.Count >= maxSpawnableWeapons) return;
+
+        RespawnAWeapon();
+    }
 
 
     public void CheckPlayers()
     {
         var playerCount = NetworkServer.connections.Count;
-        if (playerCount < waitForAmountOfPlayers)
+        if (playerCount < GameManager.instance.amountOfPlayers)
         {
             StartCoroutine(WaitForPlayers());
         }
@@ -72,8 +78,9 @@ public class WeaponSpawner : NetworkBehaviour
             {
                 GameObject weaponClone = Instantiate(weaponScriptables[Random.Range(0, weaponScriptables.Count)].weaponPrefab, weaponSpawnPoints[i].position, weaponSpawnPoints[i].rotation);
                 NetworkServer.Spawn(weaponClone);
-                weaponClone.GetComponent<Weapon>().weaponSpawnerParent = this;
-                spawnedWeapons.Add(weaponClone);
+                //weaponClone.GetComponent<Weapon>().weaponSpawnerParent = this;
+                CmdSetSpawnParent(weaponClone);
+                CmdAddWeaponToList(weaponClone);
                 //CmdAddWeaponToList(weaponClone, this);
             }
         }
@@ -82,30 +89,51 @@ public class WeaponSpawner : NetworkBehaviour
 
     public void RespawnAWeapon()
     {
-        if (spawnedWeapons.Count >= maxSpawnableWeapons) return;
+        if (!isServer) return;
 
         int randomI = Random.Range(0, weaponSpawnPoints.Count);
 
         GameObject weaponClone = Instantiate(weaponScriptables[Random.Range(0, weaponScriptables.Count)].weaponPrefab, weaponSpawnPoints[randomI].position, weaponSpawnPoints[randomI].rotation);
         NetworkServer.Spawn(weaponClone);
-        weaponClone.GetComponent<Weapon>().weaponSpawnerParent = this;
-        spawnedWeapons.Add(weaponClone);
+        CmdSetSpawnParent(weaponClone);
+        //weaponClone.GetComponent<Weapon>().weaponSpawnerParent = this;
+        CmdAddWeaponToList(weaponClone);
         //CmdAddWeaponToList(weaponClone, this);
     }
 
+    [Command(requiresAuthority = false)]
+    void CmdSetSpawnParent(GameObject weapon)
+    {
+        RpcSetSpawnParent(weapon);
+    }
+    [ClientRpc]
+    void RpcSetSpawnParent(GameObject weapon)
+    {
+        weapon.GetComponent<Weapon>().weaponSpawnerParent = this;
+    }
 
-    //[Command(requiresAuthority = false)]
-    //public void CmdAddWeaponToList(GameObject weaponClone, WeaponSpawner spawner)
-    //{
-    //    RpcAddWeaponToList(weaponClone, spawner);
-    //}
+    [Command(requiresAuthority = false)]
+    void CmdAddWeaponToList(GameObject weapon)
+    {
+        RpcAddWeaponToList(weapon);
+    }
+    [ClientRpc]
+    void RpcAddWeaponToList(GameObject weapon)
+    {
+        spawnedWeapons.Add(weapon);
+    }
 
-    //[ClientRpc]
-    //void RpcAddWeaponToList(GameObject weaponClone, WeaponSpawner spawner)
-    //{
-    //    weaponClone.GetComponent<Weapon>().weaponSpawnerParent = this;
-    //    spawner.spawnedWeapons.Add(weaponClone);
-    //}
+    [Command(requiresAuthority = false)]
+    public void CmdRemoveWeaponFromList(GameObject weapon)
+    {
+        RpcRemoveWeaponFromList(weapon);
+    }
+    [ClientRpc]
+    public void RpcRemoveWeaponFromList(GameObject weapon)
+    {
+        spawnedWeapons.Remove(weapon);
+    }
+
 
     IEnumerator WaitForPlayers()
     {

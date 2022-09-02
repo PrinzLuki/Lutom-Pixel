@@ -237,8 +237,12 @@ MonoBehaviour:
   syncInterval: 0.1
   bulletScriptable: {fileID: 11400000, guid: a74e99c0aab786e49b5643e60b8014d4, type: 2}
   parent: {fileID: 0}
+  bulletHit: 0
   fieldOfImpact: 1.5
   force: 10
   explodeLayer:
     serializedVersion: 2
-    m_Bits: 3976
+    m_Bits: 3968
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8

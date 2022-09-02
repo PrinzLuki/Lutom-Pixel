@@ -15,4 +15,5 @@ MonoBehaviour:
   weaponPrefab: {fileID: 2770220800326088166, guid: bd1873ca28b6d294fad4139a01bd3423, type: 3}
   speed: 5
   munition: 120
+  fireRate: 0.2
   automatic: 0
